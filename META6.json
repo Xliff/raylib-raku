@@ -30,7 +30,14 @@
     "Raylib::Bindings": "lib/Raylib/Bindings.rakumod"
   },
   "resources": [
-    "libraries/raylib"
+    "libraries/raylib",
+    "images/cyberpunk_street_background.png",
+    "images/cyberpunk_street_midground.png",
+    "images/cyberpunk_street_foreground.png",
+    "models/guy.iqm",
+    "models/guytex.png",
+    "models/guyanim.iqm",
+    "models/guy.blend"
   ],
   "test-depends": [],
   "version": "0.0.15",
