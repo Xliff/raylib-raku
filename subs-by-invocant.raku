@@ -1,18 +1,36 @@
-use Raylib::Bindings;
-use NativeCall;
+sub MAIN ( :$write = False, :$for = '' ) {
+  use Raylib::Bindings;
+  use NativeCall;
 
-sub MAIN ( :$write = False ) {
+  my @only-for = $for ?? $for.split(',') !! ();
+
+  my @symbols = MY.WHO
+                  .pairs
+                  .grep( *.key.starts-with("\&") )
+                  .values
+                  .categorize(
+                    *.value.signature.params.head.type.^name
+                   )
+                  .pairs
+                  .sort( *.key );
+
   for MY.WHO
         .pairs
         .grep( *.key.starts-with("\&") )
         .values
         .categorize(
-          *.value.signature.params.head.type.^name
+          *.value.signature.params.head.type.^shortname
          )
         .pairs
         .sort( *.key )
   {
-    say "\nInvocant: { .key }";
+    my $invocant = .value.head.value.signature.params.head.type.^shortname;
+
+    if $for {
+      next unless $invocant eq @only-for.any;
+    }
+
+    say "\nInvocant: { $invocant }";
 
     my ($subs, $methods);
     for .value.pairs.sort( *.value.value.name ) {
@@ -27,7 +45,7 @@ sub MAIN ( :$write = False ) {
           ?? '()'
           !! "(\n{ $s }{ $r ne "Mu" ?? "\n    --> { $r }" !! "" }\n  )";
         my $nc-sym = '';
-        $nc-sym = "\n    is symbol(\"{ .native_symbol }\")\n"
+        $nc-sym = "\n  is symbol(\"{ .native_symbol }\")"
           if .^can('native_symbol');
 
         $subs ~= qq:to/SUB/;
@@ -63,10 +81,10 @@ sub MAIN ( :$write = False ) {
     }
 
     if $write {
-      my $raw = "lib/Raylib/Raw/{ .key }.rakumod".IO;
+      my $raw = "lib/Raylib/Raw/{ $invocant }.rakumod".IO;
       $raw.spurt($subs) unless $raw.r;
 
-      my $obj = "lib/Raylib/{ .key }.rakumod".IO;
+      my $obj = "lib/Raylib/{ $invocant }.rakumod".IO;
       $obj.spurt($methods) unless $obj.r;
     } else {
       say $subs;
