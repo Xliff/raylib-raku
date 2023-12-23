@@ -3,7 +3,9 @@ use v6;
 use Method::Also;
 use Raylib::Bindings;
 
-class Raylib::Color {
+use Raylib::Roles::Reapable;
+
+class Raylib::Color does Reapable {
   has Color $!color handles(*) is built;
 
   submethod BUILD ( :$!color ) { }
@@ -16,6 +18,13 @@ class Raylib::Color {
   multi method new (Color $color) {
     return Nil unless $color;
     self.bless( :$color );
+  }
+  multi method new (Int() $r, Int() $g, Int() $b, Int() $a = 255) {
+    my $color = Color.init($r, $g, $b, $a);
+    return Nil unless $color;
+    my $o  = self.bless( :$color );
+    $o.addReapable($color);
+    $o;
   }
 
   method alpha (Num() $alpha, :$raw = False) {
