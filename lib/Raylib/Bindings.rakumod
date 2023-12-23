@@ -1170,7 +1170,7 @@ our sub image-color-contrast (Image $image is rw, num32 $contrast) is export is 
 our sub image-color-brightness (Image $image is rw, int32 $brightness) is export is native(LIBRAYLIB) is symbol('ImageColorBrightness'){ * }
 our sub unload-image-colors (Color $colors is rw) is export is native(LIBRAYLIB) is symbol('UnloadImageColors'){ * }
 our sub unload-image-palette (Color $colors is rw) is export is native(LIBRAYLIB) is symbol('UnloadImagePalette'){ * }
-our sub gen-texture-mipmaps (Texture2D $texture is rw) is export is native(LIBRAYLIB) is symbol('GenTextureMipmaps'){ * }
+
 our sub get-pixel-data-size (int32 $width, int32 $height, int32 $format) returns int32 is export is native(LIBRAYLIB) is symbol('GetPixelDataSize'){ * }
 our sub load-font-data (uint8 $fileData is rw, int32 $dataSize, int32 $fontSize, int32 $codepoints is rw, int32 $codepointCount, int32 $type) returns GlyphInfo is export is native(LIBRAYLIB) is symbol('LoadFontData'){ * }
 our sub unload-font-data (GlyphInfo $glyphs is rw, int32 $glyphCount) is export is native(LIBRAYLIB) is symbol('UnloadFontData'){ * }
@@ -1273,7 +1273,7 @@ our sub get-touch-position (int32 $index) returns Vector2 is export is native(LI
 our sub term:<get-gesture-drag-vector> () returns Vector2 is export is native(LIBRAYLIB) is symbol('GetGestureDragVector_pointerized'){ * }
 our sub term:<get-gesture-pinch-vector> () returns Vector2 is export is native(LIBRAYLIB) is symbol('GetGesturePinchVector_pointerized'){ * }
 our sub update-camera-pro (Camera $camera is rw, Vector3 $movement, Vector3 $rotation, num32 $zoom) is export is native(LIBRAYLIB) is symbol('UpdateCameraPro_pointerized'){ * }
-our sub set-shapes-texture (Texture2D $texture, Rectangle $source) is export is native(LIBRAYLIB) is symbol('SetShapesTexture_pointerized'){ * }
+
 our sub draw-pixel (int32 $posX, int32 $posY, Color $color) is export is native(LIBRAYLIB) is symbol('DrawPixel_pointerized'){ * }
 our sub draw-pixel-v (Vector2 $position, Color $color) is export is native(LIBRAYLIB) is symbol('DrawPixelV_pointerized'){ * }
 our sub draw-line (int32 $startPosX, int32 $startPosY, int32 $endPosX, int32 $endPosY, Color $color) is export is native(LIBRAYLIB) is symbol('DrawLine_pointerized'){ * }
@@ -1329,7 +1329,7 @@ our sub load-image-raw (Str $fileName, int32 $width, int32 $height, int32 $forma
 our sub load-image-svg (Str $fileNameOrString, int32 $width, int32 $height) returns Image is export is native(LIBRAYLIB) is symbol('LoadImageSvg_pointerized'){ * }
 our sub load-image-anim (Str $fileName, int32 $frames is rw, ) returns Image is export is native(LIBRAYLIB) is symbol('LoadImageAnim_pointerized'){ * }
 our sub load-image-from-memory (Str $fileType, uint8 $fileData is rw, int32 $dataSize) returns Image is export is native(LIBRAYLIB) is symbol('LoadImageFromMemory_pointerized'){ * }
-our sub load-image-from-texture (Texture2D $texture) returns Image is export is native(LIBRAYLIB) is symbol('LoadImageFromTexture_pointerized'){ * }
+
 our sub term:<load-image-from-screen> () returns Image is export is native(LIBRAYLIB) is symbol('LoadImageFromScreen_pointerized'){ * }
 our sub is-image-ready (Image $image) returns bool is export is native(LIBRAYLIB) is symbol('IsImageReady_pointerized'){ * }
 our sub unload-image (Image $image) is export is native(LIBRAYLIB) is symbol('UnloadImage_pointerized'){ * }
@@ -1376,24 +1376,12 @@ our sub image-draw-rectangle-lines (Image $dst is rw, Rectangle $rec, int32 $thi
 our sub image-draw (Image $dst is rw, Image $src, Rectangle $srcRec, Rectangle $dstRec, Color $tint) is export is native(LIBRAYLIB) is symbol('ImageDraw_pointerized'){ * }
 our sub image-draw-text (Image $dst is rw, Str $text, int32 $posX, int32 $posY, int32 $fontSize, Color $color) is export is native(LIBRAYLIB) is symbol('ImageDrawText_pointerized'){ * }
 our sub image-draw-text-ex (Image $dst is rw, Font $font, Str $text, Vector2 $position, num32 $fontSize, num32 $spacing, Color $tint) is export is native(LIBRAYLIB) is symbol('ImageDrawTextEx_pointerized'){ * }
-our sub load-texture (Str $fileName) returns Texture2D is export is native(LIBRAYLIB) is symbol('LoadTexture_pointerized'){ * }
-our sub load-texture-from-image (Image $image) returns Texture2D is export is native(LIBRAYLIB) is symbol('LoadTextureFromImage_pointerized'){ * }
+
 our sub load-texture-cubemap (Image $image, int32 $layout) returns TextureCubemap is export is native(LIBRAYLIB) is symbol('LoadTextureCubemap_pointerized'){ * }
 our sub load-render-texture (int32 $width, int32 $height) returns RenderTexture2D is export is native(LIBRAYLIB) is symbol('LoadRenderTexture_pointerized'){ * }
-our sub is-texture-ready (Texture2D $texture) returns bool is export is native(LIBRAYLIB) is symbol('IsTextureReady_pointerized'){ * }
-our sub unload-texture (Texture2D $texture) is export is native(LIBRAYLIB) is symbol('UnloadTexture_pointerized'){ * }
+
 our sub is-render-texture-ready (RenderTexture2D $target) returns bool is export is native(LIBRAYLIB) is symbol('IsRenderTextureReady_pointerized'){ * }
 our sub unload-render-texture (RenderTexture2D $target) is export is native(LIBRAYLIB) is symbol('UnloadRenderTexture_pointerized'){ * }
-our sub update-texture (Texture2D $texture, Pointer[void] $pixels, ) is export is native(LIBRAYLIB) is symbol('UpdateTexture_pointerized'){ * }
-our sub update-texture-rec (Texture2D $texture, Rectangle $rec, Pointer[void] $pixels, ) is export is native(LIBRAYLIB) is symbol('UpdateTextureRec_pointerized'){ * }
-our sub set-texture-filter (Texture2D $texture, int32 $filter) is export is native(LIBRAYLIB) is symbol('SetTextureFilter_pointerized'){ * }
-our sub set-texture-wrap (Texture2D $texture, int32 $wrap) is export is native(LIBRAYLIB) is symbol('SetTextureWrap_pointerized'){ * }
-our sub draw-texture (Texture2D $texture, int32 $posX, int32 $posY, Color $tint) is export is native(LIBRAYLIB) is symbol('DrawTexture_pointerized'){ * }
-our sub draw-texture-v (Texture2D $texture, Vector2 $position, Color $tint) is export is native(LIBRAYLIB) is symbol('DrawTextureV_pointerized'){ * }
-our sub draw-texture-ex (Texture2D $texture, Vector2 $position, num32 $rotation, num32 $scale, Color $tint) is export is native(LIBRAYLIB) is symbol('DrawTextureEx_pointerized'){ * }
-our sub draw-texture-rec (Texture2D $texture, Rectangle $source, Vector2 $position, Color $tint) is export is native(LIBRAYLIB) is symbol('DrawTextureRec_pointerized'){ * }
-our sub draw-texture-pro (Texture2D $texture, Rectangle $source, Rectangle $dest, Vector2 $origin, num32 $rotation, Color $tint) is export is native(LIBRAYLIB) is symbol('DrawTexturePro_pointerized'){ * }
-our sub draw-texture-npatch (Texture2D $texture, NPatchInfo $nPatchInfo, Rectangle $dest, Vector2 $origin, num32 $rotation, Color $tint) is export is native(LIBRAYLIB) is symbol('DrawTextureNPatch_pointerized'){ * }
 our sub fade (Color $color, num32 $alpha) returns Color is export is native(LIBRAYLIB) is symbol('Fade_pointerized'){ * }
 our sub color-to-int (Color $color) returns int32 is export is native(LIBRAYLIB) is symbol('ColorToInt_pointerized'){ * }
 our sub color-normalize (Color $color) returns Vector4 is export is native(LIBRAYLIB) is symbol('ColorNormalize_pointerized'){ * }
