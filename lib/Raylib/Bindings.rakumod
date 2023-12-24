@@ -1005,7 +1005,6 @@ our sub term:<toggle-borderless-windowed> () is export is native(LIBRAYLIB) is s
 our sub term:<maximize-window> () is export is native(LIBRAYLIB) is symbol('MaximizeWindow'){ * }
 our sub term:<minimize-window> () is export is native(LIBRAYLIB) is symbol('MinimizeWindow'){ * }
 our sub term:<restore-window> () is export is native(LIBRAYLIB) is symbol('RestoreWindow'){ * }
-our sub set-window-icons (Image $images is rw, int32 $count) is export is native(LIBRAYLIB) is symbol('SetWindowIcons'){ * }
 our sub set-window-title (Str $title) is export is native(LIBRAYLIB) is symbol('SetWindowTitle'){ * }
 our sub set-window-position (int32 $x, int32 $y) is export is native(LIBRAYLIB) is symbol('SetWindowPosition'){ * }
 our sub set-window-monitor (int32 $monitor) is export is native(LIBRAYLIB) is symbol('SetWindowMonitor'){ * }
@@ -1150,26 +1149,6 @@ our sub term:<get-gesture-hold-duration> () returns num32 is export is native(LI
 our sub term:<get-gesture-drag-angle> () returns num32 is export is native(LIBRAYLIB) is symbol('GetGestureDragAngle'){ * }
 our sub term:<get-gesture-pinch-angle> () returns num32 is export is native(LIBRAYLIB) is symbol('GetGesturePinchAngle'){ * }
 our sub update-camera (Camera $camera is rw, int32 $mode) is export is native(LIBRAYLIB) is symbol('UpdateCamera'){ * }
-our sub image-format (Image $image is rw, int32 $newFormat) is export is native(LIBRAYLIB) is symbol('ImageFormat'){ * }
-our sub image-alpha-crop (Image $image is rw, num32 $threshold) is export is native(LIBRAYLIB) is symbol('ImageAlphaCrop'){ * }
-our sub image-alpha-premultiply (Image $image is rw) is export is native(LIBRAYLIB) is symbol('ImageAlphaPremultiply'){ * }
-our sub image-blur-gaussian (Image $image is rw, int32 $blurSize) is export is native(LIBRAYLIB) is symbol('ImageBlurGaussian'){ * }
-our sub image-kernel-convolution (Image $image is rw, num32 $kernel is rw, int32 $kernelSize) is export is native(LIBRAYLIB) is symbol('ImageKernelConvolution'){ * }
-our sub image-resize (Image $image is rw, int32 $newWidth, int32 $newHeight) is export is native(LIBRAYLIB) is symbol('ImageResize'){ * }
-our sub image-resize-nn (Image $image is rw, int32 $newWidth, int32 $newHeight) is export is native(LIBRAYLIB) is symbol('ImageResizeNN'){ * }
-our sub image-mipmaps (Image $image is rw) is export is native(LIBRAYLIB) is symbol('ImageMipmaps'){ * }
-our sub image-dither (Image $image is rw, int32 $rBpp, int32 $gBpp, int32 $bBpp, int32 $aBpp) is export is native(LIBRAYLIB) is symbol('ImageDither'){ * }
-our sub image-flip-vertical (Image $image is rw) is export is native(LIBRAYLIB) is symbol('ImageFlipVertical'){ * }
-our sub image-flip-horizontal (Image $image is rw) is export is native(LIBRAYLIB) is symbol('ImageFlipHorizontal'){ * }
-our sub image-rotate (Image $image is rw, int32 $degrees) is export is native(LIBRAYLIB) is symbol('ImageRotate'){ * }
-our sub image-rotate-cw (Image $image is rw) is export is native(LIBRAYLIB) is symbol('ImageRotateCW'){ * }
-our sub image-rotate-ccw (Image $image is rw) is export is native(LIBRAYLIB) is symbol('ImageRotateCCW'){ * }
-our sub image-color-invert (Image $image is rw) is export is native(LIBRAYLIB) is symbol('ImageColorInvert'){ * }
-our sub image-color-grayscale (Image $image is rw) is export is native(LIBRAYLIB) is symbol('ImageColorGrayscale'){ * }
-our sub image-color-contrast (Image $image is rw, num32 $contrast) is export is native(LIBRAYLIB) is symbol('ImageColorContrast'){ * }
-our sub image-color-brightness (Image $image is rw, int32 $brightness) is export is native(LIBRAYLIB) is symbol('ImageColorBrightness'){ * }
-our sub unload-image-colors (Color $colors is rw) is export is native(LIBRAYLIB) is symbol('UnloadImageColors'){ * }
-our sub unload-image-palette (Color $colors is rw) is export is native(LIBRAYLIB) is symbol('UnloadImagePalette'){ * }
 
 our sub get-pixel-data-size (int32 $width, int32 $height, int32 $format) returns int32 is export is native(LIBRAYLIB) is symbol('GetPixelDataSize'){ * }
 our sub load-font-data (uint8 $fileData is rw, int32 $dataSize, int32 $fontSize, int32 $codepoints is rw, int32 $codepointCount, int32 $type) returns GlyphInfo is export is native(LIBRAYLIB) is symbol('LoadFontData'){ * }
@@ -1228,7 +1207,6 @@ our sub set-audio-stream-buffer-size-default (int32 $size) is export is native(L
 our sub attach-audio-mixed-processor (&audio-callback (Pointer[void] $bufferData, uint32 $frames)) is export is native(LIBRAYLIB) is symbol('AttachAudioMixedProcessor'){ * }
 
 ####### Pointerized functions ########
-our sub set-window-icon (Image $image) is export is native(LIBRAYLIB) is symbol('SetWindowIcon_pointerized'){ * }
 our sub get-monitor-position (int32 $monitor) returns Vector2 is export is native(LIBRAYLIB) is symbol('GetMonitorPosition_pointerized'){ * }
 our sub term:<get-window-position> () returns Vector2 is export is native(LIBRAYLIB) is symbol('GetWindowPosition_pointerized'){ * }
 our sub term:<get-window-scale-dpi> () returns Vector2 is export is native(LIBRAYLIB) is symbol('GetWindowScaleDPI_pointerized'){ * }
@@ -1314,11 +1292,6 @@ our sub load-image-anim (Str $fileName, int32 $frames is rw, ) returns Image is 
 our sub load-image-from-memory (Str $fileType, uint8 $fileData is rw, int32 $dataSize) returns Image is export is native(LIBRAYLIB) is symbol('LoadImageFromMemory_pointerized'){ * }
 
 our sub term:<load-image-from-screen> () returns Image is export is native(LIBRAYLIB) is symbol('LoadImageFromScreen_pointerized'){ * }
-our sub is-image-ready (Image $image) returns bool is export is native(LIBRAYLIB) is symbol('IsImageReady_pointerized'){ * }
-our sub unload-image (Image $image) is export is native(LIBRAYLIB) is symbol('UnloadImage_pointerized'){ * }
-our sub export-image (Image $image, Str $fileName) returns bool is export is native(LIBRAYLIB) is symbol('ExportImage_pointerized'){ * }
-our sub export-image-to-memory (Image $image, Str $fileType, int32 $fileSize is rw, ) returns Str is export is native(LIBRAYLIB) is symbol('ExportImageToMemory_pointerized'){ * }
-our sub export-image-as-code (Image $image, Str $fileName) returns bool is export is native(LIBRAYLIB) is symbol('ExportImageAsCode_pointerized'){ * }
 our sub gen-image-color (int32 $width, int32 $height, Color $color) returns Image is export is native(LIBRAYLIB) is symbol('GenImageColor_pointerized'){ * }
 our sub gen-image-gradient-linear (int32 $width, int32 $height, int32 $direction, Color $start, Color $end) returns Image is export is native(LIBRAYLIB) is symbol('GenImageGradientLinear_pointerized'){ * }
 our sub gen-image-gradient-radial (int32 $width, int32 $height, num32 $density, Color $inner, Color $outer) returns Image is export is native(LIBRAYLIB) is symbol('GenImageGradientRadial_pointerized'){ * }
@@ -1328,39 +1301,10 @@ our sub gen-image-white-noise (int32 $width, int32 $height, num32 $factor) retur
 our sub gen-image-perlin-noise (int32 $width, int32 $height, int32 $offsetX, int32 $offsetY, num32 $scale) returns Image is export is native(LIBRAYLIB) is symbol('GenImagePerlinNoise_pointerized'){ * }
 our sub gen-image-cellular (int32 $width, int32 $height, int32 $tileSize) returns Image is export is native(LIBRAYLIB) is symbol('GenImageCellular_pointerized'){ * }
 our sub gen-image-text (int32 $width, int32 $height, Str $text) returns Image is export is native(LIBRAYLIB) is symbol('GenImageText_pointerized'){ * }
-our sub image-copy (Image $image) returns Image is export is native(LIBRAYLIB) is symbol('ImageCopy_pointerized'){ * }
-our sub image-from-image (Image $image, Rectangle $rec) returns Image is export is native(LIBRAYLIB) is symbol('ImageFromImage_pointerized'){ * }
-our sub image-text (Str $text, int32 $fontSize, Color $color) returns Image is export is native(LIBRAYLIB) is symbol('ImageText_pointerized'){ * }
-our sub image-text-ex (Font $font, Str $text, num32 $fontSize, num32 $spacing, Color $tint) returns Image is export is native(LIBRAYLIB) is symbol('ImageTextEx_pointerized'){ * }
-our sub image-to-pot (Image $image is rw, Color $fill) is export is native(LIBRAYLIB) is symbol('ImageToPOT_pointerized'){ * }
-our sub image-crop (Image $image is rw, Rectangle $crop) is export is native(LIBRAYLIB) is symbol('ImageCrop_pointerized'){ * }
-our sub image-alpha-clear (Image $image is rw, Color $color, num32 $threshold) is export is native(LIBRAYLIB) is symbol('ImageAlphaClear_pointerized'){ * }
-our sub image-alpha-mask (Image $image is rw, Image $alphaMask) is export is native(LIBRAYLIB) is symbol('ImageAlphaMask_pointerized'){ * }
-our sub image-resize-canvas (Image $image is rw, int32 $newWidth, int32 $newHeight, int32 $offsetX, int32 $offsetY, Color $fill) is export is native(LIBRAYLIB) is symbol('ImageResizeCanvas_pointerized'){ * }
-our sub image-color-tint (Image $image is rw, Color $color) is export is native(LIBRAYLIB) is symbol('ImageColorTint_pointerized'){ * }
-our sub image-color-replace (Image $image is rw, Color $color, Color $replace) is export is native(LIBRAYLIB) is symbol('ImageColorReplace_pointerized'){ * }
-our sub load-image-colors (Image $image) returns Color is export is native(LIBRAYLIB) is symbol('LoadImageColors_pointerized'){ * }
-our sub load-image-palette (Image $image, int32 $maxPaletteSize, int32 $colorCount is rw, ) returns Color is export is native(LIBRAYLIB) is symbol('LoadImagePalette_pointerized'){ * }
-our sub get-image-alpha-border (Image $image, num32 $threshold) returns Rectangle is export is native(LIBRAYLIB) is symbol('GetImageAlphaBorder_pointerized'){ * }
-our sub get-image-color (Image $image, int32 $x, int32 $y) returns Color is export is native(LIBRAYLIB) is symbol('GetImageColor_pointerized'){ * }
-our sub image-clear-background (Image $dst is rw, Color $color) is export is native(LIBRAYLIB) is symbol('ImageClearBackground_pointerized'){ * }
-our sub image-draw-pixel (Image $dst is rw, int32 $posX, int32 $posY, Color $color) is export is native(LIBRAYLIB) is symbol('ImageDrawPixel_pointerized'){ * }
-our sub image-draw-pixel-v (Image $dst is rw, Vector2 $position, Color $color) is export is native(LIBRAYLIB) is symbol('ImageDrawPixelV_pointerized'){ * }
-our sub image-draw-line (Image $dst is rw, int32 $startPosX, int32 $startPosY, int32 $endPosX, int32 $endPosY, Color $color) is export is native(LIBRAYLIB) is symbol('ImageDrawLine_pointerized'){ * }
-our sub image-draw-line-v (Image $dst is rw, Vector2 $start, Vector2 $end, Color $color) is export is native(LIBRAYLIB) is symbol('ImageDrawLineV_pointerized'){ * }
-our sub image-draw-circle (Image $dst is rw, int32 $centerX, int32 $centerY, int32 $radius, Color $color) is export is native(LIBRAYLIB) is symbol('ImageDrawCircle_pointerized'){ * }
-our sub image-draw-circle-v (Image $dst is rw, Vector2 $center, int32 $radius, Color $color) is export is native(LIBRAYLIB) is symbol('ImageDrawCircleV_pointerized'){ * }
-our sub image-draw-circle-lines (Image $dst is rw, int32 $centerX, int32 $centerY, int32 $radius, Color $color) is export is native(LIBRAYLIB) is symbol('ImageDrawCircleLines_pointerized'){ * }
-our sub image-draw-circle-lines-v (Image $dst is rw, Vector2 $center, int32 $radius, Color $color) is export is native(LIBRAYLIB) is symbol('ImageDrawCircleLinesV_pointerized'){ * }
-our sub image-draw-rectangle (Image $dst is rw, int32 $posX, int32 $posY, int32 $width, int32 $height, Color $color) is export is native(LIBRAYLIB) is symbol('ImageDrawRectangle_pointerized'){ * }
-our sub image-draw-rectangle-v (Image $dst is rw, Vector2 $position, Vector2 $size, Color $color) is export is native(LIBRAYLIB) is symbol('ImageDrawRectangleV_pointerized'){ * }
-our sub image-draw-rectangle-rec (Image $dst is rw, Rectangle $rec, Color $color) is export is native(LIBRAYLIB) is symbol('ImageDrawRectangleRec_pointerized'){ * }
-our sub image-draw-rectangle-lines (Image $dst is rw, Rectangle $rec, int32 $thick, Color $color) is export is native(LIBRAYLIB) is symbol('ImageDrawRectangleLines_pointerized'){ * }
-our sub image-draw (Image $dst is rw, Image $src, Rectangle $srcRec, Rectangle $dstRec, Color $tint) is export is native(LIBRAYLIB) is symbol('ImageDraw_pointerized'){ * }
-our sub image-draw-text (Image $dst is rw, Str $text, int32 $posX, int32 $posY, int32 $fontSize, Color $color) is export is native(LIBRAYLIB) is symbol('ImageDrawText_pointerized'){ * }
-our sub image-draw-text-ex (Image $dst is rw, Font $font, Str $text, Vector2 $position, num32 $fontSize, num32 $spacing, Color $tint) is export is native(LIBRAYLIB) is symbol('ImageDrawTextEx_pointerized'){ * }
+
 
 our sub load-texture-cubemap (Image $image, int32 $layout) returns TextureCubemap is export is native(LIBRAYLIB) is symbol('LoadTextureCubemap_pointerized'){ * }
+
 our sub load-render-texture (int32 $width, int32 $height) returns RenderTexture2D is export is native(LIBRAYLIB) is symbol('LoadRenderTexture_pointerized'){ * }
 
 our sub is-render-texture-ready (RenderTexture2D $target) returns bool is export is native(LIBRAYLIB) is symbol('IsRenderTextureReady_pointerized'){ * }
@@ -1382,7 +1326,7 @@ our sub set-pixel-color (Pointer[void] $dstPtr, Color $color, int32 $format) is 
 our sub term:<get-font-default> () returns Font is export is native(LIBRAYLIB) is symbol('GetFontDefault_pointerized'){ * }
 our sub load-font (Str $fileName) returns Font is export is native(LIBRAYLIB) is symbol('LoadFont_pointerized'){ * }
 our sub load-font-ex (Str $fileName, int32 $fontSize, int32 $codepoints is rw, int32 $codepointCount) returns Font is export is native(LIBRAYLIB) is symbol('LoadFontEx_pointerized'){ * }
-our sub load-font-from-image (Image $image, Color $key, int32 $firstChar) returns Font is export is native(LIBRAYLIB) is symbol('LoadFontFromImage_pointerized'){ * }
+
 our sub load-font-from-memory (Str $fileType, uint8 $fileData is rw, int32 $dataSize, int32 $fontSize, int32 $codepoints is rw, int32 $codepointCount) returns Font is export is native(LIBRAYLIB) is symbol('LoadFontFromMemory_pointerized'){ * }
 our sub is-font-ready (Font $font) returns bool is export is native(LIBRAYLIB) is symbol('IsFontReady_pointerized'){ * }
 our sub gen-image-font-atlas (GlyphInfo $glyphs is rw, Rectangle $glyphRecs is rw, int32 $glyphCount, int32 $fontSize, int32 $padding, int32 $packMethod) returns Image is export is native(LIBRAYLIB) is symbol('GenImageFontAtlas_pointerized'){ * }
@@ -1431,8 +1375,6 @@ our sub gen-mesh-cylinder (num32 $radius, num32 $height, int32 $slices) returns 
 our sub gen-mesh-cone (num32 $radius, num32 $height, int32 $slices) returns Mesh is export is native(LIBRAYLIB) is symbol('GenMeshCone_pointerized'){ * }
 our sub gen-mesh-torus (num32 $radius, num32 $size, int32 $radSeg, int32 $sides) returns Mesh is export is native(LIBRAYLIB) is symbol('GenMeshTorus_pointerized'){ * }
 our sub gen-mesh-knot (num32 $radius, num32 $size, int32 $radSeg, int32 $sides) returns Mesh is export is native(LIBRAYLIB) is symbol('GenMeshKnot_pointerized'){ * }
-our sub gen-mesh-heightmap (Image $heightmap, Vector3 $size) returns Mesh is export is native(LIBRAYLIB) is symbol('GenMeshHeightmap_pointerized'){ * }
-our sub gen-mesh-cubicmap (Image $cubicmap, Vector3 $cubeSize) returns Mesh is export is native(LIBRAYLIB) is symbol('GenMeshCubicmap_pointerized'){ * }
 our sub term:<load-material-default> () returns Material is export is native(LIBRAYLIB) is symbol('LoadMaterialDefault_pointerized'){ * }
 our sub is-material-ready (Material $material) returns bool is export is native(LIBRAYLIB) is symbol('IsMaterialReady_pointerized'){ * }
 our sub unload-material (Material $material) is export is native(LIBRAYLIB) is symbol('UnloadMaterial_pointerized'){ * }
