@@ -1281,25 +1281,11 @@ our sub draw-line-v (Vector2 $startPos, Vector2 $endPos, Color $color) is export
 our sub draw-line-ex (Vector2 $startPos, Vector2 $endPos, num32 $thick, Color $color) is export is native(LIBRAYLIB) is symbol('DrawLineEx_pointerized'){ * }
 our sub draw-line-strip (Vector2 $points is rw, int32 $pointCount, Color $color) is export is native(LIBRAYLIB) is symbol('DrawLineStrip_pointerized'){ * }
 our sub draw-line-bezier (Vector2 $startPos, Vector2 $endPos, num32 $thick, Color $color) is export is native(LIBRAYLIB) is symbol('DrawLineBezier_pointerized'){ * }
-our sub draw-circle (int32 $centerX, int32 $centerY, num32 $radius, Color $color) is export is native(LIBRAYLIB) is symbol('DrawCircle_pointerized'){ * }
-our sub draw-circle-sector (Vector2 $center, num32 $radius, num32 $startAngle, num32 $endAngle, int32 $segments, Color $color) is export is native(LIBRAYLIB) is symbol('DrawCircleSector_pointerized'){ * }
-our sub draw-circle-sector-lines (Vector2 $center, num32 $radius, num32 $startAngle, num32 $endAngle, int32 $segments, Color $color) is export is native(LIBRAYLIB) is symbol('DrawCircleSectorLines_pointerized'){ * }
-our sub draw-circle-gradient (int32 $centerX, int32 $centerY, num32 $radius, Color $color1, Color $color2) is export is native(LIBRAYLIB) is symbol('DrawCircleGradient_pointerized'){ * }
-our sub draw-circle-v (Vector2 $center, num32 $radius, Color $color) is export is native(LIBRAYLIB) is symbol('DrawCircleV_pointerized'){ * }
-our sub draw-circle-lines (int32 $centerX, int32 $centerY, num32 $radius, Color $color) is export is native(LIBRAYLIB) is symbol('DrawCircleLines_pointerized'){ * }
-our sub draw-circle-lines-v (Vector2 $center, num32 $radius, Color $color) is export is native(LIBRAYLIB) is symbol('DrawCircleLinesV_pointerized'){ * }
 our sub draw-ellipse (int32 $centerX, int32 $centerY, num32 $radiusH, num32 $radiusV, Color $color) is export is native(LIBRAYLIB) is symbol('DrawEllipse_pointerized'){ * }
 our sub draw-ellipse-lines (int32 $centerX, int32 $centerY, num32 $radiusH, num32 $radiusV, Color $color) is export is native(LIBRAYLIB) is symbol('DrawEllipseLines_pointerized'){ * }
 our sub draw-ring (Vector2 $center, num32 $innerRadius, num32 $outerRadius, num32 $startAngle, num32 $endAngle, int32 $segments, Color $color) is export is native(LIBRAYLIB) is symbol('DrawRing_pointerized'){ * }
 our sub draw-ring-lines (Vector2 $center, num32 $innerRadius, num32 $outerRadius, num32 $startAngle, num32 $endAngle, int32 $segments, Color $color) is export is native(LIBRAYLIB) is symbol('DrawRingLines_pointerized'){ * }
 
-our sub draw-triangle (Vector2 $v1, Vector2 $v2, Vector2 $v3, Color $color) is export is native(LIBRAYLIB) is symbol('DrawTriangle_pointerized'){ * }
-our sub draw-triangle-lines (Vector2 $v1, Vector2 $v2, Vector2 $v3, Color $color) is export is native(LIBRAYLIB) is symbol('DrawTriangleLines_pointerized'){ * }
-our sub draw-triangle-fan (Vector2 $points is rw, int32 $pointCount, Color $color) is export is native(LIBRAYLIB) is symbol('DrawTriangleFan_pointerized'){ * }
-our sub draw-triangle-strip (Vector2 $points is rw, int32 $pointCount, Color $color) is export is native(LIBRAYLIB) is symbol('DrawTriangleStrip_pointerized'){ * }
-our sub draw-poly (Vector2 $center, int32 $sides, num32 $radius, num32 $rotation, Color $color) is export is native(LIBRAYLIB) is symbol('DrawPoly_pointerized'){ * }
-our sub draw-poly-lines (Vector2 $center, int32 $sides, num32 $radius, num32 $rotation, Color $color) is export is native(LIBRAYLIB) is symbol('DrawPolyLines_pointerized'){ * }
-our sub draw-poly-lines-ex (Vector2 $center, int32 $sides, num32 $radius, num32 $rotation, num32 $lineThick, Color $color) is export is native(LIBRAYLIB) is symbol('DrawPolyLinesEx_pointerized'){ * }
 our sub draw-spline-linear (Vector2 $points is rw, int32 $pointCount, num32 $thick, Color $color) is export is native(LIBRAYLIB) is symbol('DrawSplineLinear_pointerized'){ * }
 our sub draw-spline-basis (Vector2 $points is rw, int32 $pointCount, num32 $thick, Color $color) is export is native(LIBRAYLIB) is symbol('DrawSplineBasis_pointerized'){ * }
 our sub draw-spline-catmull-rom (Vector2 $points is rw, int32 $pointCount, num32 $thick, Color $color) is export is native(LIBRAYLIB) is symbol('DrawSplineCatmullRom_pointerized'){ * }
@@ -1316,11 +1302,8 @@ our sub get-spline-point-catmull-rom (Vector2 $p1, Vector2 $p2, Vector2 $p3, Vec
 our sub get-spline-point-bezier-quad (Vector2 $p1, Vector2 $c2, Vector2 $p3, num32 $t) returns Vector2 is export is native(LIBRAYLIB) is symbol('GetSplinePointBezierQuad_pointerized'){ * }
 our sub get-spline-point-bezier-cubic (Vector2 $p1, Vector2 $c2, Vector2 $c3, Vector2 $p4, num32 $t) returns Vector2 is export is native(LIBRAYLIB) is symbol('GetSplinePointBezierCubic_pointerized'){ * }
 
-our sub check-collision-circles (Vector2 $center1, num32 $radius1, Vector2 $center2, num32 $radius2) returns bool is export is native(LIBRAYLIB) is symbol('CheckCollisionCircles_pointerized'){ * }
-our sub check-collision-circle-rec (Vector2 $center, num32 $radius, Rectangle $rec) returns bool is export is native(LIBRAYLIB) is symbol('CheckCollisionCircleRec_pointerized'){ * }
-our sub check-collision-point-circle (Vector2 $point, Vector2 $center, num32 $radius) returns bool is export is native(LIBRAYLIB) is symbol('CheckCollisionPointCircle_pointerized'){ * }
-our sub check-collision-point-triangle (Vector2 $point, Vector2 $p1, Vector2 $p2, Vector2 $p3) returns bool is export is native(LIBRAYLIB) is symbol('CheckCollisionPointTriangle_pointerized'){ * }
-our sub check-collision-point-poly (Vector2 $point, Vector2 $points is rw, int32 $pointCount) returns bool is export is native(LIBRAYLIB) is symbol('CheckCollisionPointPoly_pointerized'){ * }
+
+
 our sub check-collision-lines (Vector2 $startPos1, Vector2 $endPos1, Vector2 $startPos2, Vector2 $endPos2, Vector2 $collisionPoint is rw) returns bool is export is native(LIBRAYLIB) is symbol('CheckCollisionLines_pointerized'){ * }
 our sub check-collision-point-line (Vector2 $point, Vector2 $p1, Vector2 $p2, int32 $threshold) returns bool is export is native(LIBRAYLIB) is symbol('CheckCollisionPointLine_pointerized'){ * }
 
@@ -1416,7 +1399,6 @@ our sub get-glyph-info (Font $font, int32 $codepoint) returns GlyphInfo is expor
 our sub get-glyph-atlas-rec (Font $font, int32 $codepoint) returns Rectangle is export is native(LIBRAYLIB) is symbol('GetGlyphAtlasRec_pointerized'){ * }
 our sub draw-line3d (Vector3 $startPos, Vector3 $endPos, Color $color) is export is native(LIBRAYLIB) is symbol('DrawLine3D_pointerized'){ * }
 our sub draw-point3d (Vector3 $position, Color $color) is export is native(LIBRAYLIB) is symbol('DrawPoint3D_pointerized'){ * }
-our sub draw-circle3d (Vector3 $center, num32 $radius, Vector3 $rotationAxis, num32 $rotationAngle, Color $color) is export is native(LIBRAYLIB) is symbol('DrawCircle3D_pointerized'){ * }
 our sub draw-triangle3d (Vector3 $v1, Vector3 $v2, Vector3 $v3, Color $color) is export is native(LIBRAYLIB) is symbol('DrawTriangle3D_pointerized'){ * }
 our sub draw-triangle-strip3d (Vector3 $points is rw, int32 $pointCount, Color $color) is export is native(LIBRAYLIB) is symbol('DrawTriangleStrip3D_pointerized'){ * }
 our sub draw-cube (Vector3 $position, num32 $width, num32 $height, num32 $length, Color $color) is export is native(LIBRAYLIB) is symbol('DrawCube_pointerized'){ * }
@@ -1442,7 +1424,7 @@ our sub draw-mesh-instanced (Mesh $mesh, Material $material, Matrix $transforms 
 our sub get-mesh-bounding-box (Mesh $mesh) returns BoundingBox is export is native(LIBRAYLIB) is symbol('GetMeshBoundingBox_pointerized'){ * }
 our sub export-mesh (Mesh $mesh, Str $fileName) returns bool is export is native(LIBRAYLIB) is symbol('ExportMesh_pointerized'){ * }
 our sub export-mesh-as-code (Mesh $mesh, Str $fileName) returns bool is export is native(LIBRAYLIB) is symbol('ExportMeshAsCode_pointerized'){ * }
-our sub gen-mesh-poly (int32 $sides, num32 $radius) returns Mesh is export is native(LIBRAYLIB) is symbol('GenMeshPoly_pointerized'){ * }
+
 our sub gen-mesh-plane (num32 $width, num32 $length, int32 $resX, int32 $resZ) returns Mesh is export is native(LIBRAYLIB) is symbol('GenMeshPlane_pointerized'){ * }
 our sub gen-mesh-cube (num32 $width, num32 $height, num32 $length) returns Mesh is export is native(LIBRAYLIB) is symbol('GenMeshCube_pointerized'){ * }
 our sub gen-mesh-cylinder (num32 $radius, num32 $height, int32 $slices) returns Mesh is export is native(LIBRAYLIB) is symbol('GenMeshCylinder_pointerized'){ * }
