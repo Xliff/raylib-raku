@@ -3,6 +3,7 @@ use v6;
 use Raylib::Bindings;
 use Raylib::Raw::Circle;
 
+use Raylib::Rectangle;
 use Raylib::Vector2;
 
 class Raylib::Circle {
@@ -71,16 +72,29 @@ class Raylib::Circle {
     check-collision-circles($!center, $r1, $center2, $r2);
   }
 
-  method check-collision-rec (Rectangle() $rec) {
+  multi method check-collision (Rectangle $rec) {
     my num32 $r = $!radius;
 
-    check-collision-circle-rec($!center, $r, $rec);
+    check-collision-circle-rec($!center.Vector2, $r, $rec);
   }
-
-  method check-collision-point (Vector2() $point) {
+  multi method check-collision (Vector2 $point) {
     my num32 $r = $!radius;
 
-    check-collision-point-circle($point, $!center, $r);
+    check-collision-point-circle($point, $!center.Vector2, $r);
   }
+
+  multi method check-collision ($obj) {
+    given $obj {
+      when Raylib::Rectangle  { $.check-collision( .Rectangle ) }
+      when .^can('Rectangle') { $.check-collision( .Rectangle ) }
+      when Raylib::Vector2    { $.check-collision( .Vector2 )   }
+      when .^can('Vector2')   { $.check-collision( .Vector2 )   }
+
+      default {
+        X::Raylib::UnknownType.new($obj).throw;
+      }
+    }
+  }
+
 
 }
