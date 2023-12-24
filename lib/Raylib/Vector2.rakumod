@@ -144,6 +144,9 @@ class Raylib::Vector2 does Reapable {
   }
 }
 
+subset Vector2Any is export of Mu
+  where Raylib::Vector2 | Raylib::Bindings::Vector2;
+
 sub infix:<+> (Raylib::Vector2 $a, Raylib::Vector2 $b)  is export {
   Raylib::Vector2.new(
     $a.x + $b.x,
