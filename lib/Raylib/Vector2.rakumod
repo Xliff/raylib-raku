@@ -147,16 +147,30 @@ class Raylib::Vector2 does Reapable {
 subset Vector2Any is export of Mu
   where Raylib::Vector2 | Raylib::Bindings::Vector2;
 
-sub infix:<+> (Raylib::Vector2 $a, Raylib::Vector2 $b)  is export {
+multi sub infix:<+> (Raylib::Vector2 $a, Raylib::Vector2 $b)  is export {
   Raylib::Vector2.new(
     $a.x + $b.x,
     $a.y + $b.y
   );
 }
 
-sub infix:<-> (Raylib::Vector2 $a, Raylib::Vector2 $b)  is export {
+multi sub infix:<+> (Raylib::Vector2 $a, List $b where *.elems == 2)  is export {
+  Raylib::Vector2.new(
+    $a.x + $b.head,
+    $a.y + $b.tail
+  );
+}
+
+multi sub infix:<-> (Raylib::Vector2 $a, Raylib::Vector2 $b)  is export {
   Raylib::Vector2.new(
     $a.x - $b.x,
     $a.y - $b.y
+  );
+}
+
+multi sub infix:<-> (List $a, Raylib::Vector2 $b)  is export {
+  Raylib::Vector2.new(
+    $a.head - $b.x,
+    $a.tail - $b.y
   );
 }
