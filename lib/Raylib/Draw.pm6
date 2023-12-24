@@ -2,6 +2,8 @@ use v6;
 
 use Raylib::Bindings;
 
+use Raylib::Raw::Triangle;
+use Raylib::Raw::Polygon;
 use Raylib::Color;
 
 class Raylib::Draw {
@@ -150,7 +152,19 @@ class Raylib::Draw {
 
 # our sub draw-pixel (int32 $posX, int32 $posY, Color $color) is export is native(LIBRAYLIB) is symbol('DrawPixel_pointerized'){ * }
 # our sub draw-pixel-v (Vector2 $position, Color $color) is export is native(LIBRAYLIB) is symbol('DrawPixelV_pointerized'){ * }
-# our sub draw-line (int32 $startPosX, int32 $startPosY, int32 $endPosX, int32 $endPosY, Color $color) is export is native(LIBRAYLIB) is symbol('DrawLine_pointerized'){ * }
+
+method line (
+  Int()   $startPosX,
+  Int()   $startPosY,
+  Int()   $endPosX,
+  Int()   $endPosY,
+  Color() $color
+) {
+  my ($sx, $sy, $ex, $ey) = ($startPosX, $startPosY, $endPosX, $endPosY);
+
+  draw-line($sx, $sy, $ex, $ey, $color);
+}
+
 # our sub draw-line-v (Vector2 $startPos, Vector2 $endPos, Color $color) is export is native(LIBRAYLIB) is symbol('DrawLineV_pointerized'){ * }
 # our sub draw-line-ex (Vector2 $startPos, Vector2 $endPos, num32 $thick, Color $color) is export is native(LIBRAYLIB) is symbol('DrawLineEx_pointerized'){ * }
 # our sub draw-line-strip (Vector2 $points is rw, int32 $pointCount, Color $color) is export is native(LIBRAYLIB) is symbol('DrawLineStrip_pointerized'){ * }
@@ -177,13 +191,69 @@ class Raylib::Draw {
 # our sub draw-rectangle-lines-ex (Rectangle $rec, num32 $lineThick, Color $color) is export is native(LIBRAYLIB) is symbol('DrawRectangleLinesEx_pointerized'){ * }
 # our sub draw-rectangle-rounded (Rectangle $rec, num32 $roundness, int32 $segments, Color $color) is export is native(LIBRAYLIB) is symbol('DrawRectangleRounded_pointerized'){ * }
 # our sub draw-rectangle-rounded-lines (Rectangle $rec, num32 $roundness, int32 $segments, num32 $lineThick, Color $color) is export is native(LIBRAYLIB) is symbol('DrawRectangleRoundedLines_pointerized'){ * }
-# our sub draw-triangle (Vector2 $v1, Vector2 $v2, Vector2 $v3, Color $color) is export is native(LIBRAYLIB) is symbol('DrawTriangle_pointerized'){ * }
-# our sub draw-triangle-lines (Vector2 $v1, Vector2 $v2, Vector2 $v3, Color $color) is export is native(LIBRAYLIB) is symbol('DrawTriangleLines_pointerized'){ * }
+
+method triangle (
+  Vector2() $v1,
+  Vector2() $v2,
+  Vector2() $v3,
+  Color() $color
+) {
+  draw-triangle($v1, $v2, $v3, $color);
+}
+method triangle-lines (
+  Vector2() $v1,
+  Vector2() $v2,
+  Vector2() $v3,
+  Color() $color
+) {
+  draw-triangle-lines($v1, $v2, $v3, $color);
+}
+
+# method draw-triangle-fan (Vector2 $points is rw, int32 $pointCount, Color $color) is export is native(LIBRAYLIB) is symbol('DrawTriangleFan_pointerized'){ * }
 # our sub draw-triangle-fan (Vector2 $points is rw, int32 $pointCount, Color $color) is export is native(LIBRAYLIB) is symbol('DrawTriangleFan_pointerized'){ * }
 # our sub draw-triangle-strip (Vector2 $points is rw, int32 $pointCount, Color $color) is export is native(LIBRAYLIB) is symbol('DrawTriangleStrip_pointerized'){ * }
-# our sub draw-poly (Vector2 $center, int32 $sides, num32 $radius, num32 $rotation, Color $color) is export is native(LIBRAYLIB) is symbol('DrawPoly_pointerized'){ * }
-# our sub draw-poly-lines (Vector2 $center, int32 $sides, num32 $radius, num32 $rotation, Color $color) is export is native(LIBRAYLIB) is symbol('DrawPolyLines_pointerized'){ * }
-# our sub draw-poly-lines-ex (Vector2 $center, int32 $sides, num32 $radius, num32 $rotation, num32 $lineThick, Color $color) is export is native(LIBRAYLIB) is symbol('DrawPolyLinesEx_pointerized'){ * }
+# our sub draw-triangle-strip (Vector2 $points is rw, int32 $pointCount, Color $color) is export is native(LIBRAYLIB) is symbol('DrawTriangleStrip_pointerized'){ * }
+
+method poly (
+  Vector2() $center,
+  Int()     $sides,
+  Num()     $radius,
+  Num()     $rotation,
+  Color()   $color
+) {
+  my int32  $s        =  $sides;
+  my num32 ($ra, $ro) = ($radius, $rotation);
+
+  draw-poly($center, $s, $ra, $ro, $color);
+}
+
+method poly-lines (
+  Vector2() $center,
+  Int()     $sides,
+  Num()     $radius,
+  Num()     $rotation,
+  Color()   $color
+) {
+  my int32  $s        =  $sides;
+  my num32 ($ra, $ro) = ($radius, $rotation);
+
+  draw-poly-lines($center, $s, $ra, $ro, $color);
+}
+
+method poly-lines-ex (
+  Vector2() $center,
+  Int()     $sides,
+  Num()     $radius,
+  Num()     $rotation,
+  Num()     $thick,
+  Color()   $color
+) {
+  my int32  $s            =  $sides;
+  my num32 ($ra, $ro, $t) = ($radius, $rotation, $thick);
+
+  draw-poly-lines-ex($center, $s, $ra, $ro, $t, $color);
+}
+
 # our sub draw-spline-linear (Vector2 $points is rw, int32 $pointCount, num32 $thick, Color $color) is export is native(LIBRAYLIB) is symbol('DrawSplineLinear_pointerized'){ * }
 # our sub draw-spline-basis (Vector2 $points is rw, int32 $pointCount, num32 $thick, Color $color) is export is native(LIBRAYLIB) is symbol('DrawSplineBasis_pointerized'){ * }
 # our sub draw-spline-catmull-rom (Vector2 $points is rw, int32 $pointCount, num32 $thick, Color $color) is export is native(LIBRAYLIB) is symbol('DrawSplineCatmullRom_pointerized'){ * }
