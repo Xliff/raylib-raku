@@ -1,5 +1,6 @@
 use v6;
 
+use NativeCall;
 use Raylib::Bindings;
 use Raylib::Model;
 
@@ -12,7 +13,7 @@ class Raylib::Mesh {
     return Nil unless $mesh;
     self.bless( :$mesh );
   }
-  method new (
+  multi method new (
     Int() $vertexCount,
     Int() $triangleCount,
     Num() $vertices,
@@ -66,63 +67,64 @@ class Raylib::Mesh {
         $vb
       )
     );
-
-    method draw (Material() $material, Matrix() $transform) {
-      draw-mesh($material, $transform);
-    }
-
-    method draw-instanced (
-      Material() $material,
-      Matrix()   $transforms,
-      Int()      $instances
-    ) {
-      my int32 $i = $instances;
-
-      draw-mesh-instanced ($!mesh, $material, $transforms, $i)
-    }
-
-    method get-bounding-box ( :$raw = False ) {
-      my $bb = get-mesh-bounding-box($!mesh);
-      return $bb if $raw;
-      Raylib::BoundingBox.new($bb);
-    }
-
-
-    method export (Str() $fileName)
-      export-mesh($!mesh, $fileName);
-    }
-
-    method export-as-code (Str() $filename) {
-      export-mesh-as-code ($!mesh, $fileName);
-    }
-
-    method upload ( :$dynamic = False3 ) {
-      upload-mesh($!mesh, $dynamic);
-    }
-
-    method gen-tangents {
-      gen-mesh-tangents($!mesh)
-    }
-
-    method load-model ( :$raw = False )  {
-      my $m = load-model-from-mesh($!mesh);
-      return $m if $raw;
-      Raylib::Model.new($m);
-    }
-
-    method update-buffer (
-      Int()   $index,
-      Pointer $data,
-      Int()   $dataSize,
-      Int()   $offset
-    ) {
-      my int32 ($i, $d, $o) = ($index, $dataSize, $offset);
-
-      update-mesh-buffer($!mesh, $i, $data, $d, $o)
-    }
-
-    method unload {
-      unload-mesh($!mesh)
-    }
-
   }
+
+  method draw (Material() $material, Matrix() $transform) {
+    draw-mesh($material, $transform);
+  }
+
+  method draw-instanced (
+    Material() $material,
+    Matrix()   $transforms,
+    Int()      $instances
+  ) {
+    my int32 $i = $instances;
+
+    draw-mesh-instanced ($!mesh, $material, $transforms, $i)
+  }
+
+  method get-bounding-box ( :$raw = False ) {
+    my $bb = get-mesh-bounding-box($!mesh);
+    return $bb if $raw;
+    Raylib::BoundingBox.new($bb);
+  }
+
+
+  method export (Str() $fileName) {
+    export-mesh($!mesh, $fileName);
+  }
+
+  method export-as-code (Str() $fileName) {
+    export-mesh-as-code ($!mesh, $fileName);
+  }
+
+  method upload ( :$dynamic = False ) {
+    upload-mesh($!mesh, $dynamic);
+  }
+
+  method gen-tangents {
+    gen-mesh-tangents($!mesh)
+  }
+
+  # method load-model ( :$raw = False )  {
+  #   my $m = load-model-from-mesh($!mesh);
+  #   return $m if $raw;
+  #   Raylib::Model.new($m);
+  # }
+
+  method update-buffer (
+    Int()   $index,
+    Pointer $data,
+    Int()   $dataSize,
+    Int()   $offset
+  ) {
+    my int32 ($i, $d, $o) = ($index, $dataSize, $offset);
+
+    update-mesh-buffer($!mesh, $i, $data, $d, $o)
+  }
+
+  method unload {
+    unload-mesh($!mesh)
+  }
+
+}
