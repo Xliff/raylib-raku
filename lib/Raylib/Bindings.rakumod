@@ -9,6 +9,13 @@ constant LIBRAYLIB is export = %?RESOURCES<libraries/raylib>;
 class Vector2 is export is repr('CStruct') is rw {
     has num32 $.x is rw;
     has num32 $.y is rw;
+
+    multi method new (Num() $x, Num() $y) {
+      my num32 ($xx, $yy) = ($x, $y);
+
+      self.init($x, $y);
+    }
+
     method init(num32 $x,num32 $y) returns Vector2 {
         malloc-Vector2($x,$y);
     }
@@ -78,13 +85,24 @@ class Color is export is repr('CStruct') is rw {
     }
 }
 class Rectangle is export is repr('CStruct') is rw {
-    has num32 $.x;
-    has num32 $.y;
-    has num32 $.width;
-    has num32 $.height;
+    has num32 $.x      is rw;
+    has num32 $.y      is rw;
+    has num32 $.width  is rw;
+    has num32 $.height is rw;
 
-    method w { $!width  }
-    method h { $!height }
+    method w is rw { $!width  }
+    method h is rw { $!height }
+
+    multi method new (
+      Num() $x1,
+      Num() $y1,
+      Num() $x2,
+      Num() $y2
+    ) {
+      my num32 ($xx1, $yy1, $xx2, $yy2) = ($x1, $y1, $x2, $y2);
+
+      self.init($xx1, $yy1, $xx2, $yy2);
+    }
 
     method init(num32 $x,num32 $y,num32 $width,num32 $height) returns Rectangle {
         malloc-Rectangle($x,$y,$width,$height);
