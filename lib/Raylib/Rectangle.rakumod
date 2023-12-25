@@ -1,5 +1,7 @@
 use v6;
 
+use Method::Also;
+
 use Raylib::Bindings;
 use Raylib::Raw::Rectangle;
 use Raylib::Roles::Reapable;
@@ -11,6 +13,10 @@ class Raylib::Rectangle does Reapable {
 
   proto method new (|)
   { * }
+
+  method Raylib::Bindings::Rectangle
+    is also<Rectangle>
+  { $!rectangle }
 
   multi method new (Rectangle $rectangle) {
     # cw: What if struct is malloc'd from C?
@@ -82,7 +88,7 @@ class Raylib::Rectangle does Reapable {
   # method draw-gradient-ex (Color $col1, Color $col2, Color $col3, Color $col4) {
   # our sub draw-rectangle-gradient-ex (Rectangle $rec, Color $col1, Color $col2, Color $col3, Color $col4) is export is native(LIBRAYLIB) is symbol('DrawRectangleGradientEx_pointerized'){ * }
   #
-  
+
   method draw-lines (Color() $color) {
     my int32 ($x, $y, $w, $h) = ($.x, $.y, $.w, $.h)».Int;
 
