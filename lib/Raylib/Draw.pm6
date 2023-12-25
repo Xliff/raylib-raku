@@ -107,7 +107,15 @@ class Raylib::Draw {
     draw-grid($sl, $sp);
   }
 
-  method text (
+  multi method text (
+    Str()      $text,
+    Vector2()  $pos,
+    Color()    $color,
+    Int()     :$size   = 10
+  ) {
+    samewith($text, $pos.x, $pos.y, $size, $color);
+  }
+  multi method text (
     Str()   $text,
     Int()   $posX,
     Int()   $posY,
