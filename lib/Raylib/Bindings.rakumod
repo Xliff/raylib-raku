@@ -7,7 +7,7 @@ constant R is export = %?RESOURCES;
 
 subset ResourceFile is export of Mu
   where IO | Distribution::Resource;
-  
+
 constant LIBRAYLIB is export = %?RESOURCES<libraries/raylib>;
 class Vector2 is export is repr('CStruct') is rw {
     has num32 $.x is rw;
@@ -96,6 +96,8 @@ class Rectangle is export is repr('CStruct') is rw {
     method w is rw { $!width  }
     method h is rw { $!height }
 
+    method size { ( $!width, $!height)  }
+
     multi method new (
       Num() $x1,
       Num() $y1,
@@ -123,6 +125,9 @@ class Image is export is repr('CStruct') is rw {
     method init(void $data,int32 $width,int32 $height,int32 $mipmaps,int32 $format) returns Image {
         malloc-Image($data,$width,$height,$mipmaps,$format);
     }
+
+    method size { ( $!width, $!height)  }
+
     submethod DESTROY {
         free-Image(self);
     }
@@ -133,9 +138,13 @@ class Texture is export is repr('CStruct') is rw {
     has int32 $.height;
     has int32 $.mipmaps;
     has int32 $.format;
+
     method init(int32 $id,int32 $width,int32 $height,int32 $mipmaps,int32 $format) returns Texture {
         malloc-Texture($id,$width,$height,$mipmaps,$format);
     }
+
+    method size { ( $!width, $!height )  }
+
     submethod DESTROY {
         free-Texture(self);
     }
@@ -526,6 +535,17 @@ class RayCollision is export is repr('CStruct') is rw {
 class BoundingBox is export is repr('CStruct') is rw {
     HAS Vector3 $.min is rw;
     HAS Vector3 $.max is rw;
+
+    method size ( :$hash = False ) {
+      my $r = (
+        self.max.x - self.min.x,
+        self.max.y - self.min.y,
+        self.max.z - self.min.z
+      );
+      return $r unless $hash;
+      %( x => $r[0], y => $r[1], z => $r[2] );
+    }
+
     method init(Vector3 $min,Vector3 $max) returns BoundingBox {
         malloc-BoundingBox($min,$max);
     }
@@ -1306,13 +1326,6 @@ our sub get-spline-point-bezier-cubic (Vector2 $p1, Vector2 $c2, Vector2 $c3, Ve
 our sub check-collision-lines (Vector2 $startPos1, Vector2 $endPos1, Vector2 $startPos2, Vector2 $endPos2, Vector2 $collisionPoint is rw) returns bool is export is native(LIBRAYLIB) is symbol('CheckCollisionLines_pointerized'){ * }
 our sub check-collision-point-line (Vector2 $point, Vector2 $p1, Vector2 $p2, int32 $threshold) returns bool is export is native(LIBRAYLIB) is symbol('CheckCollisionPointLine_pointerized'){ * }
 
-our sub load-image (Str $fileName) returns Image is export is native(LIBRAYLIB) is symbol('LoadImage_pointerized'){ * }
-our sub load-image-raw (Str $fileName, int32 $width, int32 $height, int32 $format, int32 $headerSize) returns Image is export is native(LIBRAYLIB) is symbol('LoadImageRaw_pointerized'){ * }
-our sub load-image-svg (Str $fileNameOrString, int32 $width, int32 $height) returns Image is export is native(LIBRAYLIB) is symbol('LoadImageSvg_pointerized'){ * }
-our sub load-image-anim (Str $fileName, int32 $frames is rw, ) returns Image is export is native(LIBRAYLIB) is symbol('LoadImageAnim_pointerized'){ * }
-our sub load-image-from-memory (Str $fileType, uint8 $fileData is rw, int32 $dataSize) returns Image is export is native(LIBRAYLIB) is symbol('LoadImageFromMemory_pointerized'){ * }
-
-our sub term:<load-image-from-screen> () returns Image is export is native(LIBRAYLIB) is symbol('LoadImageFromScreen_pointerized'){ * }
 our sub gen-image-color (int32 $width, int32 $height, Color $color) returns Image is export is native(LIBRAYLIB) is symbol('GenImageColor_pointerized'){ * }
 our sub gen-image-gradient-linear (int32 $width, int32 $height, int32 $direction, Color $start, Color $end) returns Image is export is native(LIBRAYLIB) is symbol('GenImageGradientLinear_pointerized'){ * }
 our sub gen-image-gradient-radial (int32 $width, int32 $height, num32 $density, Color $inner, Color $outer) returns Image is export is native(LIBRAYLIB) is symbol('GenImageGradientRadial_pointerized'){ * }
