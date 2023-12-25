@@ -31,6 +31,9 @@
   },
   "resources": [
     "libraries/raylib",
+    "images/custom_alagard.png",
+    "images/custom_mecha.png",
+    "images/custom_jupiter_crash.png",
     "images/cyberpunk_street_background.png",
     "images/cyberpunk_street_midground.png",
     "images/cyberpunk_street_foreground.png",
