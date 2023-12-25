@@ -1,7 +1,7 @@
 class Pointerized {
     has Bool $.is-pointerized = False;
     has Str $.pointer-value = "*";
-    multi method new ($is-pointerized, $pointer-value) { 
+    multi method new ($is-pointerized, $pointer-value) {
         self.bless(:$is-pointerized, :$pointer-value);
     }
 
@@ -24,11 +24,12 @@ class RaylibActions {
     has Int $!incrementer = 0;
     has %!callbacks;
     has @.ignore-alloc-structs = ["AudioStream"];
-    has @.ignored-functions = 
+    has @.ignored-functions;
+    has $.libname;
     # "SetTraceLogCallback",
     # "SetLoadFileDataCallback", "SetSaveFileDataCallback",
     # "SetLoadFileTextCallback", "SetSaveFileTextCallback",
-    # "SetAudioStreamCallback", 
+    # "SetAudioStreamCallback",
     # "AttachAudioMixedProcessor",
     # "DetachAudioMixedProcessor", "AttachAudioStreamProcessor",
     # "DetachAudioStreamProcessor";
@@ -200,7 +201,7 @@ class RaylibActions {
                     @.c_pointerize_bindings.push($wrapped_func_call);
                 }
             }
-            else { 
+            else {
                 @.bindings.push($func);
             }
         }
@@ -232,7 +233,7 @@ class RaylibActions {
                 }
             }
 
-            if $x<var-decl><array-identifier> { 
+            if $x<var-decl><array-identifier> {
                 @parameters.push(($x<var-decl><modifier>, $x<var-decl><type>, $x<var-decl><pointer>, $x<var-decl><array-identifier>));
                 @raku-parameters.push(('CArray[' ~ $x<var-decl><type>.made ~ ']', "\$$x<var-decl><array-identifier>[0]<identifier>"));
             }
@@ -247,8 +248,8 @@ class RaylibActions {
         my @malloc_function;
         my $struct-name = $struct<identifier>.first.Str;
         if $struct-name !∈ @.ignore-alloc-structs {
-            @.alloc_bindings.push("our sub malloc-$struct-name\($raku-param-list\) returns $struct-name is native(LIBRAYLIB) is symbol('malloc_$struct-name') \{*\}");
-            @.alloc_bindings.push("our sub free-$struct-name\($struct-name \$ptr) is native(LIBRAYLIB) is symbol('free_$struct-name') \{*\}");
+            @.alloc_bindings.push("our sub malloc-$struct-name\($raku-param-list\) returns $struct-name is native({$constant}) is symbol('malloc_$struct-name') \{*\}");
+            @.alloc_bindings.push("our sub free-$struct-name\($struct-name \$ptr) is native({$constant}) is symbol('free_$struct-name') \{*\}");
             @malloc_function.push($struct<identifier>.first.Str ~ '* '~ "malloc_" ~ $struct<identifier>.first.Str ~ "($param-list) \{\n");
             @malloc_function.push("   $struct<identifier>[0]* ptr = malloc(sizeof($struct<identifier>[0]));\n");
             for @pp -> $pv {
@@ -276,7 +277,7 @@ class RaylibActions {
     method pointerize-parameter-list(@parameters) {
         my @pointerized-params;
 
-        for @parameters -> $p { 
+        for @parameters -> $p {
             if $p[1]<identifier> && !$p[2] {
                 @pointerized-params.push(($p[0], $p[1], Pointerized.new(True, '*'), $p[3]));
             }
@@ -381,9 +382,9 @@ class RaylibActions {
         my $params = $parameters;
         my $raku-type = self.get-return-type($return-type, $pointer);
         my $kebab-case-name = self.camelcase-to-kebab($function-name.Str);
-        return $params 
-            ?? "our sub $kebab-case-name ($params)$raku-type is export is native(LIBRAYLIB) is symbol('$function-name$pointerize')\{ * \}" 
-            !! "our sub term:<$kebab-case-name> ()$raku-type is export is native(LIBRAYLIB) is symbol('$function-name$pointerize')\{ * \}";
+        return $params
+            ?? "our sub $kebab-case-name ($params)$raku-type is export is native({$constant}) is symbol('$function-name$pointerize')\{ * \}"
+            !! "our sub term:<$kebab-case-name> ()$raku-type is export is native({$constant}) is symbol('$function-name$pointerize')\{ * \}";
     }
 
     # void pointer
