@@ -4,6 +4,7 @@ use NativeCall;
 use Method::Also;
 
 use Raylib::Bindings;
+use Raylib::Raw::Exceptions;
 use Raylib::Raw::Font;
 
 class Raylib::Font {
@@ -69,12 +70,21 @@ class Raylib::Font {
     draw-text-codepoints($!font, $codepoints, $c, $position, $f, $s, $tint);
   }
 
-  method draw-ex (
-      Str()     $text,
-      Vector2() $position,
-      Num()     $fontSize,
-      Num()     $spacing,
-      Color()   $tint
+  multi method draw-ex (
+    Str()      $text,
+    Vector2()  $position,
+    Num()      $spacing,
+    Color()    $tint,
+    Num()     :$size       = self.baseSize,
+  ) {
+    samewith($text, $position, $size, $spacing, $tint);
+  }
+  multi method draw-ex (
+    Str()     $text,
+    Vector2() $position,
+    Num()     $fontSize,
+    Num()     $spacing,
+    Color()   $tint
   ) {
     my num32 ($f, $s) = ($fontSize, $spacing);
 
@@ -121,13 +131,40 @@ class Raylib::Font {
     is-font-ready($!font);
   }
 
-  method load (Str() $fileName) {
+  multi method load (ResourceFile $file) {
+    samewith($file.absolute);
+  }
+  multi method load (Str $fileName) {
     my $font = load-font($fileName);
     self.new($font);
   }
+  multi method load ($_) {
+    when Distribution::Resource { samewith( .absolute ) }
+    when .^can('IO')            { samewith( .IO  )      }
+    when .^can('Str')           { samewith( .Str )      }
 
+    default {
+      X::Raylib::InvalidObject.new( object => $_ ).throw
+    }
+  }
+
+  multi method load-ex ($_, Int() $fontSize, @codepoints) {
+    when .^can('IO')  { samewith( .IO  ) }
+    when .^can('Str') { samewith( .Str ) }
+
+    default {
+      X::Raylib::InvalidObject.new( object => $_ ).throw
+    }
+  }
   multi method load-ex (
-    Str() $fileName,
+    ResourceFile $file,
+    Int()        $fontSize,
+                 @codepoints
+  ) {
+    samewith($file.absolute, $fontSize, @codepoints);
+  }
+  multi method load-ex (
+    Str   $fileName,
     Int() $fontSize,
           @codepoints,
   ) {
@@ -173,7 +210,14 @@ class Raylib::Font {
   #   self.new($font);
   # }
 
-  method measure-text-ex (Str() $text, Num() $fontSize, Num() $spacing) {
+  multi method measure-ex (
+    Str()  $text,
+    Num()  $spacing,
+    Num() :$size     = self.baseSize
+  ) {
+    samewith($text, $size, $spacing);
+  }
+  multi method measure-ex (Str() $text, Num() $fontSize, Num() $spacing) {
     my num32 ($f, $s) = ($fontSize, $spacing);
 
     measure-text-ex($!font, $text, $f, $s);
