@@ -210,13 +210,29 @@ method circle-v (Vector2() $center, Num() $radius, Color() $color) {
 # our sub draw-rectangle-rounded (Rectangle $rec, num32 $roundness, int32 $segments, Color $color) is export is native(LIBRAYLIB) is symbol('DrawRectangleRounded_pointerized'){ * }
 # our sub draw-rectangle-rounded-lines (Rectangle $rec, num32 $roundness, int32 $segments, num32 $lineThick, Color $color) is export is native(LIBRAYLIB) is symbol('DrawRectangleRoundedLines_pointerized'){ * }
 
-method triangle (
+multi method triangle (
   Vector2() $v1,
   Vector2() $v2,
   Vector2() $v3,
   Color() $color
 ) {
   draw-triangle($v1, $v2, $v3, $color);
+}
+multi method triangle (
+  Num() $x1,
+  Num() $y1,
+  Num() $x2,
+  Num() $y2,
+  Num() $x3,
+  Num() $y3,
+  Color() $color
+) {
+  samewith(
+    Vector2.new($x1, $y1),
+    Vector2.new($x2, $y2),
+    Vector2.new($x3, $y3),
+    $color
+  );
 }
 method triangle-lines (
   Vector2() $v1,
