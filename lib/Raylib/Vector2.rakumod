@@ -4,6 +4,7 @@ use Method::Also;
 
 use Raylib::Bindings;
 use Raylib::Raw::Vector2;
+use Raylib::Raw::Rectangle;
 
 use Raylib::Roles::Reapable;
 
@@ -90,6 +91,27 @@ class Raylib::Vector2 does Reapable {
   # ) {
   #   check-collision-point-poly(...);
   # }
+
+  multi method check-collision (Rectangle $rec2,) {
+    check-collision-point-rec($!v2, $rec2);
+  }
+  multi method check-collision (
+    Num() $x1,
+    Num() $y1,
+    Num() $x2,
+    Num() $y2
+  ) {
+    my num32 ($xx1, $yy1, $xx2, $yy2) = ($x1, $y1, $x2, $y2);
+
+    my $r = Rectangle.new($xx1, $yy1, $xx2, $yy2);
+    samewith($r);
+  }
+  multi method check-collision ($_) {
+    when ::('Raylib::Rectangle') { samewith( .Rectangle ) }
+    when .^can('Rectangle')      { samewith( .Rectangle ) }
+
+    default { X::Raylib::UnknownType.new( $_ ).throw }
+  }
 
   # method check-collision-point-triangle (
   #     Vector2() $point,
