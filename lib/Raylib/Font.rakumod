@@ -21,6 +21,7 @@ class Raylib::Font {
 
   method get-default {
     my $font = get-font-default();
+    $font.gist.say;
     self.new($font);
   }
 
