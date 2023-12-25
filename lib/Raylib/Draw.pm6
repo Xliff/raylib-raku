@@ -3,6 +3,7 @@ use v6;
 use Raylib::Bindings;
 
 use Raylib::Raw::Circle;
+use Raylib::Raw::Font;
 use Raylib::Raw::Triangle;
 use Raylib::Raw::Polygon;
 use Raylib::Color;
