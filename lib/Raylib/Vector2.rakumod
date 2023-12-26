@@ -22,7 +22,7 @@ class Raylib::Vector2 does Reapable {
     return Nil unless $v2;
     self.bless( :$v2 );
   }
-  multi method new (Num() $x, Num() $y) {
+  multi method new (Num() $x = 0e0, Num() $y = 0e0) {
     my num32 ($xx, $yy) = ($x, $y);
 
     my $v2 = Vector2.init($xx, $yy);
@@ -30,6 +30,36 @@ class Raylib::Vector2 does Reapable {
     my $o = self.bless( :$v2 );
     $o.addReapable($v2);
     return $o;
+  }
+
+  method zero {
+    ($.x, $.y) = 0e0 xx 2;
+  }
+
+  multi method add (@a where *.elems == 2) {
+    samewith( |@a );
+  }
+  multi method add (Num() $x, Num() $y) {
+    ($.x, $.y) »+=« ( $x, $y );
+    self;
+  }
+  multi method add (Vector2() $b) {
+    samewith($b.x, $b.y);
+  }
+
+  proto method sub (|)
+    is also<subtract>
+  { * }
+
+  multi method sub (@a where *.elems == 2) {
+    samewith( |@a );
+  }
+  multi method sub (Num() $x, Num() $y) {
+    ($.x, $.y) »-=« ( $x, $y );
+    self;
+  }
+  multi method sub (Vector2() $b) {
+    samewith($b.x, $b.y);
   }
 
   # method check-collision-circle-rec (
