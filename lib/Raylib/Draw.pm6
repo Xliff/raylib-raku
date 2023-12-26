@@ -4,6 +4,7 @@ use Raylib::Bindings;
 
 use Raylib::Raw::Circle;
 use Raylib::Raw::Font;
+use Raylib::Raw::Rectangle;
 use Raylib::Raw::Triangle;
 use Raylib::Raw::Polygon;
 use Raylib::Color;
@@ -207,7 +208,19 @@ method circle-v (Vector2() $center, Num() $radius, Color() $color) {
 # our sub draw-ellipse-lines (int32 $centerX, int32 $centerY, num32 $radiusH, num32 $radiusV, Color $color) is export is native(LIBRAYLIB) is symbol('DrawEllipseLines_pointerized'){ * }
 # our sub draw-ring (Vector2 $center, num32 $innerRadius, num32 $outerRadius, num32 $startAngle, num32 $endAngle, int32 $segments, Color $color) is export is native(LIBRAYLIB) is symbol('DrawRing_pointerized'){ * }
 # our sub draw-ring-lines (Vector2 $center, num32 $innerRadius, num32 $outerRadius, num32 $startAngle, num32 $endAngle, int32 $segments, Color $color) is export is native(LIBRAYLIB) is symbol('DrawRingLines_pointerized'){ * }
-# our sub draw-rectangle (int32 $posX, int32 $posY, int32 $width, int32 $height, Color $color) is export is native(LIBRAYLIB) is symbol('DrawRectangle_pointerized'){ * }
+
+method rectangle (
+  Int()   $posX,
+  Int()   $posY,
+  Int()   $width,
+  Int()   $height,
+  Color() $color
+) {
+  my int32 ($x, $y, $w, $h) = ($posX, $posY, $width, $height);
+
+  draw-rectangle($x, $y, $w, $h, $color);
+}
+
 # our sub draw-rectangle-v (Vector2 $position, Vector2 $size, Color $color) is export is native(LIBRAYLIB) is symbol('DrawRectangleV_pointerized'){ * }
 # our sub draw-rectangle-rec (Rectangle $rec, Color $color) is export is native(LIBRAYLIB) is symbol('DrawRectangleRec_pointerized'){ * }
 # our sub draw-rectangle-pro (Rectangle $rec, Vector2 $origin, num32 $rotation, Color $color) is export is native(LIBRAYLIB) is symbol('DrawRectanglePro_pointerized'){ * }
