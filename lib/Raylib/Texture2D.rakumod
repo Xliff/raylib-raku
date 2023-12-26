@@ -45,7 +45,13 @@ class Raylib::Texture does Reapable {
     $o;
   }
 
-  method draw (
+  multi method draw (
+    Vector2() $pos,
+    Color()   $tint
+  ) {
+    samewith( $pos.x, $pos.y, $tint );
+  }
+  multi method draw (
       Int()   $posX,
       Int()   $posY,
       Color() $tint
@@ -196,3 +202,5 @@ class Raylib::Texture does Reapable {
   }
 
 }
+
+class  Raylib::Texture2D is Raylib::Texture { }
