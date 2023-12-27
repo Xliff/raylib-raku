@@ -6,6 +6,8 @@ use Raylib::Bindings;
 use Raylib::Raw::Exceptions;
 use Raylib::Raw::Image;
 
+use Raylib::Rectangle;
+
 class Raylib::Image {
   has Image $!image handles(*) is built;
 
@@ -16,6 +18,15 @@ class Raylib::Image {
   method new (Image $image) {
     return Nil unless $image;
     self.bless( :$image );
+  }
+
+  method sized-rect ( :$raw = False ) {
+    my $rect = Raylib::Rectangle.new(
+      width => self.width,
+      height => self.height
+    );
+    return $rect.Rectangle if $raw;
+    $rect;
   }
 
   method export-image (Str() $fileName) {
@@ -54,64 +65,76 @@ class Raylib::Image {
   # }
 
   method alpha-clear (
-      Color() $color,
-      Num()   $threshold
-    ) {
-      my num32 $t = $threshold;
+    Color() $color,
+    Num()   $threshold
+  ) {
+    my num32 $t = $threshold;
 
     image-alpha-clear($!image, $color, $t);
+    self;
   }
 
   method alpha-crop (Num() $threshold) {
     my num32 $t = $threshold;
 
     image-alpha-crop($!image, $t);
+    self;
   }
 
   method alpha-mask (Image() $alphaMask) {
     image-alpha-mask($!image, $alphaMask);
+    self;
   }
 
   method alpha-premultiply {
     image-alpha-premultiply($!image);
+    self;
   }
 
   method blur-gaussian (Int() $blurSize) {
     my int32 $b = $blurSize;
 
     image-blur-gaussian($!image, $b);
+    self;
   }
 
   method clear-background (Color() $color) {
     image-clear-background($!image, $color);
+    self;
   }
 
   method color-brightness (Int() $brightness) {
     my int32 $b = $brightness;
 
     image-color-brightness($!image, $b);
+    self;
   }
 
   method color-contrast (Num() $contrast) {
     my num32 $c = $contrast;
 
     image-color-contrast($!image, $c);
+    self;
   }
 
   method color-grayscale {
     image-color-grayscale($!image);
+    self;
   }
 
   method color-invert {
     image-color-invert($!image);
+    self;
   }
 
   method color-replace (Color() $color, Color() $replace) {
     image-color-replace($!image, $color, $replace);
+    self;
   }
 
   method color-tint (Color() $color) {
     image-color-tint($!image, $color);
+    self;
   }
 
   method copy {
@@ -120,8 +143,9 @@ class Raylib::Image {
     self.new($image);
   }
 
-  method crop (Rectangle() $crop) {
+  method crop (Rectangle() $crop, :$raw = False) {
     image-crop($!image, $crop);
+    self;
   }
 
   # method dither (
@@ -140,6 +164,7 @@ class Raylib::Image {
     Color()     $tint
   ) {
     image-draw($!image, $src, $srcRec, $dstRec, $tint);
+    self;
   }
 
   # method draw-circle (
@@ -151,14 +176,17 @@ class Raylib::Image {
   #   image-draw-circle($!image, ...);
   # }
 
-  # method draw-circle-lines (
-  #     int32 $centerX,
-  #     int32 $centerY,
-  #     int32 $radius,
-  #     Color $color
-  # ) {
-  #   image-draw-circle-lines($!image, ...);
-  # }
+  method draw-circle-lines (
+    Int()   $centerX,
+    Int()   $centerY,
+    Int()   $radius,
+    Color() $color
+  ) {
+    my int32 ($x, $y, $r) = ($centerX, $centerY, $radius);
+
+    image-draw-circle-lines($!image, $x, $y, $r, $color);
+    self;
+  }
 
   method draw-circle-lines-v (
       Vector2() $center,
@@ -168,6 +196,7 @@ class Raylib::Image {
     my int32 $r = $radius;
 
     image-draw-circle-lines-v($!image, $center, $r, $color);
+    self;
   }
 
   method draw-circle-v (
@@ -178,6 +207,7 @@ class Raylib::Image {
     my int32 $r = $radius;
 
     image-draw-circle-v($!image, $center, $r, $color);
+    self;
   }
 
   # method draw-line (
@@ -196,29 +226,37 @@ class Raylib::Image {
     Color()   $color
   ) {
     image-draw-line-v($!image, $start, $end, $color);
+    self;
   }
 
-  # method draw-pixel (
-  #     int32 $posX,
-  #     int32 $posY,
-  #     Color $color
-  # ) {
-  #   image-draw-pixel($!image, ...);
-  # }
+  method draw-pixel (
+    Int()   $posX,
+    Int()   $posY,
+    Color() $color
+  ) {
+    my int32 ($x, $y) = ($posX, $posY);
+
+    image-draw-pixel($!image, $x, $y, $color);
+    self;
+  }
 
   method draw-pixel-v (Vector2() $position, Color() $color) {
     image-draw-pixel-v($!image, $position, $color);
+    self;
   }
 
-  # method draw-rectangle (
-  #     int32 $posX,
-  #     int32 $posY,
-  #     int32 $width,
-  #     int32 $height,
-  #     Color $color
-  # ) {
-  #   image-draw-rectangle($!image, ...);
-  # }
+  method draw-rectangle (
+    Int()   $posX,
+    Int()   $posY,
+    Int()   $width,
+    Int()   $height,
+    Color() $color
+  ) {
+    my int32 ($x, $y, $w, $h) = ($posX, $posY, $width, $height);
+
+    image-draw-rectangle($!image, $x, $y, $w, $h, $color);
+    self;
+  }
 
   method draw-rectangle-lines (
     Rectangle() $rec,
@@ -228,10 +266,12 @@ class Raylib::Image {
     my int32 $t = $thick;
 
     image-draw-rectangle-lines($!image, $rec, $t, $color);
+    self;
   }
 
   method draw-rectangle-rec (Rectangle() $rec, Color() $color) {
     image-draw-rectangle-rec($!image, $rec, $color);
+    self;
   }
 
   method draw-rectangle-v (
@@ -240,41 +280,61 @@ class Raylib::Image {
       Color()   $color
   ) {
     image-draw-rectangle-v($!image, $position, $size, $color);
+    self;
   }
 
-  # method draw-text (
-  #     Str $text,
-  #     int32 $posX,
-  #     int32 $posY,
-  #     int32 $fontSize,
-  #     Color $color
-  # ) {
-  #   image-draw-text($!image, ...);
-  # }
-  #
-  # method draw-text-ex (
-  #     Font $font,
-  #     Str $text,
-  #     Vector2 $position,
-  #     num32 $fontSize,
-  #     num32 $spacing,
-  #     Color $tint
-  # ) {
-  #   image-draw-text-ex($!image, ...);
-  # }
+  method draw-text (
+      Str()   $text,
+      Int()   $posX,
+      Int()   $posY,
+      Int()   $fontSize,
+      Color() $color
+  ) {
+    my int32 ($x, $y, $f) = ($posX, $posY, $fontSize);
+
+    image-draw-text($!image, $text, $x, $y, $f);
+    self;
+  }
+
+  multi method draw-text-ex (
+    Font()     $font,
+    Str()      $text,
+    Vector2()  $position,
+    Num()      $spacing,
+    Color()    $tint,
+    Num()     :$size      = $font.baseSize,
+  ) {
+    samewith($font, $text, $position, $size, $spacing, $tint);
+  }
+  multi method draw-text-ex (
+    Font()    $font,
+    Str()     $text,
+    Vector2() $position,
+    Num()     $fontSize,
+    Num()     $spacing,
+    Color()   $tint
+  ) {
+    my num32 ($f, $s) = ($fontSize, $spacing);
+
+    image-draw-text-ex($!image, $font, $text, $position, $f, $s, $tint);
+    self;
+  }
 
   method flip-horizontal {
     image-flip-horizontal($!image);
+    self;
   }
 
   method flip-vertical {
     image-flip-vertical($!image);
+    self;
   }
 
   method format (Int() $newFormat) {
     my int32 $f = $newFormat;
 
     image-format($!image, $f);
+    self;
   }
 
   method from-image (Rectangle() $rec) {
@@ -293,12 +353,12 @@ class Raylib::Image {
     image-mipmaps($!image);
   }
 
-  # method resize (
-  #     int32 $newWidth,
-  #     int32 $newHeight
-  # ) {
-  #   image-resize($!image, ...);
-  # }
+  method resize (Int() $newWidth, Int() $newHeight) {
+    my int32 ($w, $h) = ($newWidth, $newHeight);
+
+    image-resize($!image, $w, $h);
+    self;
+  }
 
   # method resize-canvas (
   #     int32 $newWidth,
@@ -321,18 +381,22 @@ class Raylib::Image {
     my int32 $d = $degrees;
 
     image-rotate($!image, $d);
+    self;
   }
 
   method rotate-ccw {
     image-rotate-ccw($!image);
+    self;
   }
 
   method rotate-cw {
     image-rotate-cw($!image);
+    self;
   }
 
   method to-pot (Color() $fill) {
     image-to-pot($!image, $fill);
+    self;
   }
 
   method is-ready {
@@ -348,6 +412,7 @@ class Raylib::Image {
 
   method load-colors {
     load-image-colors($!image);
+    self;
   }
 
   # method load-palette (
