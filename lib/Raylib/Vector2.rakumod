@@ -36,6 +36,10 @@ class Raylib::Vector2 does Reapable {
     ($.x, $.y) = 0e0 xx 2;
   }
 
+  method list {
+    ($.x, $.y)
+  }
+
   multi method add (@a where *.elems == 2) {
     samewith( |@a );
   }
@@ -45,6 +49,15 @@ class Raylib::Vector2 does Reapable {
   }
   multi method add (Vector2() $b) {
     samewith($b.x, $b.y);
+  }
+
+  multi method set (Vector2() $b) {
+    ($.x, $.y) = ($b.x, $b.y);
+  }
+  multi method set (Num() $x, Num() $y) {
+    my num32 ($xx, $yy) = ($x, $y);
+
+    ($.x, $.y) = ($xx, $yy);
   }
 
   proto method sub (|)
@@ -61,6 +74,23 @@ class Raylib::Vector2 does Reapable {
   multi method sub (Vector2() $b) {
     samewith($b.x, $b.y);
   }
+
+  proto method div (|)
+    is also<divide>
+  { * }
+
+  multi method div (@a where *.elems == 2) {
+    samewith( |@a );
+  }
+  multi method div (Num() $x, Num() $y) {
+    ($.x, $.y) »/=« ( $x, $y );
+    self;
+  }
+  multi method div (Vector2() $b) {
+    samewith($b.x, $b.y);
+  }
+
+
 
   # method check-collision-circle-rec (
   #     Vector2 $center,
