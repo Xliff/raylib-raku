@@ -102,7 +102,7 @@ class Raylib::Texture does Reapable {
       Rectangle() $dest,
       Vector2()   $origin,
       Num()       $rotation,
-      Color       $tint
+      Color()     $tint
   ) {
     my num32 $r = $rotation;
 
