@@ -158,8 +158,8 @@ class RenderTexture is export is repr('CStruct') is rw {
 
     method init(
       int32 $id,
-      Texture $texture,
-      Texture $depth
+      Texture2D $texture,
+      Texture2D $depth
     )
       returns RenderTexture
     {
@@ -1081,7 +1081,6 @@ our sub term:<begin-drawing> () is export is native(LIBRAYLIB) is symbol('BeginD
 our sub term:<end-drawing> () is export is native(LIBRAYLIB) is symbol('EndDrawing'){ * }
 our sub term:<end-mode2d> () is export is native(LIBRAYLIB) is symbol('EndMode2D'){ * }
 our sub term:<end-mode3d> () is export is native(LIBRAYLIB) is symbol('EndMode3D'){ * }
-our sub term:<end-texture-mode> () is export is native(LIBRAYLIB) is symbol('EndTextureMode'){ * }
 our sub term:<end-shader-mode> () is export is native(LIBRAYLIB) is symbol('EndShaderMode'){ * }
 our sub begin-blend-mode (int32 $mode) is export is native(LIBRAYLIB) is symbol('BeginBlendMode'){ * }
 our sub term:<end-blend-mode> () is export is native(LIBRAYLIB) is symbol('EndBlendMode'){ * }
@@ -1254,7 +1253,7 @@ our sub term:<get-window-scale-dpi> () returns Vector2 is export is native(LIBRA
 our sub clear-background (Color $color) is export is native(LIBRAYLIB) is symbol('ClearBackground_pointerized'){ * }
 our sub begin-mode2d (Camera2D $camera) is export is native(LIBRAYLIB) is symbol('BeginMode2D_pointerized'){ * }
 our sub begin-mode3d (Camera3D $camera) is export is native(LIBRAYLIB) is symbol('BeginMode3D_pointerized'){ * }
-our sub begin-texture-mode (RenderTexture2D $target) is export is native(LIBRAYLIB) is symbol('BeginTextureMode_pointerized'){ * }
+
 our sub begin-shader-mode (Shader $shader) is export is native(LIBRAYLIB) is symbol('BeginShaderMode_pointerized'){ * }
 our sub begin-vr-stereo-mode (VrStereoConfig $config) is export is native(LIBRAYLIB) is symbol('BeginVrStereoMode_pointerized'){ * }
 our sub load-vr-stereo-config (VrDeviceInfo $device) returns VrStereoConfig is export is native(LIBRAYLIB) is symbol('LoadVrStereoConfig_pointerized'){ * }
@@ -1339,10 +1338,8 @@ our sub gen-image-text (int32 $width, int32 $height, Str $text) returns Image is
 
 our sub load-texture-cubemap (Image $image, int32 $layout) returns TextureCubemap is export is native(LIBRAYLIB) is symbol('LoadTextureCubemap_pointerized'){ * }
 
-our sub load-render-texture (int32 $width, int32 $height) returns RenderTexture2D is export is native(LIBRAYLIB) is symbol('LoadRenderTexture_pointerized'){ * }
 
-our sub is-render-texture-ready (RenderTexture2D $target) returns bool is export is native(LIBRAYLIB) is symbol('IsRenderTextureReady_pointerized'){ * }
-our sub unload-render-texture (RenderTexture2D $target) is export is native(LIBRAYLIB) is symbol('UnloadRenderTexture_pointerized'){ * }
+
 our sub fade (Color $color, num32 $alpha) returns Color is export is native(LIBRAYLIB) is symbol('Fade_pointerized'){ * }
 our sub color-to-int (Color $color) returns int32 is export is native(LIBRAYLIB) is symbol('ColorToInt_pointerized'){ * }
 our sub color-normalize (Color $color) returns Vector4 is export is native(LIBRAYLIB) is symbol('ColorNormalize_pointerized'){ * }
