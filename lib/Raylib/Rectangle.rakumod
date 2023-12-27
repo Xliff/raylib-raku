@@ -27,8 +27,8 @@ class Raylib::Rectangle does Reapable {
     self.bless( :$rectangle );
   }
   multi method new (
-    Num() :$x,
-    Num() :$y,
+    Num() :$x           = 0e0,
+    Num() :$y           = 0e0,
     Num() :w(:$width),
     Num() :h(:$height)
   ) {
@@ -141,6 +141,29 @@ class Raylib::Rectangle does Reapable {
     my $r = get-collision-rec($!rectangle, $rec2);
     return $r if $raw;
     self.new($r);
+  }
+
+  multi method offset (Vector2() $v) {
+    samewith($v.x, $v.y);
+  }
+  multi method offset (Num() $x, Num() $y) {
+    ($!rectangle.x, $!rectangle.y) »+=« ($x, $y);
+    self;
+  }
+
+  method scale (Num() $f) {
+    ($!rectangle.width, $!rectangle.height) »*=» $f;
+    self;
+  }
+
+  method size {
+    ($.width, $.height);
+  }
+
+  method sized-rect ( :$raw = False ) {
+    my $r = Raylib::Rectangle.new( width => $.width, height => $.height);
+    return $r.Rectangle if $raw;
+    $r;
   }
 
   # our sub draw-rectangle (int32 $posX, int32 $posY, int32 $width, int32 $height, Color $color) is export is native(LIBRAYLIB) is symbol('DrawRectangle_pointerized'){ * }
