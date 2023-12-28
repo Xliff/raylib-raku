@@ -108,11 +108,28 @@ class Raylib::Draw {
     draw-grid($sl, $sp);
   }
 
+  multi method text-centered (
+    Str()    $text,
+    Int()    $y,
+    Color()  $color,
+    Int()   :$size     is copy,
+    Int()   :$spacing           = 1
+  ) {
+    my $font = get-font-default;
+
+    my int32 ($s, $yy)  = ($size // $font.baseSize, $y);
+    my num32  $sp       = $spacing.Num;
+    my num32  $tw       = measure-text-ex($font, $text, $s.Num, $sp).x;
+    my int32  $x        = ( (get-screen-width - $tw.Int) / 2 ).Int;
+
+    self.text($text, $x, $y, $size, $color)
+  }
+
   multi method text (
     Str()      $text,
     Vector2()  $pos,
     Color()    $color,
-    Int()     :$size   = 10
+    Int()     :$size   = get-font-default.baseSize,
   ) {
     samewith($text, $pos.x, $pos.y, $size, $color);
   }
