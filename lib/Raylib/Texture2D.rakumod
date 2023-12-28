@@ -9,8 +9,12 @@ use Raylib::Raw::Texture2D;
 use Raylib::Vector2;
 
 use Raylib::Roles::Reapable;
+use Raylib::Roles::ScreenPositionable;
 
-class Raylib::Texture does Reapable {
+class Raylib::Texture
+  does Reapable
+  does Raylib::Roles::ScreenPositionable
+{
   has Texture2D $!texture handles(*) is built;
 
   method Raylib::Bindings::Texture2D
