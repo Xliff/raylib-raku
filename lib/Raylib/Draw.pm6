@@ -134,6 +134,15 @@ class Raylib::Draw {
     samewith($text, $pos.x, $pos.y, $size, $color);
   }
   multi method text (
+    Str()    $text,
+    Int()    $posX,
+    Int()    $posY,
+    Color()  $color,
+    Int()   :$size  = get-font-default.baseSize,
+  ) {
+    samewith($text, $posX, $posY, $size, $color);
+  }
+  multi method text (
     Str()   $text,
     Int()   $posX,
     Int()   $posY,
