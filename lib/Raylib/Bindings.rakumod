@@ -1397,24 +1397,11 @@ our sub get-ray-collision-quad (Ray $ray, Vector3 $p1, Vector3 $p2, Vector3 $p3,
 our sub load-wave (Str $fileName) returns Wave is export is native(LIBRAYLIB) is symbol('LoadWave_pointerized'){ * }
 our sub load-wave-from-memory (Str $fileType, uint8 $fileData is rw, int32 $dataSize) returns Wave is export is native(LIBRAYLIB) is symbol('LoadWaveFromMemory_pointerized'){ * }
 our sub is-wave-ready (Wave $wave) returns bool is export is native(LIBRAYLIB) is symbol('IsWaveReady_pointerized'){ * }
-our sub load-sound (Str $fileName) returns Sound is export is native(LIBRAYLIB) is symbol('LoadSound_pointerized'){ * }
-our sub load-sound-from-wave (Wave $wave) returns Sound is export is native(LIBRAYLIB) is symbol('LoadSoundFromWave_pointerized'){ * }
-our sub load-sound-alias (Sound $source) returns Sound is export is native(LIBRAYLIB) is symbol('LoadSoundAlias_pointerized'){ * }
-our sub is-sound-ready (Sound $sound) returns bool is export is native(LIBRAYLIB) is symbol('IsSoundReady_pointerized'){ * }
-our sub update-sound (Sound $sound, Pointer[void] $data, int32 $sampleCount) is export is native(LIBRAYLIB) is symbol('UpdateSound_pointerized'){ * }
+
+
 our sub unload-wave (Wave $wave) is export is native(LIBRAYLIB) is symbol('UnloadWave_pointerized'){ * }
-our sub unload-sound (Sound $sound) is export is native(LIBRAYLIB) is symbol('UnloadSound_pointerized'){ * }
-our sub unload-sound-alias (Sound $alias) is export is native(LIBRAYLIB) is symbol('UnloadSoundAlias_pointerized'){ * }
 our sub export-wave (Wave $wave, Str $fileName) returns bool is export is native(LIBRAYLIB) is symbol('ExportWave_pointerized'){ * }
 our sub export-wave-as-code (Wave $wave, Str $fileName) returns bool is export is native(LIBRAYLIB) is symbol('ExportWaveAsCode_pointerized'){ * }
-our sub play-sound (Sound $sound) is export is native(LIBRAYLIB) is symbol('PlaySound_pointerized'){ * }
-our sub stop-sound (Sound $sound) is export is native(LIBRAYLIB) is symbol('StopSound_pointerized'){ * }
-our sub pause-sound (Sound $sound) is export is native(LIBRAYLIB) is symbol('PauseSound_pointerized'){ * }
-our sub resume-sound (Sound $sound) is export is native(LIBRAYLIB) is symbol('ResumeSound_pointerized'){ * }
-our sub is-sound-playing (Sound $sound) returns bool is export is native(LIBRAYLIB) is symbol('IsSoundPlaying_pointerized'){ * }
-our sub set-sound-volume (Sound $sound, num32 $volume) is export is native(LIBRAYLIB) is symbol('SetSoundVolume_pointerized'){ * }
-our sub set-sound-pitch (Sound $sound, num32 $pitch) is export is native(LIBRAYLIB) is symbol('SetSoundPitch_pointerized'){ * }
-our sub set-sound-pan (Sound $sound, num32 $pan) is export is native(LIBRAYLIB) is symbol('SetSoundPan_pointerized'){ * }
 our sub wave-copy (Wave $wave) returns Wave is export is native(LIBRAYLIB) is symbol('WaveCopy_pointerized'){ * }
 our sub load-wave-samples (Wave $wave) returns num32 is export is native(LIBRAYLIB) is symbol('LoadWaveSamples_pointerized'){ * }
 our sub load-music-stream (Str $fileName) returns Music is export is native(LIBRAYLIB) is symbol('LoadMusicStream_pointerized'){ * }
