@@ -8,6 +8,8 @@ use Raylib::Raw::Rectangle;
 
 use Raylib::Roles::Reapable;
 
+my $mouse-pos;
+
 class Raylib::Vector2 does Reapable {
   has Vector2 $!v2 handles(*) is built;
 
@@ -223,6 +225,14 @@ class Raylib::Vector2 does Reapable {
 
   method scale (Num() $f) {
     Raylib::Vector2.new( $f * $.x, $f * $.y)
+  }
+
+  method get-mouse-position ( Raylib::Vector2:U: :$list = False;) {
+    unless $mouse-pos {
+      $mouse-pos = Raylib::Vector2.new;
+    }
+    return ($mouse-pos.x, $mouse-pos.y) = (get-mouse-x, get-mouse-y) if $list;
+    $mouse-pos;
   }
 }
 
