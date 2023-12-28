@@ -10,8 +10,12 @@ use Raylib::Raw::Image;
 use Raylib::Rectangle;
 
 use Raylib::Roles::Reapable;
+use Raylib::Roles::ScreenPositionable;
 
-class Raylib::Image does Reapable {
+class Raylib::Image
+  does Reapable
+  does Raylib::Roles::ScreenPositionable
+{
   has Image $!image handles(*) is built;
 
   method Raylib::Bindings::Image
@@ -488,6 +492,30 @@ class Raylib::Image does Reapable {
     }
   }
 
+  multi method load-svg (ResourceFile $file, $width, $height) {
+    samewith($file.absolute, $width, $height);
+  }
+  multi method load-svg ($_, $width, $height) {
+    when Distribution::Resource { samewith( .absolute, $width, $height ) }
+    when IO                     { samewith( .absolute, $width, $height ) }
+    when .^can('IO')            { samewith( .absolute, $width, $height ) }
+    when .^can('Str')           { samewith( .Str     , $width, $height ) }
+
+    default {
+      X::Raylib::InvalidObject.new( object => $_ ).throw;
+    }
+  }
+  multi method load-svg (
+    Str   $fileName,
+    Int() $width,
+    Int() $height
+  ) {
+    my int32 ($w, $h) = ($width, $height);
+
+    my $image = load-image-svg($fileName, $width, $height);
+    self.new($image, :reapable);
+  }
+
   method gen-color (Int() $width, Int() $height, Color() $color) {
     my int32 ($w, $h) = ($width, $height);
 
@@ -606,11 +634,7 @@ class Raylib::Image does Reapable {
   #   int32 $format,
   #   int32 $headerSize
   # )
-  # load-image-svg (
-  #   Str   $fileNameOrString,
-  #   int32 $width,
-  #   int32 $height
-  # )
+
   # load-image-anim (
   #   Str   $fileName,
   #   int32 $frames    is rw
