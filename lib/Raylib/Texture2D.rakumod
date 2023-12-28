@@ -52,6 +52,13 @@ class Raylib::Texture does Reapable {
       $tint
     );
   }
+  method draw-centered ($y, Color() $tint) {
+    self.draw(
+      (get-screen-width  - self.width )  / 2,
+      $y,
+      $tint
+    );
+  }
 
   multi method draw (
     Vector2() $pos,
