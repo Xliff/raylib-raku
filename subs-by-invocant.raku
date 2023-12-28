@@ -50,6 +50,7 @@ sub MAIN ( :$write = False, :$for = '' ) {
 
         $subs ~= qq:to/SUB/;
           sub { .name } { $nc-sig }{ $nc-sym }
+	    is export
             is native(LIBRAYLIB) \{*\};
 
           SUB
