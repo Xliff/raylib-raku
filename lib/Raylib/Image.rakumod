@@ -309,9 +309,9 @@ class Raylib::Image does Reapable {
     Font()     $font,
     Str()      $text,
     Vector2()  $position,
-    Num()      $spacing,
     Color()    $tint,
     Num()     :$size      = $font.baseSize,
+    Num()     :$spacing   = 0,
   ) {
     samewith($font, $text, $position, $size, $spacing, $tint);
   }
