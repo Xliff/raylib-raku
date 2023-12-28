@@ -7,8 +7,12 @@ use Raylib::Bindings;
 use Raylib::Raw::Exceptions;
 use Raylib::Raw::Font;
 
+use Raylib::Texture2D;
+
 class Raylib::Font {
   has Font $!font handles(*) is built;
+
+  has $!texture;
 
   method Raylib::Bindings::Font
     is also<Font>
@@ -17,6 +21,14 @@ class Raylib::Font {
   multi method new (Font $font) {
     return Nil unless $font;
     self.bless( :$font );
+  }
+
+  method texture ( :$raw ) {
+    $!texture = Raylib::Texture2D.new(
+      nativecast(Texture2D, $!font.texture)
+    ) unless $!texture;
+    return $!texture.Texture2D if $raw;
+    $!texture;
   }
 
   method get-default {
@@ -74,9 +86,9 @@ class Raylib::Font {
   multi method draw-ex (
     Str()      $text,
     Vector2()  $position,
-    Num()      $spacing,
     Color()    $tint,
     Num()     :$size       = self.baseSize,
+    Num()     :$spacing    = 0,
   ) {
     samewith($text, $position, $size, $spacing, $tint);
   }
@@ -160,14 +172,14 @@ class Raylib::Font {
   multi method load-ex (
     ResourceFile $file,
     Int()        $fontSize,
-                 @codepoints
+                 @codepoints = ()
   ) {
     samewith($file.absolute, $fontSize, @codepoints);
   }
   multi method load-ex (
     Str   $fileName,
     Int() $fontSize,
-          @codepoints,
+          @codepoints = (),
   ) {
     if @codepoints.grep( * !~~ Int ) -> $i {
       X::Raylib::InvalidObject.new( object => $i.head ).throw
@@ -176,7 +188,7 @@ class Raylib::Font {
     samewith(
       $fileName,
       $fontSize,
-      CArray[int32].new(@codepoints),
+      @codepoints.elems ?? CArray[int32].new(@codepoints) !! CArray[int32],
       @codepoints.elems
     );
   }
