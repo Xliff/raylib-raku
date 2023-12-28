@@ -1,5 +1,6 @@
 use v6;
 
+use NativeCall;
 use Method::Also;
 
 use Raylib::Bindings;
@@ -350,12 +351,30 @@ class Raylib::Image does Reapable {
     self.new($image);
   }
 
-  # method kernel-convolution (
-  #     num32 $kernel,
-  #     int32 $kernelSize
-  # ) {
-  #   image-kernel-convolution($!image, ...);
-  # }
+
+  multi method kernel-convolution (@kernel) {
+    my $k = CArray[num32].new(
+      @kernel.map( -> $_ is rw {
+        unless $_ ~~ Num {
+          .^can('Num')
+            ?? $_ .= Num
+            !! X::Raylib::InvalidObject( object => $_ ).throw;
+        }
+        $_;
+      })
+    );
+
+    samewith($k, @kernel.elems)
+  }
+  multi method kernel-convolution (
+    CArray[num32] $kernel,
+    Int()         $kernelSize
+  ) {
+    my int32 $s = $kernelSize;
+
+    image-kernel-convolution($!image, $kernel, $s);
+    self;
+  }
 
   method mipmaps {
     image-mipmaps($!image);

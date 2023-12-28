@@ -385,9 +385,9 @@ sub image-from-image (
   is native(LIBRAYLIB) {*};
 
 sub image-kernel-convolution (
-    Image $image,
-    num32 $kernel,
-    int32 $kernelSize
+    Image         $image,
+    CArray[num32] $kernel,
+    int32         $kernelSize
   )
   is export
   is symbol("ImageKernelConvolution")
