@@ -45,6 +45,14 @@ class Raylib::Texture does Reapable {
     $o;
   }
 
+  method draw-midscreen (Color() $tint) {
+    self.draw(
+      (get-screen-width  - self.width )  / 2,
+      (get-screen-height - self.height ) / 2,
+      $tint
+    );
+  }
+
   multi method draw (
     Vector2() $pos,
     Color()   $tint
