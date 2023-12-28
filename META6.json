@@ -31,6 +31,7 @@
   },
   "resources": [
     "libraries/raylib",
+    "fonts/KAISG.ttf",
     "images/cat.png",
     "images/custom_alagard.png",
     "images/custom_mecha.png",
