@@ -4,11 +4,16 @@ use Method::Also;
 
 use Raylib::Bindings;
 use Raylib::Raw::Rectangle;
-use Raylib::Roles::Reapable;
 
 use Raylib::Color;
 
-class Raylib::Rectangle does Reapable {
+use Raylib::Roles::Reapable;
+use Raylib::Roles::ScreenPositionable;
+
+class Raylib::Rectangle
+  does Raylib::Roles::ScreenPositionable
+  does Reapable
+{
   has Rectangle $!rectangle handles(*) is built;
 
   proto method new (|)
