@@ -580,3 +580,104 @@ our sub load-image-from-screen ()
   is      export
   is      native(LIBRAYLIB)
   is      symbol('LoadImageFromScreen_pointerized'){ * }
+
+our sub gen-image-color (
+  int32 $width,
+  int32 $height,
+  Color $color
+)
+  returns Image
+  is      export
+  is      native(LIBRAYLIB)
+  is      symbol('GenImageColor_pointerized'){ * }
+
+our sub gen-image-gradient-linear (
+  int32 $width,
+  int32 $height,
+  int32 $direction,
+  Color $start,
+  Color $end
+)
+  returns Image
+  is      export
+  is      native(LIBRAYLIB)
+  is      symbol('GenImageGradientLinear_pointerized'){ * }
+
+our sub gen-image-gradient-radial (
+  int32 $width,
+  int32 $height,
+  num32 $density,
+  Color $inner,
+  Color $outer
+)
+  returns Image
+  is      export
+  is      native(LIBRAYLIB)
+  is      symbol('GenImageGradientRadial_pointerized'){ * }
+
+our sub gen-image-gradient-square (
+  int32 $width,
+  int32 $height,
+  num32 $density,
+  Color $inner,
+  Color $outer
+)
+  returns Image
+  is      export
+  is      native(LIBRAYLIB)
+  is      symbol('GenImageGradientSquare_pointerized'){ * }
+
+our sub gen-image-checked (
+  int32 $width,
+  int32 $height,
+  int32 $checksX,
+  int32 $checksY,
+  Color $col1,
+  Color $col2
+)
+  returns Image
+  is      export
+  is      native(LIBRAYLIB)
+  is      symbol('GenImageChecked_pointerized'){ * }
+
+our sub gen-image-white-noise (
+  int32 $width,
+  int32 $height,
+  num32 $factor
+)
+  returns Image
+  is      export
+  is      native(LIBRAYLIB)
+  is      symbol('GenImageWhiteNoise_pointerized'){ * }
+
+our sub gen-image-perlin-noise (
+  int32 $width,
+  int32 $height,
+  int32 $offsetX,
+  int32 $offsetY,
+  num32 $scale
+)
+  returns Image
+  is      export
+  is      native(LIBRAYLIB)
+  is      symbol('GenImagePerlinNoise_pointerized'){ * }
+
+our sub gen-image-cellular (
+  int32 $width,
+  int32 $height,
+  int32 $tileSize
+)
+  returns Image
+  is      export
+  is      native(LIBRAYLIB)
+  is      symbol('GenImageCellular_pointerized'){ * }
+
+our sub gen-image-text (
+  int32 $width,
+  int32 $height,
+  Str   $text
+)
+  returns Image
+  is      export
+  is      native(LIBRAYLIB)
+  is      symbol('GenImageText_pointerized'){ * }

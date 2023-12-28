@@ -8,14 +8,22 @@ use Raylib::Raw::Image;
 
 use Raylib::Rectangle;
 
-class Raylib::Image {
+use Raylib::Roles::Reapable;
+
+class Raylib::Image does Reapable {
   has Image $!image handles(*) is built;
 
   method Raylib::Bindings::Image
     is also<Image>
   { $!image }
 
-  method new (Image $image) {
+  multi method new (Image $image, :$reapable is required where *.so) {
+    return Nil unless $image;
+    my $o = self.bless( :$image );
+    $o.addReapable($image);
+    $o;
+  }
+  multi method new (Image $image) {
     return Nil unless $image;
     self.bless( :$image );
   }
@@ -140,7 +148,7 @@ class Raylib::Image {
   method copy {
     my $image = image-copy($!image);
 
-    self.new($image);
+    self.new($image, :reapable);
   }
 
   method crop (Rectangle() $crop, :$raw = False) {
@@ -448,7 +456,7 @@ class Raylib::Image {
   }
   multi method load (Str $fileName) {
     my $image = load-image($fileName);
-    self.new($image);
+    self.new($image, :reapable);
   }
   multi method load ($_) {
     when Distribution::Resource { samewith( .absolute ) }
@@ -459,6 +467,117 @@ class Raylib::Image {
     default {
       X::Raylib::InvalidObject.new( object => $_ ).throw;
     }
+  }
+
+  method gen-color (Int() $width, Int() $height, Color() $color) {
+    my int32 ($w, $h) = ($width, $height);
+
+    my $image = gen-image-color($w, $h, $color);
+    return Nil unless $image;
+    self.new($image, :reapable);
+  }
+
+  method gen-gradient-linear (
+    Int()   $width,
+    Int()   $height,
+    Int()   $direction,
+    Color() $start,
+    Color() $end
+  ) {
+    my int32 ($w, $h, $d) = ($width, $height, $direction);
+
+    my $image = gen-image-gradient-linear($w, $h, $d, $start, $end);
+    return Nil unless $image;
+    self.new($image, :reapable);
+  }
+
+  method gen-gradient-radial (
+    Int()   $width,
+    Int()   $height,
+    Num()   $density,
+    Color() $inner,
+    Color() $outer
+  ) {
+    my int32 ($w, $h) = ($width, $height);
+    my num32  $d      =  $density;
+
+    my $image = gen-image-gradient-radial($w, $h, $d, $inner, $outer);
+    return Nil unless $image;
+    self.new($image, :reapable);
+  }
+
+  method gen-gradient-square (
+    Int()   $width,
+    Int()   $height,
+    Num()   $density,
+    Color() $inner,
+    Color() $outer
+  ) {
+    my int32 ($w, $h) = ($width, $height);
+    my num32  $d      =  $density;
+
+    my $image = gen-image-gradient-square($w, $h, $d, $inner, $outer);
+    return Nil unless $image;
+    self.new($image, :reapable);
+  }
+
+  method gen-checked (
+    Int()   $width,
+    Int()   $height,
+    Int()   $checksX,
+    Int()   $checksY,
+    Color() $col1,
+    Color() $col2
+  ) {
+    my int32 ($w, $h, $c1, $c2) = ($width, $height, $checksX, $checksY);
+
+    my $image = gen-image-checked($w, $h, $c1, $c2, $col1, $col2);
+    return Nil unless $image;
+    self.new($image, :reapable);
+  }
+
+  method gen-white-noise (Int() $width, Int() $height, Num() $factor) {
+    my int32 ($w, $h) = ($width, $height);
+    my num32  $f      =  $factor;
+
+    my $image = gen-image-white-noise($w, $h, $f);
+    return Nil unless $image;
+    self.new($image, :reapable);
+  }
+
+  method gen-perlin-noise (
+    Int() $width,
+    Int() $height,
+    Int() $offsetX,
+    Int() $offsetY,
+    Num() $scale
+  ) {
+    my int32 ($w, $h, $x, $y) = ($width, $height, $offsetX, $offsetY);
+    my num32  $s              =  $scale;
+
+    my $image = gen-image-perlin-noise($w, $h, $x, $y, $s);
+    return Nil unless $image;
+    self.new($image, :reapable);
+  }
+
+  method gen-cellular (
+    Int() $width,
+    Int() $height,
+    Int() $tileSize
+  ) {
+    my int32 ($w, $h, $t) = ($width, $height, $tileSize);
+
+    my $image = gen-image-cellular($w, $h, $t);
+    return Nil unless $image;
+    self.new($image, :reapable);
+  }
+
+  method gen-text (Int() $width, Int() $height, Str() $text) {
+    my int32 ($w, $h) = ($width, $height);
+
+    my $image = gen-image-text($w, $h, $text);
+    return Nil unless $image;
+    self.new($image, :reapable);
   }
 
   # load-image-raw (
