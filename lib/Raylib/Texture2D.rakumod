@@ -7,6 +7,7 @@ use Raylib::Bindings;
 use Raylib::Raw::Texture2D;
 
 use Raylib::Vector2;
+use Raylib::Rectangle;
 
 use Raylib::Roles::Reapable;
 use Raylib::Roles::ScreenPositionable;
@@ -71,13 +72,29 @@ class Raylib::Texture
     samewith( $pos.x, $pos.y, $tint );
   }
   multi method draw (
-      Int()   $posX,
-      Int()   $posY,
-      Color() $tint
+    Rectangle $rec,
+    Vector2()  $position,
+    Color()    $tint
+  ) {
+    self.draw-rec($rec, $position, $tint);
+  }
+  multi method draw (
+    Int     $posX,
+    Int()   $posY,
+    Color() $tint
   ) {
     my int32 ($x, $y) = ($posX, $posY);
 
     draw-texture($!texture, $x, $y, $tint);
+  }
+  multi method draw ($_, $b, $c) {
+    when Raylib::Rectangle { self.draw( .Rectangle, $b, $c ) }
+    when .can('Rectangle') { self.draw( .Rectangle, $b, $c ) }
+    when .can('Int')       { self.draw( .Int,       $b, $c ) }
+
+    default {
+      X::Raylib::InvalidObject.new( object => $_ ).throw;
+    }
   }
 
   multi method draw-ex (
