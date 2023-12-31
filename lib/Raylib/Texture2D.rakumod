@@ -148,6 +148,9 @@ class Raylib::Texture
     is-texture-ready($!texture);
   }
 
+  proto method load (|)
+  { * }
+
   multi method load (
     Raylib::Texture:U:
 
@@ -171,6 +174,16 @@ class Raylib::Texture
     my $texture = load-texture($filename);
     return Nil unless $texture;
     self.new($texture);
+  }
+  multi method load ($_) {
+    when Distribution::Resource { samewith( .absolute ) }
+    when IO                     { samewith( .absolute ) }
+    when .^can('IO')            { samewith( .absolute ) }
+    when .^can('Str')           { samewith( .Str      ) }
+
+    default {
+      X::Raylib::InvalidObject.new( object => $_ ).throw;
+    }
   }
 
   # cw: Is this a reapable situation?
