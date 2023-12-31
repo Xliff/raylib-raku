@@ -32,6 +32,7 @@
   "resources": [
     "libraries/raylib",
     "fonts/KAISG.ttf",
+    "images/button.png",
     "images/cat.png",
     "images/custom_alagard.png",
     "images/custom_mecha.png",
@@ -39,13 +40,18 @@
     "images/cyberpunk_street_background.png",
     "images/cyberpunk_street_midground.png",
     "images/cyberpunk_street_foreground.png",
+    "images/explosion.png",
+    "images/scarfy.png",
     "images/parrots.png",
     "images/raylib_logo.png",
+    "images/test.svg",
     "images/wabbit_alpha.png",
     "models/guy.iqm",
     "models/guytex.png",
     "models/guyanim.iqm",
-    "models/guy.blend"
+    "models/guy.blend",
+    "sounds/boom.wav",
+    "sounds/buttonfx.wav"
   ],
   "test-depends": [],
   "version": "0.0.15",
