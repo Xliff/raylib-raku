@@ -6,6 +6,7 @@ use Raylib::Bindings;
 use Raylib::Raw::Rectangle;
 
 use Raylib::Color;
+use Raylib::Vector2;
 
 use Raylib::Roles::Reapable;
 use Raylib::Roles::ScreenPositionable;
@@ -22,6 +23,13 @@ class Raylib::Rectangle
   method Raylib::Bindings::Rectangle
     is also<Rectangle>
   { $!rectangle }
+
+  method Raylib::Bindings::Vector2
+    is also<Vector2>
+  {
+    my num32 ($x, $y) = ($.x, $.y);
+    Raylib::Bindings::Vector2.new($x, $y)
+  }
 
   multi method new (Rectangle $rectangle) {
     # cw: What if struct is malloc'd from C?
@@ -48,6 +56,7 @@ class Raylib::Rectangle
     my num32 ($x, $y, $w, $h) = ($xx, $yy, $width, $height);
 
     my $rectangle = Rectangle.init($x, $y, $w, $h);
+
     return Nil unless $rectangle;
 
     my $o = self.bless( :$rectangle );
@@ -113,33 +122,19 @@ class Raylib::Rectangle
   # method draw-rounded-lines (num32 $roundness, int32 $segments, num32 $lineThick, Color $color) {
   # our sub draw-rectangle-rounded-lines (Rectangle $rec, num32 $roundness, int32 $segments, num32 $lineThick, Color $color) is export is native(LIBRAYLIB) is symbol('DrawRectangleRoundedLines_pointerized'){ * }
 
-  multi method check-collision (
-    Rectangle() $rec2,
-
-    :r(:rect(:$rectangle)) is required,
-
-    :$raw = False
-  ) {
-    my $r = check-collision-recs($!rectangle, $rec2);
-    return $r if False;
-    self.new($r);
+  multi method check-collision (Rectangle $rec2) {
+    check-collision-recs($!rectangle, $rec2);
   }
-  multi method check-collision (
-    Vector2() $point,
-
-    :v(:vec(:$vector)) is required,
-  ) {
+  multi method check-collision (Vector2 $point) {
     check-collision-point-rec($point, $!rectangle);
   }
-  multi method check-collision ($point) {
-    given $point {
-      when Rectangle                  { samewith($_, :rectangle) }
-      when $point.^can('Rectangle')   { samewith($_, :rectangle) }
-      when Vector2                    { samewith($_, :vector)    }
-      when $point.^can('Vector2')     { samewith($_, :vector)    }
+  multi method check-collision ($_) {
+    when Raylib::Rectangle    { samewith( .Rectangle ) }
+    when Raylib::Vector2      { samewith( .Vector2   ) }
+    when .^can('Rectangle')   { samewith( .Rectangle ) }
+    when .^can('Vector2')     { samewith( .Vector2   ) }
 
-      default { X::Raylib::UnknownType.new(value => $_).throw }
-    }
+    default { X::Raylib::UnknownType.new(value => $_).throw }
   }
 
   method get-collision-rec (Rectangle() $rec2, :$raw = False) {
@@ -147,6 +142,10 @@ class Raylib::Rectangle
     return $r if $raw;
     self.new($r);
   }
+
+  proto method offset (|)
+    is also<move>
+  { * }
 
   multi method offset (Vector2() $v) {
     samewith($v.x, $v.y);
@@ -170,6 +169,30 @@ class Raylib::Rectangle
     return $r.Rectangle if $raw;
     $r;
   }
+
+  multi method set (
+    :$x = self.x,
+    :$y = self.y,
+    :$w = self.w,
+    :$h = self.h
+  ) {
+    samewith($x, $y, $w, $h);
+  }
+  multi method set (Num() $xx, Num() $yy, Num() $ww, Num() $hh) {
+    my num32 ($x, $y, $w, $h) = ($xx, $yy, $ww, $hh);
+
+    ($.x, $.y, $.w, $.h) = ($x, $y, $w, $h);
+  }
+
+  multi method set-xy ($a where *.elems == 2) {
+    samewith($a.head, $a.tail);
+  }
+  multi method set-xy (Num() $x, Num() $y) {
+    my num32 ($xx, $yy) = ($x, $y);
+
+    ($.x, $.y) = ($xx, $yy);
+  }
+
 
   # our sub draw-rectangle (int32 $posX, int32 $posY, int32 $width, int32 $height, Color $color) is export is native(LIBRAYLIB) is symbol('DrawRectangle_pointerized'){ * }
   # our sub draw-rectangle-v (Vector2 $position, Vector2 $size, Color $color) is export is native(LIBRAYLIB) is symbol('DrawRectangleV_pointerized'){ * }
