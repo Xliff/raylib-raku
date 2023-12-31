@@ -231,7 +231,9 @@ class Raylib::Vector2 does Reapable {
     unless $mouse-pos {
       $mouse-pos = Raylib::Vector2.new;
     }
-    return ($mouse-pos.x, $mouse-pos.y) = (get-mouse-x, get-mouse-y) if $list;
+    my @pos = (get-mouse-x, get-mouse-y);
+    $mouse-pos.set( |@pos );
+    return @pos if $list;
     $mouse-pos;
   }
 }
