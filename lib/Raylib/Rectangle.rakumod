@@ -143,14 +143,19 @@ class Raylib::Rectangle
     self.new($r);
   }
 
-  proto method offset (|)
-    is also<move>
-  { * }
 
-  multi method offset (Vector2() $v) {
+  method offset (Num() $x, Num() $y) {
+    ($!rectangle.x, $!rectangle.y) »+« ($x, $y);
+  }
+
+  method offset-rect (Num() $x, Num() $y) {
+    ($.x + $x, $.y + $y, $.w, $.h)
+  }
+
+  multi method move (Vector2() $v) {
     samewith($v.x, $v.y);
   }
-  multi method offset (Num() $x, Num() $y) {
+  multi method move (Num() $x, Num() $y) {
     ($!rectangle.x, $!rectangle.y) »+=« ($x, $y);
     self;
   }
