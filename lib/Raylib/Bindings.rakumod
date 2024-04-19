@@ -1,24 +1,10 @@
 # This Raku module is generated from raylib.h
-
-unit module Raylib::Bindings:ver<0.0.15>:auth<zef:vushu>;
+unit module Raylib::Bindings:ver<0.0.17>:auth<zef:vushu>;
 use NativeCall;
-
-constant R is export = %?RESOURCES;
-
-subset ResourceFile is export of Mu
-  where IO | Distribution::Resource;
-
-constant LIBRAYLIB is export = %?RESOURCES<libraries/raylib>;
+constant LIBRAYLIB = %?RESOURCES<libraries/raylib>;
 class Vector2 is export is repr('CStruct') is rw {
-    has num32 $.x is rw;
-    has num32 $.y is rw;
-
-    multi method new (Num() $x, Num() $y) {
-      my num32 ($xx, $yy) = ($x, $y);
-
-      self.init($x, $y);
-    }
-
+    has num32 $.x;
+    has num32 $.y;
     method init(num32 $x,num32 $y) returns Vector2 {
         malloc-Vector2($x,$y);
     }
@@ -27,9 +13,9 @@ class Vector2 is export is repr('CStruct') is rw {
     }
 }
 class Vector3 is export is repr('CStruct') is rw {
-    has num32 $.x is rw;
-    has num32 $.y is rw;
-    has num32 $.z is rw;
+    has num32 $.x;
+    has num32 $.y;
+    has num32 $.z;
     method init(num32 $x,num32 $y,num32 $z) returns Vector3 {
         malloc-Vector3($x,$y,$z);
     }
@@ -38,10 +24,10 @@ class Vector3 is export is repr('CStruct') is rw {
     }
 }
 class Vector4 is export is repr('CStruct') is rw {
-    has num32 $.x is rw;
-    has num32 $.y is rw;
-    has num32 $.z is rw;
-    has num32 $.w is rw;
+    has num32 $.x;
+    has num32 $.y;
+    has num32 $.z;
+    has num32 $.w;
     method init(num32 $x,num32 $y,num32 $z,num32 $w) returns Vector4 {
         malloc-Vector4($x,$y,$z,$w);
     }
@@ -51,23 +37,22 @@ class Vector4 is export is repr('CStruct') is rw {
 }
 class Quaternion is Vector4 is export is repr('CStruct') {}
 class Matrix is export is repr('CStruct') is rw {
-    has num32 $.m0  is rw;
-    has num32 $.m4  is rw;
-    has num32 $.m8  is rw;
-    has num32 $.m12 is rw;
-    has num32 $.m1  is rw;
-    has num32 $.m5  is rw;
-    has num32 $.m9  is rw;
-    has num32 $.m13 is rw;
-    has num32 $.m2  is rw;
-    has num32 $.m6  is rw;
-    has num32 $.m10 is rw;
-    has num32 $.m14 is rw;
-    has num32 $.m3  is rw;
-    has num32 $.m7  is rw;
-    has num32 $.m11 is rw;
-    has num32 $.m15 is rw;
-
+    has num32 $.m0;
+    has num32 $.m4;
+    has num32 $.m8;
+    has num32 $.m12;
+    has num32 $.m1;
+    has num32 $.m5;
+    has num32 $.m9;
+    has num32 $.m13;
+    has num32 $.m2;
+    has num32 $.m6;
+    has num32 $.m10;
+    has num32 $.m14;
+    has num32 $.m3;
+    has num32 $.m7;
+    has num32 $.m11;
+    has num32 $.m15;
     method init(num32 $m0,num32 $m4,num32 $m8,num32 $m12,num32 $m1,num32 $m5,num32 $m9,num32 $m13,num32 $m2,num32 $m6,num32 $m10,num32 $m14,num32 $m3,num32 $m7,num32 $m11,num32 $m15) returns Matrix {
         malloc-Matrix($m0,$m4,$m8,$m12,$m1,$m5,$m9,$m13,$m2,$m6,$m10,$m14,$m3,$m7,$m11,$m15);
     }
@@ -76,10 +61,10 @@ class Matrix is export is repr('CStruct') is rw {
     }
 }
 class Color is export is repr('CStruct') is rw {
-    has uint8 $.r is rw;
-    has uint8 $.g is rw;
-    has uint8 $.b is rw;
-    has uint8 $.a is rw;
+    has uint8 $.r;
+    has uint8 $.g;
+    has uint8 $.b;
+    has uint8 $.a;
     method init(uint8 $r,uint8 $g,uint8 $b,uint8 $a) returns Color {
         malloc-Color($r,$g,$b,$a);
     }
@@ -88,27 +73,10 @@ class Color is export is repr('CStruct') is rw {
     }
 }
 class Rectangle is export is repr('CStruct') is rw {
-    has num32 $.x      is rw;
-    has num32 $.y      is rw;
-    has num32 $.width  is rw;
-    has num32 $.height is rw;
-
-    method w is rw { $!width  }
-    method h is rw { $!height }
-
-    method size { ( $!width, $!height)  }
-
-    multi method new (
-      Num() $x1,
-      Num() $y1,
-      Num() $x2,
-      Num() $y2
-    ) {
-      my num32 ($xx1, $yy1, $xx2, $yy2) = ($x1, $y1, $x2, $y2);
-
-      self.init($xx1, $yy1, $xx2, $yy2);
-    }
-
+    has num32 $.x;
+    has num32 $.y;
+    has num32 $.width;
+    has num32 $.height;
     method init(num32 $x,num32 $y,num32 $width,num32 $height) returns Rectangle {
         malloc-Rectangle($x,$y,$width,$height);
     }
@@ -125,9 +93,6 @@ class Image is export is repr('CStruct') is rw {
     method init(void $data,int32 $width,int32 $height,int32 $mipmaps,int32 $format) returns Image {
         malloc-Image($data,$width,$height,$mipmaps,$format);
     }
-
-    method size { ( $!width, $!height)  }
-
     submethod DESTROY {
         free-Image(self);
     }
@@ -138,13 +103,9 @@ class Texture is export is repr('CStruct') is rw {
     has int32 $.height;
     has int32 $.mipmaps;
     has int32 $.format;
-
     method init(int32 $id,int32 $width,int32 $height,int32 $mipmaps,int32 $format) returns Texture {
         malloc-Texture($id,$width,$height,$mipmaps,$format);
     }
-
-    method size { ( $!width, $!height )  }
-
     submethod DESTROY {
         free-Texture(self);
     }
@@ -155,28 +116,14 @@ class RenderTexture is export is repr('CStruct') is rw {
     has uint32 $.id;
     HAS Texture $.texture;
     HAS Texture $.depth;
-
-    method init(
-      int32 $id,
-      Texture2D $texture,
-      Texture2D $depth
-    )
-      returns RenderTexture
-    {
-      malloc-RenderTexture(
-        $id,
-        $texture,
-        $depth
-      );
+    method init(int32 $id,Texture $texture,Texture $depth) returns RenderTexture {
+        malloc-RenderTexture($id,$texture,$depth);
     }
-
     submethod DESTROY {
         free-RenderTexture(self);
     }
 }
-
 class RenderTexture2D is RenderTexture is export is repr('CStruct') {}
-
 class NPatchInfo is export is repr('CStruct') is rw {
     HAS Rectangle $.source;
     has int32 $.left;
@@ -184,77 +131,36 @@ class NPatchInfo is export is repr('CStruct') is rw {
     has int32 $.right;
     has int32 $.bottom;
     has int32 $.layout;
-
-    method init(
-      Rectangle $source,
-      int32     $left,
-      int32     $top,
-      int32     $right,
-      int32     $bottom,
-      int32     $layout
-    )
-      returns NPatchInfo
-    {
-      malloc-NPatchInfo($source,$left,$top,$right,$bottom,$layout);
+    method init(Rectangle $source,int32 $left,int32 $top,int32 $right,int32 $bottom,int32 $layout) returns NPatchInfo {
+        malloc-NPatchInfo($source,$left,$top,$right,$bottom,$layout);
     }
-
     submethod DESTROY {
-      free-NPatchInfo(self);
+        free-NPatchInfo(self);
     }
 }
-
 class GlyphInfo is export is repr('CStruct') is rw {
     has int32 $.value;
     has int32 $.offsetX;
     has int32 $.offsetY;
     has int32 $.advanceX;
     HAS Image $.image;
-
-    method init(
-      int32 $value,
-      int32 $offsetX,
-      int32 $offsetY,
-      int32 $advanceX,
-      Image $image
-    )
-      returns GlyphInfo
-    {
-      malloc-GlyphInfo($value,$offsetX,$offsetY,$advanceX,$image);
+    method init(int32 $value,int32 $offsetX,int32 $offsetY,int32 $advanceX,Image $image) returns GlyphInfo {
+        malloc-GlyphInfo($value,$offsetX,$offsetY,$advanceX,$image);
     }
-
     submethod DESTROY {
         free-GlyphInfo(self);
     }
 }
-
 class Font is export is repr('CStruct') is rw {
-    has int32     $.baseSize;
-    has int32     $.glyphCount;
-    has int32     $.glyphPadding;
+    has int32 $.baseSize;
+    has int32 $.glyphCount;
+    has int32 $.glyphPadding;
     HAS Texture2D $.texture;
-    has Pointer   $.recs;         #= Array of Rectangle
-    has Pointer   $.glyphs;       #= Array of GlyphInfo
-
-    method init(
-      int32     $baseSize,
-      int32     $glyphCount,
-      int32     $glyphPadding,
-      Texture2D $texture,
-      Pointer   $recs,
-      Pointer   $glyphs
-    )
-      returns Font
-    {
-        malloc-Font(
-          $baseSize,
-          $glyphCount,
-          $glyphPadding,
-          $texture,
-          $recs,
-          $glyphs
-        );
+    has Pointer[Rectangle] $.recs;
+    has Pointer[GlyphInfo] $.glyphs;
+    method init(int32 $baseSize,int32 $glyphCount,int32 $glyphPadding,Texture2D $texture,Pointer[Rectangle] $recs,Pointer[GlyphInfo] $glyphs) returns Font {
+        malloc-Font($baseSize,$glyphCount,$glyphPadding,$texture,$recs,$glyphs);
     }
-
     submethod DESTROY {
         free-Font(self);
     }
@@ -263,256 +169,137 @@ class Camera3D is export is repr('CStruct') is rw {
     HAS Vector3 $.position;
     HAS Vector3 $.target;
     HAS Vector3 $.up;
-    has num32   $.fovy;
-    has int32   $.projection;
-
-    method init(
-      Vector3 $position,
-      Vector3 $target,
-      Vector3 $up,
-      num32   $fovy,
-      int32   $projection
-    )
-      returns Camera3D
-    {
-      malloc-Camera3D(
-        $position,
-        $target,
-        $up,
-        $fovy,
-        $projection
-      );
+    has num32 $.fovy;
+    has int32 $.projection;
+    method init(Vector3 $position,Vector3 $target,Vector3 $up,num32 $fovy,int32 $projection) returns Camera3D {
+        malloc-Camera3D($position,$target,$up,$fovy,$projection);
     }
-
     submethod DESTROY {
         free-Camera3D(self);
     }
 }
-
 class Camera is Camera3D is export is repr('CStruct') {}
-
 class Camera2D is export is repr('CStruct') is rw {
     HAS Vector2 $.offset;
     HAS Vector2 $.target;
-    has num32   $.rotation;
-    has num32   $.zoom;
-
-    method init(
-      Vector2 $offset,
-      Vector2 $target,
-      num32 $rotation,
-      num32 $zoom
-    )
-      returns Camera2D
-    {
-      malloc-Camera2D(
-        $offset,
-        $target,
-        $rotation,
-        $zoom
-      );
+    has num32 $.rotation;
+    has num32 $.zoom;
+    method init(Vector2 $offset,Vector2 $target,num32 $rotation,num32 $zoom) returns Camera2D {
+        malloc-Camera2D($offset,$target,$rotation,$zoom);
     }
-
     submethod DESTROY {
         free-Camera2D(self);
     }
 }
-
 class Mesh is export is repr('CStruct') is rw {
-    has int32          $.vertexCount;
-    has int32          $.triangleCount;
-    has CArray[num32]  $.vertices;
-    has CArray[num32]  $.texcoords;
-    has CArray[num32]  $.texcoords2;
-    has CArray[num32]  $.normals;
-    has CArray[num32]  $.tangents;
-    has CArray[uint8]  $.colors;
-    has CArray[uint16] $.indices        is rw;
-    has CArray[num32]  $.animVertices   is rw;
-    has CArray[num32]  $.animNormals    is rw;
-    has CArray[uint8]  $.boneIds        is rw;
-    has CArray[num32]  $.boneWeights    is rw;
-    has uint32         $.vaoId;
-    has CArray[uint32] $.vboId          is rw;
-
-    method init(
-      int32          $vertexCount,
-      int32          $triangleCount,
-      CArray[num32]  $vertices,
-      CArray[num32]  $texcoords,
-      CArray[num32]  $texcoords2,
-      CArray[num32]  $normals,
-      CArray[num32]  $tangents,
-      CArray[uint8]  $colors,
-      CArray[uint16] $indices,
-      CArray[num32]  $animVertices,
-      CArray[num32]  $animNormals,
-      CArray[uint8]  $boneIds,
-      CArray[num32]  $boneWeights,
-      int32          $vaoId,
-      CArray[int32]  $vboId
-    )
-      returns Mesh
-    {
-      malloc-Mesh(
-        $vertexCount,
-        $triangleCount,
-        $vertices,
-        $texcoords,
-        $texcoords2,
-        $normals,
-        $tangents,
-        $colors,
-        $indices,
-        $animVertices,
-        $animNormals,
-        $boneIds,
-        $boneWeights,
-        $vaoId,
-        $vboId
-      );
+    has int32 $.vertexCount;
+    has int32 $.triangleCount;
+    has num32 $.vertices is rw;
+    has num32 $.texcoords is rw;
+    has num32 $.texcoords2 is rw;
+    has num32 $.normals is rw;
+    has num32 $.tangents is rw;
+    has uint8 $.colors is rw;
+    has uint16 $.indices is rw;
+    has num32 $.animVertices is rw;
+    has num32 $.animNormals is rw;
+    has uint8 $.boneIds is rw;
+    has num32 $.boneWeights is rw;
+    has uint32 $.vaoId;
+    has uint32 $.vboId is rw;
+    method init(int32 $vertexCount,int32 $triangleCount,num32 $vertices,num32 $texcoords,num32 $texcoords2,num32 $normals,num32 $tangents,uint8 $colors,int16 $indices,num32 $animVertices,num32 $animNormals,uint8 $boneIds,num32 $boneWeights,int32 $vaoId,int32 $vboId) returns Mesh {
+        malloc-Mesh($vertexCount,$triangleCount,$vertices,$texcoords,$texcoords2,$normals,$tangents,$colors,$indices,$animVertices,$animNormals,$boneIds,$boneWeights,$vaoId,$vboId);
     }
-
     submethod DESTROY {
-      say "Destroying Mesh...";
-      free-Mesh(self);
+        free-Mesh(self);
     }
 }
-
 class Shader is export is repr('CStruct') is rw {
-    has uint32        $.id;
-    has CArray[int32] $!locs;
-
-    method locs is rw {
-      Proxy.new:
-        FETCH => -> $     { $!locs[0]     },
-        STORE => -> $, \v { $!locs[0] = v };
+    has uint32 $.id;
+    has int32 $.locs is rw;
+    method init(int32 $id,int32 $locs) returns Shader {
+        malloc-Shader($id,$locs);
     }
-
-    method init(int32 $id, CArray[int32] $locs) returns Shader {
-      malloc-Shader($id, $locs);
-    }
-
     submethod DESTROY {
-      free-Shader(self);
+        free-Shader(self);
     }
 }
-
 class MaterialMap is export is repr('CStruct') is rw {
     HAS Texture2D $.texture;
-    HAS Color     $.color;
-    has num32     $.value;
-
-    method init(
-      Texture2D $texture,
-      Color     $color,
-      num32     $value
-    )
-      returns MaterialMap
-    {
-        malloc-MaterialMap($texture, $color, $value);
+    HAS Color $.color;
+    has num32 $.value;
+    method init(Texture2D $texture,Color $color,num32 $value) returns MaterialMap {
+        malloc-MaterialMap($texture,$color,$value);
     }
-
     submethod DESTROY {
         free-MaterialMap(self);
     }
 }
-
 class Material is export is repr('CStruct') is rw {
-  HAS Shader        $.shader;
-  has MaterialMap   $.maps;
-  HAS num32         @.params[4] is CArray;
-
-  method init(
-    Shader        $shader,
-    MaterialMap   $maps,
-    CArray[num32] $params
-  )
-    returns Material
-  {
-    malloc-Material($shader, $maps, $params);
-  }
-
-  submethod DESTROY {
-    free-Material(self);
-  }
+    HAS Shader $.shader;
+    has Pointer[MaterialMap] $.maps;
+    has CArray[num32] $.params is rw;
+    method init(Shader $shader,Pointer[MaterialMap] $maps,CArray[num32] $params) returns Material {
+        malloc-Material($shader,$maps,$params);
+    }
+    submethod DESTROY {
+        free-Material(self);
+    }
 }
-
-
 class Transform is export is repr('CStruct') is rw {
-    HAS Vector3    $.translation;
+    HAS Vector3 $.translation;
     HAS Quaternion $.rotation;
-    HAS Vector3    $.scale;
-
-    method init(
-      Vector3    $translation,
-      Quaternion $rotation,
-      Vector3    $scale
-    )
-      returns Transform
-    {
-        malloc-Transform($translation, $rotation, $scale);
+    HAS Vector3 $.scale;
+    method init(Vector3 $translation,Quaternion $rotation,Vector3 $scale) returns Transform {
+        malloc-Transform($translation,$rotation,$scale);
     }
-
     submethod DESTROY {
-      free-Transform(self);
+        free-Transform(self);
     }
 }
-
 class BoneInfo is export is repr('CStruct') is rw {
-    HAS uint8 @.name[32] is CArray;
+    has uint8 @.name[32] is CArray;
     has int32 $.parent;
-
-    method init(
-      Str   $name,
-      int32 $parent
-    )
-      returns BoneInfo
-    {
-      my $n = CArray[uint8].new( $name.comb[^32] );
-      malloc-BoneInfo($n, $parent);
+    method init(Str $name,int32 $parent) returns BoneInfo {
+        malloc-BoneInfo($name,$parent);
     }
-
     submethod DESTROY {
-      free-BoneInfo(self);
+        free-BoneInfo(self);
     }
 }
-
-
-
-class ModelAnimation is export is repr('CStruct') is rw {
-    has int32                     $.boneCount;
-    has int32                     $.frameCount;
-    has Pointer                   $.bones;                 #= Array of BoneInfo
-    has CArray[CArray[Transform]] $.framePoses;
-    HAS uint8                     @.name[32]    is CArray;
-
-    method init(
-      int32                     $boneCount,
-      int32                     $frameCount,
-      Pointer                   $bones,
-      CArray[CArray[Transform]] $framePoses,
-      CArray[uint8]             $name
-    )
-      returns ModelAnimation
-    {
-      malloc-ModelAnimation(
-        $boneCount,
-        $frameCount,
-        $bones,
-        $framePoses,
-        $name
-      );
+class Model is export is repr('CStruct') is rw {
+    HAS Matrix $.transform;
+    has int32 $.meshCount;
+    has int32 $.materialCount;
+    has Pointer[Mesh] $.meshes;
+    has Pointer[Material] $.materials;
+    has int32 $.meshMaterial is rw;
+    has int32 $.boneCount;
+    has Pointer[BoneInfo] $.bones;
+    has Pointer[Transform] $.bindPose;
+    method init(Matrix $transform,int32 $meshCount,int32 $materialCount,Pointer[Mesh] $meshes,Pointer[Material] $materials,int32 $meshMaterial,int32 $boneCount,Pointer[BoneInfo] $bones,Pointer[Transform] $bindPose) returns Model {
+        malloc-Model($transform,$meshCount,$materialCount,$meshes,$materials,$meshMaterial,$boneCount,$bones,$bindPose);
     }
-
+    submethod DESTROY {
+        free-Model(self);
+    }
+}
+class ModelAnimation is export is repr('CStruct') is rw {
+    has int32 $.boneCount;
+    has int32 $.frameCount;
+    has Pointer[BoneInfo] $.bones;
+    has Pointer $.framePoses;
+    has uint8 @.name[32] is CArray;
+    method init(int32 $boneCount,int32 $frameCount,Pointer[BoneInfo] $bones,Pointer $framePoses,Str $name) returns ModelAnimation {
+        malloc-ModelAnimation($boneCount,$frameCount,$bones,$framePoses,$name);
+    }
     submethod DESTROY {
         free-ModelAnimation(self);
     }
 }
-
 class Ray is export is repr('CStruct') is rw {
-    has Vector3 $.position;
-    has Vector3 $.direction;
+    HAS Vector3 $.position;
+    HAS Vector3 $.direction;
     method init(Vector3 $position,Vector3 $direction) returns Ray {
         malloc-Ray($position,$direction);
     }
@@ -523,8 +310,8 @@ class Ray is export is repr('CStruct') is rw {
 class RayCollision is export is repr('CStruct') is rw {
     has bool $.hit;
     has num32 $.distance;
-    has Vector3 $.point;
-    has Vector3 $.normal;
+    HAS Vector3 $.point;
+    HAS Vector3 $.normal;
     method init(bool $hit,num32 $distance,Vector3 $point,Vector3 $normal) returns RayCollision {
         malloc-RayCollision($hit,$distance,$point,$normal);
     }
@@ -533,19 +320,8 @@ class RayCollision is export is repr('CStruct') is rw {
     }
 }
 class BoundingBox is export is repr('CStruct') is rw {
-    HAS Vector3 $.min is rw;
-    HAS Vector3 $.max is rw;
-
-    method size ( :$hash = False ) {
-      my $r = (
-        self.max.x - self.min.x,
-        self.max.y - self.min.y,
-        self.max.z - self.min.z
-      );
-      return $r unless $hash;
-      %( x => $r[0], y => $r[1], z => $r[2] );
-    }
-
+    HAS Vector3 $.min;
+    HAS Vector3 $.max;
     method init(Vector3 $min,Vector3 $max) returns BoundingBox {
         malloc-BoundingBox($min,$max);
     }
@@ -553,36 +329,24 @@ class BoundingBox is export is repr('CStruct') is rw {
         free-BoundingBox(self);
     }
 }
-
-class Wave is export is repr('CStruct') {
-    has uint32  $.frameCount;
-    has uint32  $.sampleRate;
-    has uint32  $.sampleSize;
-    has uint32  $.channels;
-    has Pointer $.data;
-
-    method init(
-      int32   $frameCount,
-      int32   $sampleRate,
-      int32   $sampleSize,
-      int32   $channels,
-      Pointer $data
-    )
-      returns Wave
-    {
+class Wave is export is repr('CStruct') is rw {
+    has uint32 $.frameCount;
+    has uint32 $.sampleRate;
+    has uint32 $.sampleSize;
+    has uint32 $.channels;
+    has Pointer[void] $.data;
+    method init(int32 $frameCount,int32 $sampleRate,int32 $sampleSize,int32 $channels,void $data) returns Wave {
         malloc-Wave($frameCount,$sampleRate,$sampleSize,$channels,$data);
     }
-
     submethod DESTROY {
         free-Wave(self);
     }
 }
-
 class rAudioBuffer is export is repr('CStruct') {  has int32 $.dummy;}
 class rAudioProcessor is export is repr('CStruct') {  has int32 $.dummy;}
 class AudioStream is export is repr('CStruct') is rw {
-    has rAudioBuffer $.buffer is rw;
-    has rAudioProcessor $.processor is rw;
+    has Pointer[rAudioBuffer] $.buffer;
+    has Pointer[rAudioProcessor] $.processor;
     has uint32 $.sampleRate;
     has uint32 $.sampleSize;
     has uint32 $.channels;
@@ -590,7 +354,7 @@ class AudioStream is export is repr('CStruct') is rw {
 
 }
 class Sound is export is repr('CStruct') is rw {
-    has AudioStream $.stream;
+    HAS AudioStream $.stream;
     has uint32 $.frameCount;
     method init(AudioStream $stream,int32 $frameCount) returns Sound {
         malloc-Sound($stream,$frameCount);
@@ -600,7 +364,7 @@ class Sound is export is repr('CStruct') is rw {
     }
 }
 class Music is export is repr('CStruct') is rw {
-    has AudioStream $.stream;
+    HAS AudioStream $.stream;
     has uint32 $.frameCount;
     has bool $.looping;
     has int32 $.ctxType;
@@ -659,8 +423,7 @@ class FilePathList is export is repr('CStruct') is rw {
 class AutomationEvent is export is repr('CStruct') is rw {
     has uint32 $.frame;
     has uint32 $.type;
-    HAS int32  @.params[4] is CArray;
-
+    has CArray[int32] $.params is rw;
     method init(int32 $frame,int32 $type,CArray[int32] $params) returns AutomationEvent {
         malloc-AutomationEvent($frame,$type,$params);
     }
@@ -671,8 +434,8 @@ class AutomationEvent is export is repr('CStruct') is rw {
 class AutomationEventList is export is repr('CStruct') is rw {
     has uint32 $.capacity;
     has uint32 $.count;
-    has AutomationEvent $.events is rw;
-    method init(int32 $capacity,int32 $count,AutomationEvent $events) returns AutomationEventList {
+    has Pointer[AutomationEvent] $.events;
+    method init(int32 $capacity,int32 $count,Pointer[AutomationEvent] $events) returns AutomationEventList {
         malloc-AutomationEventList($capacity,$count,$events);
     }
     submethod DESTROY {
@@ -1019,16 +782,7 @@ enum NPatchLayout is export (
     NPATCH_THREE_PATCH_VERTICAL => 1,
     NPATCH_THREE_PATCH_HORIZONTAL => 2,
 );
-
-our sub init-window-raw (int32 $width, int32 $height, Str $title)  is native(LIBRAYLIB) is symbol('InitWindow'){ * }
-
-our sub init-window (Int() $width, Int() $height, Str() $title = 'Raku Raylib') is export {
-  my int32 ($w, $h) = ($width, $height);
-
-  init-window-raw($w, $h, $title);
-}
-
-
+our sub init-window (int32 $width, int32 $height, Str $title) is export is native(LIBRAYLIB) is symbol('InitWindow'){ * }
 our sub term:<close-window> () is export is native(LIBRAYLIB) is symbol('CloseWindow'){ * }
 our sub term:<window-should-close> () returns bool is export is native(LIBRAYLIB) is symbol('WindowShouldClose'){ * }
 our sub term:<is-window-ready> () returns bool is export is native(LIBRAYLIB) is symbol('IsWindowReady'){ * }
@@ -1046,6 +800,7 @@ our sub term:<toggle-borderless-windowed> () is export is native(LIBRAYLIB) is s
 our sub term:<maximize-window> () is export is native(LIBRAYLIB) is symbol('MaximizeWindow'){ * }
 our sub term:<minimize-window> () is export is native(LIBRAYLIB) is symbol('MinimizeWindow'){ * }
 our sub term:<restore-window> () is export is native(LIBRAYLIB) is symbol('RestoreWindow'){ * }
+our sub set-window-icons (Image $images is rw, int32 $count) is export is native(LIBRAYLIB) is symbol('SetWindowIcons'){ * }
 our sub set-window-title (Str $title) is export is native(LIBRAYLIB) is symbol('SetWindowTitle'){ * }
 our sub set-window-position (int32 $x, int32 $y) is export is native(LIBRAYLIB) is symbol('SetWindowPosition'){ * }
 our sub set-window-monitor (int32 $monitor) is export is native(LIBRAYLIB) is symbol('SetWindowMonitor'){ * }
@@ -1081,21 +836,14 @@ our sub term:<begin-drawing> () is export is native(LIBRAYLIB) is symbol('BeginD
 our sub term:<end-drawing> () is export is native(LIBRAYLIB) is symbol('EndDrawing'){ * }
 our sub term:<end-mode2d> () is export is native(LIBRAYLIB) is symbol('EndMode2D'){ * }
 our sub term:<end-mode3d> () is export is native(LIBRAYLIB) is symbol('EndMode3D'){ * }
+our sub term:<end-texture-mode> () is export is native(LIBRAYLIB) is symbol('EndTextureMode'){ * }
 our sub term:<end-shader-mode> () is export is native(LIBRAYLIB) is symbol('EndShaderMode'){ * }
 our sub begin-blend-mode (int32 $mode) is export is native(LIBRAYLIB) is symbol('BeginBlendMode'){ * }
 our sub term:<end-blend-mode> () is export is native(LIBRAYLIB) is symbol('EndBlendMode'){ * }
 our sub begin-scissor-mode (int32 $x, int32 $y, int32 $width, int32 $height) is export is native(LIBRAYLIB) is symbol('BeginScissorMode'){ * }
 our sub term:<end-scissor-mode> () is export is native(LIBRAYLIB) is symbol('EndScissorMode'){ * }
 our sub term:<end-vr-stereo-mode> () is export is native(LIBRAYLIB) is symbol('EndVrStereoMode'){ * }
-
-our sub set-target-fps-raw (int32 $fps) is export is native(LIBRAYLIB) is symbol('SetTargetFPS'){ * }
-
-our sub set-target-fps (Int() $fps) is export {
-  my int32 $f = $fps;
-
-  set-target-fps-raw($f);
-}
-
+our sub set-target-fps (int32 $fps) is export is native(LIBRAYLIB) is symbol('SetTargetFPS'){ * }
 our sub term:<get-frame-time> () returns num32 is export is native(LIBRAYLIB) is symbol('GetFrameTime'){ * }
 our sub term:<get-time> () returns num64 is export is native(LIBRAYLIB) is symbol('GetTime'){ * }
 our sub term:<get-fps> () returns int32 is export is native(LIBRAYLIB) is symbol('GetFPS'){ * }
@@ -1189,20 +937,33 @@ our sub term:<get-gesture-hold-duration> () returns num32 is export is native(LI
 our sub term:<get-gesture-drag-angle> () returns num32 is export is native(LIBRAYLIB) is symbol('GetGestureDragAngle'){ * }
 our sub term:<get-gesture-pinch-angle> () returns num32 is export is native(LIBRAYLIB) is symbol('GetGesturePinchAngle'){ * }
 our sub update-camera (Camera $camera is rw, int32 $mode) is export is native(LIBRAYLIB) is symbol('UpdateCamera'){ * }
-
+our sub image-format (Image $image is rw, int32 $newFormat) is export is native(LIBRAYLIB) is symbol('ImageFormat'){ * }
+our sub image-alpha-crop (Image $image is rw, num32 $threshold) is export is native(LIBRAYLIB) is symbol('ImageAlphaCrop'){ * }
+our sub image-alpha-premultiply (Image $image is rw) is export is native(LIBRAYLIB) is symbol('ImageAlphaPremultiply'){ * }
+our sub image-blur-gaussian (Image $image is rw, int32 $blurSize) is export is native(LIBRAYLIB) is symbol('ImageBlurGaussian'){ * }
+our sub image-kernel-convolution (Image $image is rw, num32 $kernel is rw, int32 $kernelSize) is export is native(LIBRAYLIB) is symbol('ImageKernelConvolution'){ * }
+our sub image-resize (Image $image is rw, int32 $newWidth, int32 $newHeight) is export is native(LIBRAYLIB) is symbol('ImageResize'){ * }
+our sub image-resize-nn (Image $image is rw, int32 $newWidth, int32 $newHeight) is export is native(LIBRAYLIB) is symbol('ImageResizeNN'){ * }
+our sub image-mipmaps (Image $image is rw) is export is native(LIBRAYLIB) is symbol('ImageMipmaps'){ * }
+our sub image-dither (Image $image is rw, int32 $rBpp, int32 $gBpp, int32 $bBpp, int32 $aBpp) is export is native(LIBRAYLIB) is symbol('ImageDither'){ * }
+our sub image-flip-vertical (Image $image is rw) is export is native(LIBRAYLIB) is symbol('ImageFlipVertical'){ * }
+our sub image-flip-horizontal (Image $image is rw) is export is native(LIBRAYLIB) is symbol('ImageFlipHorizontal'){ * }
+our sub image-rotate (Image $image is rw, int32 $degrees) is export is native(LIBRAYLIB) is symbol('ImageRotate'){ * }
+our sub image-rotate-cw (Image $image is rw) is export is native(LIBRAYLIB) is symbol('ImageRotateCW'){ * }
+our sub image-rotate-ccw (Image $image is rw) is export is native(LIBRAYLIB) is symbol('ImageRotateCCW'){ * }
+our sub image-color-invert (Image $image is rw) is export is native(LIBRAYLIB) is symbol('ImageColorInvert'){ * }
+our sub image-color-grayscale (Image $image is rw) is export is native(LIBRAYLIB) is symbol('ImageColorGrayscale'){ * }
+our sub image-color-contrast (Image $image is rw, num32 $contrast) is export is native(LIBRAYLIB) is symbol('ImageColorContrast'){ * }
+our sub image-color-brightness (Image $image is rw, int32 $brightness) is export is native(LIBRAYLIB) is symbol('ImageColorBrightness'){ * }
+our sub unload-image-colors (Color $colors is rw) is export is native(LIBRAYLIB) is symbol('UnloadImageColors'){ * }
+our sub unload-image-palette (Color $colors is rw) is export is native(LIBRAYLIB) is symbol('UnloadImagePalette'){ * }
+our sub gen-texture-mipmaps (Texture2D $texture is rw) is export is native(LIBRAYLIB) is symbol('GenTextureMipmaps'){ * }
 our sub get-pixel-data-size (int32 $width, int32 $height, int32 $format) returns int32 is export is native(LIBRAYLIB) is symbol('GetPixelDataSize'){ * }
 our sub load-font-data (uint8 $fileData is rw, int32 $dataSize, int32 $fontSize, int32 $codepoints is rw, int32 $codepointCount, int32 $type) returns GlyphInfo is export is native(LIBRAYLIB) is symbol('LoadFontData'){ * }
 our sub unload-font-data (GlyphInfo $glyphs is rw, int32 $glyphCount) is export is native(LIBRAYLIB) is symbol('UnloadFontData'){ * }
 our sub draw-fps (int32 $posX, int32 $posY) is export is native(LIBRAYLIB) is symbol('DrawFPS'){ * }
 our sub set-text-line-spacing (int32 $spacing) is export is native(LIBRAYLIB) is symbol('SetTextLineSpacing'){ * }
-our sub measure-text-raw (Str $text, int32 $fontSize) returns int32 is export is native(LIBRAYLIB) is symbol('MeasureText'){ * }
-
-sub measure-text (Str() $text, Int() $fontSize) is export {
-  my int32 $f = $fontSize;
-
-  measure-text-raw($text, $f);
-}
-
+our sub measure-text (Str $text, int32 $fontSize) returns int32 is export is native(LIBRAYLIB) is symbol('MeasureText'){ * }
 our sub load-utf8 (int32 $codepoints is rw, int32 $length) returns Str is export is native(LIBRAYLIB) is symbol('LoadUTF8'){ * }
 our sub unload-utf8 (CArray[uint8] $text, ) is export is native(LIBRAYLIB) is symbol('UnloadUTF8'){ * }
 our sub load-codepoints (Str $text, int32 $count is rw, ) returns int32 is export is native(LIBRAYLIB) is symbol('LoadCodepoints'){ * }
@@ -1232,7 +993,7 @@ our sub draw-grid (int32 $slices, num32 $spacing) is export is native(LIBRAYLIB)
 our sub upload-mesh (Mesh $mesh is rw, bool $dynamic) is export is native(LIBRAYLIB) is symbol('UploadMesh'){ * }
 our sub gen-mesh-tangents (Mesh $mesh is rw) is export is native(LIBRAYLIB) is symbol('GenMeshTangents'){ * }
 our sub load-materials (Str $fileName, int32 $materialCount is rw, ) returns Material is export is native(LIBRAYLIB) is symbol('LoadMaterials'){ * }
-
+our sub set-model-mesh-material (Model $model is rw, int32 $meshId, int32 $materialId) is export is native(LIBRAYLIB) is symbol('SetModelMeshMaterial'){ * }
 our sub load-model-animations (Str $fileName, int32 $animCount is rw, ) returns ModelAnimation is export is native(LIBRAYLIB) is symbol('LoadModelAnimations'){ * }
 our sub unload-model-animations (ModelAnimation $animations is rw, int32 $animCount) is export is native(LIBRAYLIB) is symbol('UnloadModelAnimations'){ * }
 our sub term:<init-audio-device> () is export is native(LIBRAYLIB) is symbol('InitAudioDevice'){ * }
@@ -1245,15 +1006,43 @@ our sub wave-format (Wave $wave is rw, int32 $sampleRate, int32 $sampleSize, int
 our sub unload-wave-samples (num32 $samples is rw) is export is native(LIBRAYLIB) is symbol('UnloadWaveSamples'){ * }
 our sub set-audio-stream-buffer-size-default (int32 $size) is export is native(LIBRAYLIB) is symbol('SetAudioStreamBufferSizeDefault'){ * }
 our sub attach-audio-mixed-processor (&audio-callback (Pointer[void] $bufferData, uint32 $frames)) is export is native(LIBRAYLIB) is symbol('AttachAudioMixedProcessor'){ * }
-
+our sub detach-audio-mixed-processor (&audio-callback (Pointer[void] $bufferData, uint32 $frames)) is export is native(LIBRAYLIB) is symbol('DetachAudioMixedProcessor'){ * }
+####### Predefined colors ########
+sub term:<init-lightgray  > is export { Color.init(200,  200,  200,  255 );} # creating a new instance of Color
+sub term:<init-gray       > is export { Color.init(130,  130,  130,  255 );} # creating a new instance of Color
+sub term:<init-darkgray   > is export { Color.init(80,  80,  80,  255 );} # creating a new instance of Color
+sub term:<init-yellow     > is export { Color.init(253,  249,  0,  255 );} # creating a new instance of Color
+sub term:<init-gold       > is export { Color.init(255,  203,  0,  255 );} # creating a new instance of Color
+sub term:<init-orange     > is export { Color.init(255,  161,  0,  255 );} # creating a new instance of Color
+sub term:<init-pink       > is export { Color.init(255,  109,  194,  255 );} # creating a new instance of Color
+sub term:<init-red        > is export { Color.init(230,  41,  55,  255 );} # creating a new instance of Color
+sub term:<init-maroon     > is export { Color.init(190,  33,  55,  255 );} # creating a new instance of Color
+sub term:<init-green      > is export { Color.init(0,  228,  48,  255 );} # creating a new instance of Color
+sub term:<init-lime       > is export { Color.init(0,  158,  47,  255 );} # creating a new instance of Color
+sub term:<init-darkgreen  > is export { Color.init(0,  117,  44,  255 );} # creating a new instance of Color
+sub term:<init-skyblue    > is export { Color.init(102,  191,  255,  255 );} # creating a new instance of Color
+sub term:<init-blue       > is export { Color.init(0,  121,  241,  255 );} # creating a new instance of Color
+sub term:<init-darkblue   > is export { Color.init(0,  82,  172,  255 );} # creating a new instance of Color
+sub term:<init-purple     > is export { Color.init(200,  122,  255,  255 );} # creating a new instance of Color
+sub term:<init-violet     > is export { Color.init(135,  60,  190,  255 );} # creating a new instance of Color
+sub term:<init-darkpurple > is export { Color.init(112,  31,  126,  255 );} # creating a new instance of Color
+sub term:<init-beige      > is export { Color.init(211,  176,  131,  255 );} # creating a new instance of Color
+sub term:<init-brown      > is export { Color.init(127,  106,  79,  255 );} # creating a new instance of Color
+sub term:<init-darkbrown  > is export { Color.init(76,  63,  47,  255 );} # creating a new instance of Color
+sub term:<init-white      > is export { Color.init(255,  255,  255,  255 );} # creating a new instance of Color
+sub term:<init-black      > is export { Color.init(0,  0,  0,  255 );} # creating a new instance of Color
+sub term:<init-blank      > is export { Color.init(0,  0,  0,  0 );} # creating a new instance of Color
+sub term:<init-magenta    > is export { Color.init(255,  0,  255,  255 );} # creating a new instance of Color
+sub term:<init-raywhite   > is export { Color.init(245,  245,  245,  255 );} # creating a new instance of Color
 ####### Pointerized functions ########
+our sub set-window-icon (Image $image) is export is native(LIBRAYLIB) is symbol('SetWindowIcon_pointerized'){ * }
 our sub get-monitor-position (int32 $monitor) returns Vector2 is export is native(LIBRAYLIB) is symbol('GetMonitorPosition_pointerized'){ * }
 our sub term:<get-window-position> () returns Vector2 is export is native(LIBRAYLIB) is symbol('GetWindowPosition_pointerized'){ * }
 our sub term:<get-window-scale-dpi> () returns Vector2 is export is native(LIBRAYLIB) is symbol('GetWindowScaleDPI_pointerized'){ * }
 our sub clear-background (Color $color) is export is native(LIBRAYLIB) is symbol('ClearBackground_pointerized'){ * }
 our sub begin-mode2d (Camera2D $camera) is export is native(LIBRAYLIB) is symbol('BeginMode2D_pointerized'){ * }
 our sub begin-mode3d (Camera3D $camera) is export is native(LIBRAYLIB) is symbol('BeginMode3D_pointerized'){ * }
-
+our sub begin-texture-mode (RenderTexture2D $target) is export is native(LIBRAYLIB) is symbol('BeginTextureMode_pointerized'){ * }
 our sub begin-shader-mode (Shader $shader) is export is native(LIBRAYLIB) is symbol('BeginShaderMode_pointerized'){ * }
 our sub begin-vr-stereo-mode (VrStereoConfig $config) is export is native(LIBRAYLIB) is symbol('BeginVrStereoMode_pointerized'){ * }
 our sub load-vr-stereo-config (VrDeviceInfo $device) returns VrStereoConfig is export is native(LIBRAYLIB) is symbol('LoadVrStereoConfig_pointerized'){ * }
@@ -1291,7 +1080,7 @@ our sub get-touch-position (int32 $index) returns Vector2 is export is native(LI
 our sub term:<get-gesture-drag-vector> () returns Vector2 is export is native(LIBRAYLIB) is symbol('GetGestureDragVector_pointerized'){ * }
 our sub term:<get-gesture-pinch-vector> () returns Vector2 is export is native(LIBRAYLIB) is symbol('GetGesturePinchVector_pointerized'){ * }
 our sub update-camera-pro (Camera $camera is rw, Vector3 $movement, Vector3 $rotation, num32 $zoom) is export is native(LIBRAYLIB) is symbol('UpdateCameraPro_pointerized'){ * }
-
+our sub set-shapes-texture (Texture2D $texture, Rectangle $source) is export is native(LIBRAYLIB) is symbol('SetShapesTexture_pointerized'){ * }
 our sub draw-pixel (int32 $posX, int32 $posY, Color $color) is export is native(LIBRAYLIB) is symbol('DrawPixel_pointerized'){ * }
 our sub draw-pixel-v (Vector2 $position, Color $color) is export is native(LIBRAYLIB) is symbol('DrawPixelV_pointerized'){ * }
 our sub draw-line (int32 $startPosX, int32 $startPosY, int32 $endPosX, int32 $endPosY, Color $color) is export is native(LIBRAYLIB) is symbol('DrawLine_pointerized'){ * }
@@ -1299,11 +1088,35 @@ our sub draw-line-v (Vector2 $startPos, Vector2 $endPos, Color $color) is export
 our sub draw-line-ex (Vector2 $startPos, Vector2 $endPos, num32 $thick, Color $color) is export is native(LIBRAYLIB) is symbol('DrawLineEx_pointerized'){ * }
 our sub draw-line-strip (Vector2 $points is rw, int32 $pointCount, Color $color) is export is native(LIBRAYLIB) is symbol('DrawLineStrip_pointerized'){ * }
 our sub draw-line-bezier (Vector2 $startPos, Vector2 $endPos, num32 $thick, Color $color) is export is native(LIBRAYLIB) is symbol('DrawLineBezier_pointerized'){ * }
+our sub draw-circle (int32 $centerX, int32 $centerY, num32 $radius, Color $color) is export is native(LIBRAYLIB) is symbol('DrawCircle_pointerized'){ * }
+our sub draw-circle-sector (Vector2 $center, num32 $radius, num32 $startAngle, num32 $endAngle, int32 $segments, Color $color) is export is native(LIBRAYLIB) is symbol('DrawCircleSector_pointerized'){ * }
+our sub draw-circle-sector-lines (Vector2 $center, num32 $radius, num32 $startAngle, num32 $endAngle, int32 $segments, Color $color) is export is native(LIBRAYLIB) is symbol('DrawCircleSectorLines_pointerized'){ * }
+our sub draw-circle-gradient (int32 $centerX, int32 $centerY, num32 $radius, Color $color1, Color $color2) is export is native(LIBRAYLIB) is symbol('DrawCircleGradient_pointerized'){ * }
+our sub draw-circle-v (Vector2 $center, num32 $radius, Color $color) is export is native(LIBRAYLIB) is symbol('DrawCircleV_pointerized'){ * }
+our sub draw-circle-lines (int32 $centerX, int32 $centerY, num32 $radius, Color $color) is export is native(LIBRAYLIB) is symbol('DrawCircleLines_pointerized'){ * }
+our sub draw-circle-lines-v (Vector2 $center, num32 $radius, Color $color) is export is native(LIBRAYLIB) is symbol('DrawCircleLinesV_pointerized'){ * }
 our sub draw-ellipse (int32 $centerX, int32 $centerY, num32 $radiusH, num32 $radiusV, Color $color) is export is native(LIBRAYLIB) is symbol('DrawEllipse_pointerized'){ * }
 our sub draw-ellipse-lines (int32 $centerX, int32 $centerY, num32 $radiusH, num32 $radiusV, Color $color) is export is native(LIBRAYLIB) is symbol('DrawEllipseLines_pointerized'){ * }
 our sub draw-ring (Vector2 $center, num32 $innerRadius, num32 $outerRadius, num32 $startAngle, num32 $endAngle, int32 $segments, Color $color) is export is native(LIBRAYLIB) is symbol('DrawRing_pointerized'){ * }
 our sub draw-ring-lines (Vector2 $center, num32 $innerRadius, num32 $outerRadius, num32 $startAngle, num32 $endAngle, int32 $segments, Color $color) is export is native(LIBRAYLIB) is symbol('DrawRingLines_pointerized'){ * }
-
+our sub draw-rectangle (int32 $posX, int32 $posY, int32 $width, int32 $height, Color $color) is export is native(LIBRAYLIB) is symbol('DrawRectangle_pointerized'){ * }
+our sub draw-rectangle-v (Vector2 $position, Vector2 $size, Color $color) is export is native(LIBRAYLIB) is symbol('DrawRectangleV_pointerized'){ * }
+our sub draw-rectangle-rec (Rectangle $rec, Color $color) is export is native(LIBRAYLIB) is symbol('DrawRectangleRec_pointerized'){ * }
+our sub draw-rectangle-pro (Rectangle $rec, Vector2 $origin, num32 $rotation, Color $color) is export is native(LIBRAYLIB) is symbol('DrawRectanglePro_pointerized'){ * }
+our sub draw-rectangle-gradient-v (int32 $posX, int32 $posY, int32 $width, int32 $height, Color $color1, Color $color2) is export is native(LIBRAYLIB) is symbol('DrawRectangleGradientV_pointerized'){ * }
+our sub draw-rectangle-gradient-h (int32 $posX, int32 $posY, int32 $width, int32 $height, Color $color1, Color $color2) is export is native(LIBRAYLIB) is symbol('DrawRectangleGradientH_pointerized'){ * }
+our sub draw-rectangle-gradient-ex (Rectangle $rec, Color $col1, Color $col2, Color $col3, Color $col4) is export is native(LIBRAYLIB) is symbol('DrawRectangleGradientEx_pointerized'){ * }
+our sub draw-rectangle-lines (int32 $posX, int32 $posY, int32 $width, int32 $height, Color $color) is export is native(LIBRAYLIB) is symbol('DrawRectangleLines_pointerized'){ * }
+our sub draw-rectangle-lines-ex (Rectangle $rec, num32 $lineThick, Color $color) is export is native(LIBRAYLIB) is symbol('DrawRectangleLinesEx_pointerized'){ * }
+our sub draw-rectangle-rounded (Rectangle $rec, num32 $roundness, int32 $segments, Color $color) is export is native(LIBRAYLIB) is symbol('DrawRectangleRounded_pointerized'){ * }
+our sub draw-rectangle-rounded-lines (Rectangle $rec, num32 $roundness, int32 $segments, num32 $lineThick, Color $color) is export is native(LIBRAYLIB) is symbol('DrawRectangleRoundedLines_pointerized'){ * }
+our sub draw-triangle (Vector2 $v1, Vector2 $v2, Vector2 $v3, Color $color) is export is native(LIBRAYLIB) is symbol('DrawTriangle_pointerized'){ * }
+our sub draw-triangle-lines (Vector2 $v1, Vector2 $v2, Vector2 $v3, Color $color) is export is native(LIBRAYLIB) is symbol('DrawTriangleLines_pointerized'){ * }
+our sub draw-triangle-fan (Vector2 $points is rw, int32 $pointCount, Color $color) is export is native(LIBRAYLIB) is symbol('DrawTriangleFan_pointerized'){ * }
+our sub draw-triangle-strip (Vector2 $points is rw, int32 $pointCount, Color $color) is export is native(LIBRAYLIB) is symbol('DrawTriangleStrip_pointerized'){ * }
+our sub draw-poly (Vector2 $center, int32 $sides, num32 $radius, num32 $rotation, Color $color) is export is native(LIBRAYLIB) is symbol('DrawPoly_pointerized'){ * }
+our sub draw-poly-lines (Vector2 $center, int32 $sides, num32 $radius, num32 $rotation, Color $color) is export is native(LIBRAYLIB) is symbol('DrawPolyLines_pointerized'){ * }
+our sub draw-poly-lines-ex (Vector2 $center, int32 $sides, num32 $radius, num32 $rotation, num32 $lineThick, Color $color) is export is native(LIBRAYLIB) is symbol('DrawPolyLinesEx_pointerized'){ * }
 our sub draw-spline-linear (Vector2 $points is rw, int32 $pointCount, num32 $thick, Color $color) is export is native(LIBRAYLIB) is symbol('DrawSplineLinear_pointerized'){ * }
 our sub draw-spline-basis (Vector2 $points is rw, int32 $pointCount, num32 $thick, Color $color) is export is native(LIBRAYLIB) is symbol('DrawSplineBasis_pointerized'){ * }
 our sub draw-spline-catmull-rom (Vector2 $points is rw, int32 $pointCount, num32 $thick, Color $color) is export is native(LIBRAYLIB) is symbol('DrawSplineCatmullRom_pointerized'){ * }
@@ -1319,17 +1132,86 @@ our sub get-spline-point-basis (Vector2 $p1, Vector2 $p2, Vector2 $p3, Vector2 $
 our sub get-spline-point-catmull-rom (Vector2 $p1, Vector2 $p2, Vector2 $p3, Vector2 $p4, num32 $t) returns Vector2 is export is native(LIBRAYLIB) is symbol('GetSplinePointCatmullRom_pointerized'){ * }
 our sub get-spline-point-bezier-quad (Vector2 $p1, Vector2 $c2, Vector2 $p3, num32 $t) returns Vector2 is export is native(LIBRAYLIB) is symbol('GetSplinePointBezierQuad_pointerized'){ * }
 our sub get-spline-point-bezier-cubic (Vector2 $p1, Vector2 $c2, Vector2 $c3, Vector2 $p4, num32 $t) returns Vector2 is export is native(LIBRAYLIB) is symbol('GetSplinePointBezierCubic_pointerized'){ * }
-
-
-
+our sub check-collision-recs (Rectangle $rec1, Rectangle $rec2) returns bool is export is native(LIBRAYLIB) is symbol('CheckCollisionRecs_pointerized'){ * }
+our sub check-collision-circles (Vector2 $center1, num32 $radius1, Vector2 $center2, num32 $radius2) returns bool is export is native(LIBRAYLIB) is symbol('CheckCollisionCircles_pointerized'){ * }
+our sub check-collision-circle-rec (Vector2 $center, num32 $radius, Rectangle $rec) returns bool is export is native(LIBRAYLIB) is symbol('CheckCollisionCircleRec_pointerized'){ * }
+our sub check-collision-point-rec (Vector2 $point, Rectangle $rec) returns bool is export is native(LIBRAYLIB) is symbol('CheckCollisionPointRec_pointerized'){ * }
+our sub check-collision-point-circle (Vector2 $point, Vector2 $center, num32 $radius) returns bool is export is native(LIBRAYLIB) is symbol('CheckCollisionPointCircle_pointerized'){ * }
+our sub check-collision-point-triangle (Vector2 $point, Vector2 $p1, Vector2 $p2, Vector2 $p3) returns bool is export is native(LIBRAYLIB) is symbol('CheckCollisionPointTriangle_pointerized'){ * }
+our sub check-collision-point-poly (Vector2 $point, Vector2 $points is rw, int32 $pointCount) returns bool is export is native(LIBRAYLIB) is symbol('CheckCollisionPointPoly_pointerized'){ * }
 our sub check-collision-lines (Vector2 $startPos1, Vector2 $endPos1, Vector2 $startPos2, Vector2 $endPos2, Vector2 $collisionPoint is rw) returns bool is export is native(LIBRAYLIB) is symbol('CheckCollisionLines_pointerized'){ * }
 our sub check-collision-point-line (Vector2 $point, Vector2 $p1, Vector2 $p2, int32 $threshold) returns bool is export is native(LIBRAYLIB) is symbol('CheckCollisionPointLine_pointerized'){ * }
-
-
+our sub get-collision-rec (Rectangle $rec1, Rectangle $rec2) returns Rectangle is export is native(LIBRAYLIB) is symbol('GetCollisionRec_pointerized'){ * }
+our sub load-image (Str $fileName) returns Image is export is native(LIBRAYLIB) is symbol('LoadImage_pointerized'){ * }
+our sub load-image-raw (Str $fileName, int32 $width, int32 $height, int32 $format, int32 $headerSize) returns Image is export is native(LIBRAYLIB) is symbol('LoadImageRaw_pointerized'){ * }
+our sub load-image-svg (Str $fileNameOrString, int32 $width, int32 $height) returns Image is export is native(LIBRAYLIB) is symbol('LoadImageSvg_pointerized'){ * }
+our sub load-image-anim (Str $fileName, int32 $frames is rw, ) returns Image is export is native(LIBRAYLIB) is symbol('LoadImageAnim_pointerized'){ * }
+our sub load-image-from-memory (Str $fileType, uint8 $fileData is rw, int32 $dataSize) returns Image is export is native(LIBRAYLIB) is symbol('LoadImageFromMemory_pointerized'){ * }
+our sub load-image-from-texture (Texture2D $texture) returns Image is export is native(LIBRAYLIB) is symbol('LoadImageFromTexture_pointerized'){ * }
+our sub term:<load-image-from-screen> () returns Image is export is native(LIBRAYLIB) is symbol('LoadImageFromScreen_pointerized'){ * }
+our sub is-image-ready (Image $image) returns bool is export is native(LIBRAYLIB) is symbol('IsImageReady_pointerized'){ * }
+our sub unload-image (Image $image) is export is native(LIBRAYLIB) is symbol('UnloadImage_pointerized'){ * }
+our sub export-image (Image $image, Str $fileName) returns bool is export is native(LIBRAYLIB) is symbol('ExportImage_pointerized'){ * }
+our sub export-image-to-memory (Image $image, Str $fileType, int32 $fileSize is rw, ) returns Str is export is native(LIBRAYLIB) is symbol('ExportImageToMemory_pointerized'){ * }
+our sub export-image-as-code (Image $image, Str $fileName) returns bool is export is native(LIBRAYLIB) is symbol('ExportImageAsCode_pointerized'){ * }
+our sub gen-image-color (int32 $width, int32 $height, Color $color) returns Image is export is native(LIBRAYLIB) is symbol('GenImageColor_pointerized'){ * }
+our sub gen-image-gradient-linear (int32 $width, int32 $height, int32 $direction, Color $start, Color $end) returns Image is export is native(LIBRAYLIB) is symbol('GenImageGradientLinear_pointerized'){ * }
+our sub gen-image-gradient-radial (int32 $width, int32 $height, num32 $density, Color $inner, Color $outer) returns Image is export is native(LIBRAYLIB) is symbol('GenImageGradientRadial_pointerized'){ * }
+our sub gen-image-gradient-square (int32 $width, int32 $height, num32 $density, Color $inner, Color $outer) returns Image is export is native(LIBRAYLIB) is symbol('GenImageGradientSquare_pointerized'){ * }
+our sub gen-image-checked (int32 $width, int32 $height, int32 $checksX, int32 $checksY, Color $col1, Color $col2) returns Image is export is native(LIBRAYLIB) is symbol('GenImageChecked_pointerized'){ * }
+our sub gen-image-white-noise (int32 $width, int32 $height, num32 $factor) returns Image is export is native(LIBRAYLIB) is symbol('GenImageWhiteNoise_pointerized'){ * }
+our sub gen-image-perlin-noise (int32 $width, int32 $height, int32 $offsetX, int32 $offsetY, num32 $scale) returns Image is export is native(LIBRAYLIB) is symbol('GenImagePerlinNoise_pointerized'){ * }
+our sub gen-image-cellular (int32 $width, int32 $height, int32 $tileSize) returns Image is export is native(LIBRAYLIB) is symbol('GenImageCellular_pointerized'){ * }
+our sub gen-image-text (int32 $width, int32 $height, Str $text) returns Image is export is native(LIBRAYLIB) is symbol('GenImageText_pointerized'){ * }
+our sub image-copy (Image $image) returns Image is export is native(LIBRAYLIB) is symbol('ImageCopy_pointerized'){ * }
+our sub image-from-image (Image $image, Rectangle $rec) returns Image is export is native(LIBRAYLIB) is symbol('ImageFromImage_pointerized'){ * }
+our sub image-text (Str $text, int32 $fontSize, Color $color) returns Image is export is native(LIBRAYLIB) is symbol('ImageText_pointerized'){ * }
+our sub image-text-ex (Font $font, Str $text, num32 $fontSize, num32 $spacing, Color $tint) returns Image is export is native(LIBRAYLIB) is symbol('ImageTextEx_pointerized'){ * }
+our sub image-to-pot (Image $image is rw, Color $fill) is export is native(LIBRAYLIB) is symbol('ImageToPOT_pointerized'){ * }
+our sub image-crop (Image $image is rw, Rectangle $crop) is export is native(LIBRAYLIB) is symbol('ImageCrop_pointerized'){ * }
+our sub image-alpha-clear (Image $image is rw, Color $color, num32 $threshold) is export is native(LIBRAYLIB) is symbol('ImageAlphaClear_pointerized'){ * }
+our sub image-alpha-mask (Image $image is rw, Image $alphaMask) is export is native(LIBRAYLIB) is symbol('ImageAlphaMask_pointerized'){ * }
+our sub image-resize-canvas (Image $image is rw, int32 $newWidth, int32 $newHeight, int32 $offsetX, int32 $offsetY, Color $fill) is export is native(LIBRAYLIB) is symbol('ImageResizeCanvas_pointerized'){ * }
+our sub image-color-tint (Image $image is rw, Color $color) is export is native(LIBRAYLIB) is symbol('ImageColorTint_pointerized'){ * }
+our sub image-color-replace (Image $image is rw, Color $color, Color $replace) is export is native(LIBRAYLIB) is symbol('ImageColorReplace_pointerized'){ * }
+our sub load-image-colors (Image $image) returns Color is export is native(LIBRAYLIB) is symbol('LoadImageColors_pointerized'){ * }
+our sub load-image-palette (Image $image, int32 $maxPaletteSize, int32 $colorCount is rw, ) returns Color is export is native(LIBRAYLIB) is symbol('LoadImagePalette_pointerized'){ * }
+our sub get-image-alpha-border (Image $image, num32 $threshold) returns Rectangle is export is native(LIBRAYLIB) is symbol('GetImageAlphaBorder_pointerized'){ * }
+our sub get-image-color (Image $image, int32 $x, int32 $y) returns Color is export is native(LIBRAYLIB) is symbol('GetImageColor_pointerized'){ * }
+our sub image-clear-background (Image $dst is rw, Color $color) is export is native(LIBRAYLIB) is symbol('ImageClearBackground_pointerized'){ * }
+our sub image-draw-pixel (Image $dst is rw, int32 $posX, int32 $posY, Color $color) is export is native(LIBRAYLIB) is symbol('ImageDrawPixel_pointerized'){ * }
+our sub image-draw-pixel-v (Image $dst is rw, Vector2 $position, Color $color) is export is native(LIBRAYLIB) is symbol('ImageDrawPixelV_pointerized'){ * }
+our sub image-draw-line (Image $dst is rw, int32 $startPosX, int32 $startPosY, int32 $endPosX, int32 $endPosY, Color $color) is export is native(LIBRAYLIB) is symbol('ImageDrawLine_pointerized'){ * }
+our sub image-draw-line-v (Image $dst is rw, Vector2 $start, Vector2 $end, Color $color) is export is native(LIBRAYLIB) is symbol('ImageDrawLineV_pointerized'){ * }
+our sub image-draw-circle (Image $dst is rw, int32 $centerX, int32 $centerY, int32 $radius, Color $color) is export is native(LIBRAYLIB) is symbol('ImageDrawCircle_pointerized'){ * }
+our sub image-draw-circle-v (Image $dst is rw, Vector2 $center, int32 $radius, Color $color) is export is native(LIBRAYLIB) is symbol('ImageDrawCircleV_pointerized'){ * }
+our sub image-draw-circle-lines (Image $dst is rw, int32 $centerX, int32 $centerY, int32 $radius, Color $color) is export is native(LIBRAYLIB) is symbol('ImageDrawCircleLines_pointerized'){ * }
+our sub image-draw-circle-lines-v (Image $dst is rw, Vector2 $center, int32 $radius, Color $color) is export is native(LIBRAYLIB) is symbol('ImageDrawCircleLinesV_pointerized'){ * }
+our sub image-draw-rectangle (Image $dst is rw, int32 $posX, int32 $posY, int32 $width, int32 $height, Color $color) is export is native(LIBRAYLIB) is symbol('ImageDrawRectangle_pointerized'){ * }
+our sub image-draw-rectangle-v (Image $dst is rw, Vector2 $position, Vector2 $size, Color $color) is export is native(LIBRAYLIB) is symbol('ImageDrawRectangleV_pointerized'){ * }
+our sub image-draw-rectangle-rec (Image $dst is rw, Rectangle $rec, Color $color) is export is native(LIBRAYLIB) is symbol('ImageDrawRectangleRec_pointerized'){ * }
+our sub image-draw-rectangle-lines (Image $dst is rw, Rectangle $rec, int32 $thick, Color $color) is export is native(LIBRAYLIB) is symbol('ImageDrawRectangleLines_pointerized'){ * }
+our sub image-draw (Image $dst is rw, Image $src, Rectangle $srcRec, Rectangle $dstRec, Color $tint) is export is native(LIBRAYLIB) is symbol('ImageDraw_pointerized'){ * }
+our sub image-draw-text (Image $dst is rw, Str $text, int32 $posX, int32 $posY, int32 $fontSize, Color $color) is export is native(LIBRAYLIB) is symbol('ImageDrawText_pointerized'){ * }
+our sub image-draw-text-ex (Image $dst is rw, Font $font, Str $text, Vector2 $position, num32 $fontSize, num32 $spacing, Color $tint) is export is native(LIBRAYLIB) is symbol('ImageDrawTextEx_pointerized'){ * }
+our sub load-texture (Str $fileName) returns Texture2D is export is native(LIBRAYLIB) is symbol('LoadTexture_pointerized'){ * }
+our sub load-texture-from-image (Image $image) returns Texture2D is export is native(LIBRAYLIB) is symbol('LoadTextureFromImage_pointerized'){ * }
 our sub load-texture-cubemap (Image $image, int32 $layout) returns TextureCubemap is export is native(LIBRAYLIB) is symbol('LoadTextureCubemap_pointerized'){ * }
-
-
-
+our sub load-render-texture (int32 $width, int32 $height) returns RenderTexture2D is export is native(LIBRAYLIB) is symbol('LoadRenderTexture_pointerized'){ * }
+our sub is-texture-ready (Texture2D $texture) returns bool is export is native(LIBRAYLIB) is symbol('IsTextureReady_pointerized'){ * }
+our sub unload-texture (Texture2D $texture) is export is native(LIBRAYLIB) is symbol('UnloadTexture_pointerized'){ * }
+our sub is-render-texture-ready (RenderTexture2D $target) returns bool is export is native(LIBRAYLIB) is symbol('IsRenderTextureReady_pointerized'){ * }
+our sub unload-render-texture (RenderTexture2D $target) is export is native(LIBRAYLIB) is symbol('UnloadRenderTexture_pointerized'){ * }
+our sub update-texture (Texture2D $texture, Pointer[void] $pixels, ) is export is native(LIBRAYLIB) is symbol('UpdateTexture_pointerized'){ * }
+our sub update-texture-rec (Texture2D $texture, Rectangle $rec, Pointer[void] $pixels, ) is export is native(LIBRAYLIB) is symbol('UpdateTextureRec_pointerized'){ * }
+our sub set-texture-filter (Texture2D $texture, int32 $filter) is export is native(LIBRAYLIB) is symbol('SetTextureFilter_pointerized'){ * }
+our sub set-texture-wrap (Texture2D $texture, int32 $wrap) is export is native(LIBRAYLIB) is symbol('SetTextureWrap_pointerized'){ * }
+our sub draw-texture (Texture2D $texture, int32 $posX, int32 $posY, Color $tint) is export is native(LIBRAYLIB) is symbol('DrawTexture_pointerized'){ * }
+our sub draw-texture-v (Texture2D $texture, Vector2 $position, Color $tint) is export is native(LIBRAYLIB) is symbol('DrawTextureV_pointerized'){ * }
+our sub draw-texture-ex (Texture2D $texture, Vector2 $position, num32 $rotation, num32 $scale, Color $tint) is export is native(LIBRAYLIB) is symbol('DrawTextureEx_pointerized'){ * }
+our sub draw-texture-rec (Texture2D $texture, Rectangle $source, Vector2 $position, Color $tint) is export is native(LIBRAYLIB) is symbol('DrawTextureRec_pointerized'){ * }
+our sub draw-texture-pro (Texture2D $texture, Rectangle $source, Rectangle $dest, Vector2 $origin, num32 $rotation, Color $tint) is export is native(LIBRAYLIB) is symbol('DrawTexturePro_pointerized'){ * }
+our sub draw-texture-npatch (Texture2D $texture, NPatchInfo $nPatchInfo, Rectangle $dest, Vector2 $origin, num32 $rotation, Color $tint) is export is native(LIBRAYLIB) is symbol('DrawTextureNPatch_pointerized'){ * }
 our sub fade (Color $color, num32 $alpha) returns Color is export is native(LIBRAYLIB) is symbol('Fade_pointerized'){ * }
 our sub color-to-int (Color $color) returns int32 is export is native(LIBRAYLIB) is symbol('ColorToInt_pointerized'){ * }
 our sub color-normalize (Color $color) returns Vector4 is export is native(LIBRAYLIB) is symbol('ColorNormalize_pointerized'){ * }
@@ -1344,19 +1226,36 @@ our sub color-alpha-blend (Color $dst, Color $src, Color $tint) returns Color is
 our sub get-color (uint32 $hexValue) returns Color is export is native(LIBRAYLIB) is symbol('GetColor_pointerized'){ * }
 our sub get-pixel-color (Pointer[void] $srcPtr, int32 $format) returns Color is export is native(LIBRAYLIB) is symbol('GetPixelColor_pointerized'){ * }
 our sub set-pixel-color (Pointer[void] $dstPtr, Color $color, int32 $format) is export is native(LIBRAYLIB) is symbol('SetPixelColor_pointerized'){ * }
-
+our sub term:<get-font-default> () returns Font is export is native(LIBRAYLIB) is symbol('GetFontDefault_pointerized'){ * }
+our sub load-font (Str $fileName) returns Font is export is native(LIBRAYLIB) is symbol('LoadFont_pointerized'){ * }
+our sub load-font-ex (Str $fileName, int32 $fontSize, int32 $codepoints is rw, int32 $codepointCount) returns Font is export is native(LIBRAYLIB) is symbol('LoadFontEx_pointerized'){ * }
+our sub load-font-from-image (Image $image, Color $key, int32 $firstChar) returns Font is export is native(LIBRAYLIB) is symbol('LoadFontFromImage_pointerized'){ * }
+our sub load-font-from-memory (Str $fileType, uint8 $fileData is rw, int32 $dataSize, int32 $fontSize, int32 $codepoints is rw, int32 $codepointCount) returns Font is export is native(LIBRAYLIB) is symbol('LoadFontFromMemory_pointerized'){ * }
+our sub is-font-ready (Font $font) returns bool is export is native(LIBRAYLIB) is symbol('IsFontReady_pointerized'){ * }
 our sub gen-image-font-atlas (GlyphInfo $glyphs is rw, Rectangle $glyphRecs is rw, int32 $glyphCount, int32 $fontSize, int32 $padding, int32 $packMethod) returns Image is export is native(LIBRAYLIB) is symbol('GenImageFontAtlas_pointerized'){ * }
-
-
+our sub unload-font (Font $font) is export is native(LIBRAYLIB) is symbol('UnloadFont_pointerized'){ * }
+our sub export-font-as-code (Font $font, Str $fileName) returns bool is export is native(LIBRAYLIB) is symbol('ExportFontAsCode_pointerized'){ * }
 our sub draw-text (Str $text, int32 $posX, int32 $posY, int32 $fontSize, Color $color) is export is native(LIBRAYLIB) is symbol('DrawText_pointerized'){ * }
+our sub draw-text-ex (Font $font, Str $text, Vector2 $position, num32 $fontSize, num32 $spacing, Color $tint) is export is native(LIBRAYLIB) is symbol('DrawTextEx_pointerized'){ * }
+our sub draw-text-pro (Font $font, Str $text, Vector2 $position, Vector2 $origin, num32 $rotation, num32 $fontSize, num32 $spacing, Color $tint) is export is native(LIBRAYLIB) is symbol('DrawTextPro_pointerized'){ * }
+our sub draw-text-codepoint (Font $font, int32 $codepoint, Vector2 $position, num32 $fontSize, Color $tint) is export is native(LIBRAYLIB) is symbol('DrawTextCodepoint_pointerized'){ * }
+our sub draw-text-codepoints (Font $font, int32 $codepoints is rw, int32 $codepointCount, Vector2 $position, num32 $fontSize, num32 $spacing, Color $tint) is export is native(LIBRAYLIB) is symbol('DrawTextCodepoints_pointerized'){ * }
+our sub measure-text-ex (Font $font, Str $text, num32 $fontSize, num32 $spacing) returns Vector2 is export is native(LIBRAYLIB) is symbol('MeasureTextEx_pointerized'){ * }
+our sub get-glyph-index (Font $font, int32 $codepoint) returns int32 is export is native(LIBRAYLIB) is symbol('GetGlyphIndex_pointerized'){ * }
+our sub get-glyph-info (Font $font, int32 $codepoint) returns GlyphInfo is export is native(LIBRAYLIB) is symbol('GetGlyphInfo_pointerized'){ * }
+our sub get-glyph-atlas-rec (Font $font, int32 $codepoint) returns Rectangle is export is native(LIBRAYLIB) is symbol('GetGlyphAtlasRec_pointerized'){ * }
 our sub draw-line3d (Vector3 $startPos, Vector3 $endPos, Color $color) is export is native(LIBRAYLIB) is symbol('DrawLine3D_pointerized'){ * }
 our sub draw-point3d (Vector3 $position, Color $color) is export is native(LIBRAYLIB) is symbol('DrawPoint3D_pointerized'){ * }
+our sub draw-circle3d (Vector3 $center, num32 $radius, Vector3 $rotationAxis, num32 $rotationAngle, Color $color) is export is native(LIBRAYLIB) is symbol('DrawCircle3D_pointerized'){ * }
 our sub draw-triangle3d (Vector3 $v1, Vector3 $v2, Vector3 $v3, Color $color) is export is native(LIBRAYLIB) is symbol('DrawTriangle3D_pointerized'){ * }
 our sub draw-triangle-strip3d (Vector3 $points is rw, int32 $pointCount, Color $color) is export is native(LIBRAYLIB) is symbol('DrawTriangleStrip3D_pointerized'){ * }
 our sub draw-cube (Vector3 $position, num32 $width, num32 $height, num32 $length, Color $color) is export is native(LIBRAYLIB) is symbol('DrawCube_pointerized'){ * }
 our sub draw-cube-v (Vector3 $position, Vector3 $size, Color $color) is export is native(LIBRAYLIB) is symbol('DrawCubeV_pointerized'){ * }
 our sub draw-cube-wires (Vector3 $position, num32 $width, num32 $height, num32 $length, Color $color) is export is native(LIBRAYLIB) is symbol('DrawCubeWires_pointerized'){ * }
 our sub draw-cube-wires-v (Vector3 $position, Vector3 $size, Color $color) is export is native(LIBRAYLIB) is symbol('DrawCubeWiresV_pointerized'){ * }
+our sub draw-sphere (Vector3 $centerPos, num32 $radius, Color $color) is export is native(LIBRAYLIB) is symbol('DrawSphere_pointerized'){ * }
+our sub draw-sphere-ex (Vector3 $centerPos, num32 $radius, int32 $rings, int32 $slices, Color $color) is export is native(LIBRAYLIB) is symbol('DrawSphereEx_pointerized'){ * }
+our sub draw-sphere-wires (Vector3 $centerPos, num32 $radius, int32 $rings, int32 $slices, Color $color) is export is native(LIBRAYLIB) is symbol('DrawSphereWires_pointerized'){ * }
 our sub draw-cylinder (Vector3 $position, num32 $radiusTop, num32 $radiusBottom, num32 $height, int32 $slices, Color $color) is export is native(LIBRAYLIB) is symbol('DrawCylinder_pointerized'){ * }
 our sub draw-cylinder-ex (Vector3 $startPos, Vector3 $endPos, num32 $startRadius, num32 $endRadius, int32 $sides, Color $color) is export is native(LIBRAYLIB) is symbol('DrawCylinderEx_pointerized'){ * }
 our sub draw-cylinder-wires (Vector3 $position, num32 $radiusTop, num32 $radiusBottom, num32 $height, int32 $slices, Color $color) is export is native(LIBRAYLIB) is symbol('DrawCylinderWires_pointerized'){ * }
@@ -1365,7 +1264,16 @@ our sub draw-capsule (Vector3 $startPos, Vector3 $endPos, num32 $radius, int32 $
 our sub draw-capsule-wires (Vector3 $startPos, Vector3 $endPos, num32 $radius, int32 $slices, int32 $rings, Color $color) is export is native(LIBRAYLIB) is symbol('DrawCapsuleWires_pointerized'){ * }
 our sub draw-plane (Vector3 $centerPos, Vector2 $size, Color $color) is export is native(LIBRAYLIB) is symbol('DrawPlane_pointerized'){ * }
 our sub draw-ray (Ray $ray, Color $color) is export is native(LIBRAYLIB) is symbol('DrawRay_pointerized'){ * }
-
+our sub load-model (Str $fileName) returns Model is export is native(LIBRAYLIB) is symbol('LoadModel_pointerized'){ * }
+our sub load-model-from-mesh (Mesh $mesh) returns Model is export is native(LIBRAYLIB) is symbol('LoadModelFromMesh_pointerized'){ * }
+our sub is-model-ready (Model $model) returns bool is export is native(LIBRAYLIB) is symbol('IsModelReady_pointerized'){ * }
+our sub unload-model (Model $model) is export is native(LIBRAYLIB) is symbol('UnloadModel_pointerized'){ * }
+our sub get-model-bounding-box (Model $model) returns BoundingBox is export is native(LIBRAYLIB) is symbol('GetModelBoundingBox_pointerized'){ * }
+our sub draw-model (Model $model, Vector3 $position, num32 $scale, Color $tint) is export is native(LIBRAYLIB) is symbol('DrawModel_pointerized'){ * }
+our sub draw-model-ex (Model $model, Vector3 $position, Vector3 $rotationAxis, num32 $rotationAngle, Vector3 $scale, Color $tint) is export is native(LIBRAYLIB) is symbol('DrawModelEx_pointerized'){ * }
+our sub draw-model-wires (Model $model, Vector3 $position, num32 $scale, Color $tint) is export is native(LIBRAYLIB) is symbol('DrawModelWires_pointerized'){ * }
+our sub draw-model-wires-ex (Model $model, Vector3 $position, Vector3 $rotationAxis, num32 $rotationAngle, Vector3 $scale, Color $tint) is export is native(LIBRAYLIB) is symbol('DrawModelWiresEx_pointerized'){ * }
+our sub draw-bounding-box (BoundingBox $box, Color $color) is export is native(LIBRAYLIB) is symbol('DrawBoundingBox_pointerized'){ * }
 our sub draw-billboard (Camera $camera, Texture2D $texture, Vector3 $position, num32 $size, Color $tint) is export is native(LIBRAYLIB) is symbol('DrawBillboard_pointerized'){ * }
 our sub draw-billboard-rec (Camera $camera, Texture2D $texture, Rectangle $source, Vector3 $position, Vector2 $size, Color $tint) is export is native(LIBRAYLIB) is symbol('DrawBillboardRec_pointerized'){ * }
 our sub draw-billboard-pro (Camera $camera, Texture2D $texture, Rectangle $source, Vector3 $position, Vector3 $up, Vector2 $size, Vector2 $origin, num32 $rotation, Color $tint) is export is native(LIBRAYLIB) is symbol('DrawBillboardPro_pointerized'){ * }
@@ -1376,19 +1284,27 @@ our sub draw-mesh-instanced (Mesh $mesh, Material $material, Matrix $transforms 
 our sub get-mesh-bounding-box (Mesh $mesh) returns BoundingBox is export is native(LIBRAYLIB) is symbol('GetMeshBoundingBox_pointerized'){ * }
 our sub export-mesh (Mesh $mesh, Str $fileName) returns bool is export is native(LIBRAYLIB) is symbol('ExportMesh_pointerized'){ * }
 our sub export-mesh-as-code (Mesh $mesh, Str $fileName) returns bool is export is native(LIBRAYLIB) is symbol('ExportMeshAsCode_pointerized'){ * }
-
+our sub gen-mesh-poly (int32 $sides, num32 $radius) returns Mesh is export is native(LIBRAYLIB) is symbol('GenMeshPoly_pointerized'){ * }
 our sub gen-mesh-plane (num32 $width, num32 $length, int32 $resX, int32 $resZ) returns Mesh is export is native(LIBRAYLIB) is symbol('GenMeshPlane_pointerized'){ * }
 our sub gen-mesh-cube (num32 $width, num32 $height, num32 $length) returns Mesh is export is native(LIBRAYLIB) is symbol('GenMeshCube_pointerized'){ * }
+our sub gen-mesh-sphere (num32 $radius, int32 $rings, int32 $slices) returns Mesh is export is native(LIBRAYLIB) is symbol('GenMeshSphere_pointerized'){ * }
+our sub gen-mesh-hemi-sphere (num32 $radius, int32 $rings, int32 $slices) returns Mesh is export is native(LIBRAYLIB) is symbol('GenMeshHemiSphere_pointerized'){ * }
 our sub gen-mesh-cylinder (num32 $radius, num32 $height, int32 $slices) returns Mesh is export is native(LIBRAYLIB) is symbol('GenMeshCylinder_pointerized'){ * }
 our sub gen-mesh-cone (num32 $radius, num32 $height, int32 $slices) returns Mesh is export is native(LIBRAYLIB) is symbol('GenMeshCone_pointerized'){ * }
 our sub gen-mesh-torus (num32 $radius, num32 $size, int32 $radSeg, int32 $sides) returns Mesh is export is native(LIBRAYLIB) is symbol('GenMeshTorus_pointerized'){ * }
 our sub gen-mesh-knot (num32 $radius, num32 $size, int32 $radSeg, int32 $sides) returns Mesh is export is native(LIBRAYLIB) is symbol('GenMeshKnot_pointerized'){ * }
+our sub gen-mesh-heightmap (Image $heightmap, Vector3 $size) returns Mesh is export is native(LIBRAYLIB) is symbol('GenMeshHeightmap_pointerized'){ * }
+our sub gen-mesh-cubicmap (Image $cubicmap, Vector3 $cubeSize) returns Mesh is export is native(LIBRAYLIB) is symbol('GenMeshCubicmap_pointerized'){ * }
 our sub term:<load-material-default> () returns Material is export is native(LIBRAYLIB) is symbol('LoadMaterialDefault_pointerized'){ * }
 our sub is-material-ready (Material $material) returns bool is export is native(LIBRAYLIB) is symbol('IsMaterialReady_pointerized'){ * }
 our sub unload-material (Material $material) is export is native(LIBRAYLIB) is symbol('UnloadMaterial_pointerized'){ * }
 our sub set-material-texture (Material $material is rw, int32 $mapType, Texture2D $texture) is export is native(LIBRAYLIB) is symbol('SetMaterialTexture_pointerized'){ * }
-
+our sub update-model-animation (Model $model, ModelAnimation $anim, int32 $frame) is export is native(LIBRAYLIB) is symbol('UpdateModelAnimation_pointerized'){ * }
 our sub unload-model-animation (ModelAnimation $anim) is export is native(LIBRAYLIB) is symbol('UnloadModelAnimation_pointerized'){ * }
+our sub is-model-animation-valid (Model $model, ModelAnimation $anim) returns bool is export is native(LIBRAYLIB) is symbol('IsModelAnimationValid_pointerized'){ * }
+our sub check-collision-spheres (Vector3 $center1, num32 $radius1, Vector3 $center2, num32 $radius2) returns bool is export is native(LIBRAYLIB) is symbol('CheckCollisionSpheres_pointerized'){ * }
+our sub check-collision-boxes (BoundingBox $box1, BoundingBox $box2) returns bool is export is native(LIBRAYLIB) is symbol('CheckCollisionBoxes_pointerized'){ * }
+our sub check-collision-box-sphere (BoundingBox $box, Vector3 $center, num32 $radius) returns bool is export is native(LIBRAYLIB) is symbol('CheckCollisionBoxSphere_pointerized'){ * }
 our sub get-ray-collision-sphere (Ray $ray, Vector3 $center, num32 $radius) returns RayCollision is export is native(LIBRAYLIB) is symbol('GetRayCollisionSphere_pointerized'){ * }
 our sub get-ray-collision-box (Ray $ray, BoundingBox $box) returns RayCollision is export is native(LIBRAYLIB) is symbol('GetRayCollisionBox_pointerized'){ * }
 our sub get-ray-collision-mesh (Ray $ray, Mesh $mesh, Matrix $transform) returns RayCollision is export is native(LIBRAYLIB) is symbol('GetRayCollisionMesh_pointerized'){ * }
@@ -1397,11 +1313,24 @@ our sub get-ray-collision-quad (Ray $ray, Vector3 $p1, Vector3 $p2, Vector3 $p3,
 our sub load-wave (Str $fileName) returns Wave is export is native(LIBRAYLIB) is symbol('LoadWave_pointerized'){ * }
 our sub load-wave-from-memory (Str $fileType, uint8 $fileData is rw, int32 $dataSize) returns Wave is export is native(LIBRAYLIB) is symbol('LoadWaveFromMemory_pointerized'){ * }
 our sub is-wave-ready (Wave $wave) returns bool is export is native(LIBRAYLIB) is symbol('IsWaveReady_pointerized'){ * }
-
-
+our sub load-sound (Str $fileName) returns Sound is export is native(LIBRAYLIB) is symbol('LoadSound_pointerized'){ * }
+our sub load-sound-from-wave (Wave $wave) returns Sound is export is native(LIBRAYLIB) is symbol('LoadSoundFromWave_pointerized'){ * }
+our sub load-sound-alias (Sound $source) returns Sound is export is native(LIBRAYLIB) is symbol('LoadSoundAlias_pointerized'){ * }
+our sub is-sound-ready (Sound $sound) returns bool is export is native(LIBRAYLIB) is symbol('IsSoundReady_pointerized'){ * }
+our sub update-sound (Sound $sound, Pointer[void] $data, int32 $sampleCount) is export is native(LIBRAYLIB) is symbol('UpdateSound_pointerized'){ * }
 our sub unload-wave (Wave $wave) is export is native(LIBRAYLIB) is symbol('UnloadWave_pointerized'){ * }
+our sub unload-sound (Sound $sound) is export is native(LIBRAYLIB) is symbol('UnloadSound_pointerized'){ * }
+our sub unload-sound-alias (Sound $alias) is export is native(LIBRAYLIB) is symbol('UnloadSoundAlias_pointerized'){ * }
 our sub export-wave (Wave $wave, Str $fileName) returns bool is export is native(LIBRAYLIB) is symbol('ExportWave_pointerized'){ * }
 our sub export-wave-as-code (Wave $wave, Str $fileName) returns bool is export is native(LIBRAYLIB) is symbol('ExportWaveAsCode_pointerized'){ * }
+our sub play-sound (Sound $sound) is export is native(LIBRAYLIB) is symbol('PlaySound_pointerized'){ * }
+our sub stop-sound (Sound $sound) is export is native(LIBRAYLIB) is symbol('StopSound_pointerized'){ * }
+our sub pause-sound (Sound $sound) is export is native(LIBRAYLIB) is symbol('PauseSound_pointerized'){ * }
+our sub resume-sound (Sound $sound) is export is native(LIBRAYLIB) is symbol('ResumeSound_pointerized'){ * }
+our sub is-sound-playing (Sound $sound) returns bool is export is native(LIBRAYLIB) is symbol('IsSoundPlaying_pointerized'){ * }
+our sub set-sound-volume (Sound $sound, num32 $volume) is export is native(LIBRAYLIB) is symbol('SetSoundVolume_pointerized'){ * }
+our sub set-sound-pitch (Sound $sound, num32 $pitch) is export is native(LIBRAYLIB) is symbol('SetSoundPitch_pointerized'){ * }
+our sub set-sound-pan (Sound $sound, num32 $pan) is export is native(LIBRAYLIB) is symbol('SetSoundPan_pointerized'){ * }
 our sub wave-copy (Wave $wave) returns Wave is export is native(LIBRAYLIB) is symbol('WaveCopy_pointerized'){ * }
 our sub load-wave-samples (Wave $wave) returns num32 is export is native(LIBRAYLIB) is symbol('LoadWaveSamples_pointerized'){ * }
 our sub load-music-stream (Str $fileName) returns Music is export is native(LIBRAYLIB) is symbol('LoadMusicStream_pointerized'){ * }
@@ -1448,7 +1377,7 @@ our sub free-Matrix(Matrix $ptr) is native(LIBRAYLIB) is symbol('free_Matrix') {
 our sub malloc-Color(uint8 $r,uint8 $g,uint8 $b,uint8 $a) returns Color is native(LIBRAYLIB) is symbol('malloc_Color') {*}
 our sub free-Color(Color $ptr) is native(LIBRAYLIB) is symbol('free_Color') {*}
 our sub malloc-Rectangle(num32 $x,num32 $y,num32 $width,num32 $height) returns Rectangle is native(LIBRAYLIB) is symbol('malloc_Rectangle') {*}
-
+our sub free-Rectangle(Rectangle $ptr) is native(LIBRAYLIB) is symbol('free_Rectangle') {*}
 our sub malloc-Image(void $data,int32 $width,int32 $height,int32 $mipmaps,int32 $format) returns Image is native(LIBRAYLIB) is symbol('malloc_Image') {*}
 our sub free-Image(Image $ptr) is native(LIBRAYLIB) is symbol('free_Image') {*}
 our sub malloc-Texture(int32 $id,int32 $width,int32 $height,int32 $mipmaps,int32 $format) returns Texture is native(LIBRAYLIB) is symbol('malloc_Texture') {*}
@@ -1459,69 +1388,35 @@ our sub malloc-NPatchInfo(Rectangle $source,int32 $left,int32 $top,int32 $right,
 our sub free-NPatchInfo(NPatchInfo $ptr) is native(LIBRAYLIB) is symbol('free_NPatchInfo') {*}
 our sub malloc-GlyphInfo(int32 $value,int32 $offsetX,int32 $offsetY,int32 $advanceX,Image $image) returns GlyphInfo is native(LIBRAYLIB) is symbol('malloc_GlyphInfo') {*}
 our sub free-GlyphInfo(GlyphInfo $ptr) is native(LIBRAYLIB) is symbol('free_GlyphInfo') {*}
-our sub malloc-Font(int32 $baseSize,int32 $glyphCount,int32 $glyphPadding,Texture2D $texture,Pointer $recs,Pointer $glyphs) returns Font is native(LIBRAYLIB) is symbol('malloc_Font') {*}
+our sub malloc-Font(int32 $baseSize,int32 $glyphCount,int32 $glyphPadding,Texture2D $texture,Pointer[Rectangle] $recs,Pointer[GlyphInfo] $glyphs) returns Font is native(LIBRAYLIB) is symbol('malloc_Font') {*}
 our sub free-Font(Font $ptr) is native(LIBRAYLIB) is symbol('free_Font') {*}
 our sub malloc-Camera3D(Vector3 $position,Vector3 $target,Vector3 $up,num32 $fovy,int32 $projection) returns Camera3D is native(LIBRAYLIB) is symbol('malloc_Camera3D') {*}
 our sub free-Camera3D(Camera3D $ptr) is native(LIBRAYLIB) is symbol('free_Camera3D') {*}
 our sub malloc-Camera2D(Vector2 $offset,Vector2 $target,num32 $rotation,num32 $zoom) returns Camera2D is native(LIBRAYLIB) is symbol('malloc_Camera2D') {*}
 our sub free-Camera2D(Camera2D $ptr) is native(LIBRAYLIB) is symbol('free_Camera2D') {*}
-
-our sub malloc-Mesh(
-  int32          $vertexCount,
-  int32          $triangleCount,
-  CArray[num32]  $vertices,
-  CArray[num32]  $texcoords,
-  CArray[num32]  $texcoords2,
-  CArray[num32]  $normals,
-  CArray[num32]  $tangents,
-  CArray[uint8]  $colors,
-  CArray[uint16] $indices,
-  CArray[num32]  $animVertices,
-  CArray[num32]  $animNormals,
-  CArray[uint8]  $boneIds,
-  CArray[num32]  $boneWeights,
-  int32          $vaoId,
-  CArray[int32]  $vboId
-)
-  returns Mesh
-is native(LIBRAYLIB)
-is symbol('malloc_Mesh') {*}
-
+our sub malloc-Mesh(int32 $vertexCount,int32 $triangleCount,num32 $vertices,num32 $texcoords,num32 $texcoords2,num32 $normals,num32 $tangents,uint8 $colors,int16 $indices,num32 $animVertices,num32 $animNormals,uint8 $boneIds,num32 $boneWeights,int32 $vaoId,int32 $vboId) returns Mesh is native(LIBRAYLIB) is symbol('malloc_Mesh') {*}
 our sub free-Mesh(Mesh $ptr) is native(LIBRAYLIB) is symbol('free_Mesh') {*}
-our sub malloc-Shader(int32 $id, CArray[int32] $locs) returns Shader is native(LIBRAYLIB) is symbol('malloc_Shader') {*}
+our sub malloc-Shader(int32 $id,int32 $locs) returns Shader is native(LIBRAYLIB) is symbol('malloc_Shader') {*}
 our sub free-Shader(Shader $ptr) is native(LIBRAYLIB) is symbol('free_Shader') {*}
 our sub malloc-MaterialMap(Texture2D $texture,Color $color,num32 $value) returns MaterialMap is native(LIBRAYLIB) is symbol('malloc_MaterialMap') {*}
 our sub free-MaterialMap(MaterialMap $ptr) is native(LIBRAYLIB) is symbol('free_MaterialMap') {*}
-our sub malloc-Material(Shader $shader,MaterialMap $maps,CArray[num32] $params) returns Material is native(LIBRAYLIB) is symbol('malloc_Material') {*}
+our sub malloc-Material(Shader $shader,Pointer[MaterialMap] $maps,CArray[num32] $params) returns Material is native(LIBRAYLIB) is symbol('malloc_Material') {*}
 our sub free-Material(Material $ptr) is native(LIBRAYLIB) is symbol('free_Material') {*}
 our sub malloc-Transform(Vector3 $translation,Quaternion $rotation,Vector3 $scale) returns Transform is native(LIBRAYLIB) is symbol('malloc_Transform') {*}
 our sub free-Transform(Transform $ptr) is native(LIBRAYLIB) is symbol('free_Transform') {*}
-our sub malloc-BoneInfo(CArray[Str] $name,int32 $parent) returns BoneInfo is native(LIBRAYLIB) is symbol('malloc_BoneInfo') {*}
+our sub malloc-BoneInfo(Str $name,int32 $parent) returns BoneInfo is native(LIBRAYLIB) is symbol('malloc_BoneInfo') {*}
 our sub free-BoneInfo(BoneInfo $ptr) is native(LIBRAYLIB) is symbol('free_BoneInfo') {*}
-
-
-our sub malloc-ModelAnimation(
-  int32                     $boneCount,
-  int32                     $frameCount,
-  Pointer                   $bones,
-  CArray[CArray[Transform]] $framePoses,
-  CArray[uint8]             $name
-)
-  returns ModelAnimation
-  is native(LIBRAYLIB)
-  is symbol('malloc_ModelAnimation')
-  is export {*}
-
-our sub free-ModelAnimation(ModelAnimation $ptr)
-  is native(LIBRAYLIB)
-  is symbol('free_ModelAnimation')
-  is export {*}
-
+our sub malloc-Model(Matrix $transform,int32 $meshCount,int32 $materialCount,Pointer[Mesh] $meshes,Pointer[Material] $materials,int32 $meshMaterial,int32 $boneCount,Pointer[BoneInfo] $bones,Pointer[Transform] $bindPose) returns Model is native(LIBRAYLIB) is symbol('malloc_Model') {*}
+our sub free-Model(Model $ptr) is native(LIBRAYLIB) is symbol('free_Model') {*}
+our sub malloc-ModelAnimation(int32 $boneCount,int32 $frameCount,Pointer[BoneInfo] $bones,Pointer $framePoses,Str $name) returns ModelAnimation is native(LIBRAYLIB) is symbol('malloc_ModelAnimation') {*}
+our sub free-ModelAnimation(ModelAnimation $ptr) is native(LIBRAYLIB) is symbol('free_ModelAnimation') {*}
 our sub malloc-Ray(Vector3 $position,Vector3 $direction) returns Ray is native(LIBRAYLIB) is symbol('malloc_Ray') {*}
 our sub free-Ray(Ray $ptr) is native(LIBRAYLIB) is symbol('free_Ray') {*}
 our sub malloc-RayCollision(bool $hit,num32 $distance,Vector3 $point,Vector3 $normal) returns RayCollision is native(LIBRAYLIB) is symbol('malloc_RayCollision') {*}
 our sub free-RayCollision(RayCollision $ptr) is native(LIBRAYLIB) is symbol('free_RayCollision') {*}
-our sub malloc-Wave(int32 $frameCount,int32 $sampleRate,int32 $sampleSize,int32 $channels,Pointer $data) returns Wave is native(LIBRAYLIB) is symbol('malloc_Wave') {*}
+our sub malloc-BoundingBox(Vector3 $min,Vector3 $max) returns BoundingBox is native(LIBRAYLIB) is symbol('malloc_BoundingBox') {*}
+our sub free-BoundingBox(BoundingBox $ptr) is native(LIBRAYLIB) is symbol('free_BoundingBox') {*}
+our sub malloc-Wave(int32 $frameCount,int32 $sampleRate,int32 $sampleSize,int32 $channels,void $data) returns Wave is native(LIBRAYLIB) is symbol('malloc_Wave') {*}
 our sub free-Wave(Wave $ptr) is native(LIBRAYLIB) is symbol('free_Wave') {*}
 our sub malloc-Sound(AudioStream $stream,int32 $frameCount) returns Sound is native(LIBRAYLIB) is symbol('malloc_Sound') {*}
 our sub free-Sound(Sound $ptr) is native(LIBRAYLIB) is symbol('free_Sound') {*}
@@ -1535,20 +1430,5 @@ our sub malloc-FilePathList(int32 $capacity,int32 $count,Str $paths) returns Fil
 our sub free-FilePathList(FilePathList $ptr) is native(LIBRAYLIB) is symbol('free_FilePathList') {*}
 our sub malloc-AutomationEvent(int32 $frame,int32 $type,CArray[int32] $params) returns AutomationEvent is native(LIBRAYLIB) is symbol('malloc_AutomationEvent') {*}
 our sub free-AutomationEvent(AutomationEvent $ptr) is native(LIBRAYLIB) is symbol('free_AutomationEvent') {*}
-our sub malloc-AutomationEventList(int32 $capacity,int32 $count,AutomationEvent $events) returns AutomationEventList is native(LIBRAYLIB) is symbol('malloc_AutomationEventList') {*}
+our sub malloc-AutomationEventList(int32 $capacity,int32 $count,Pointer[AutomationEvent] $events) returns AutomationEventList is native(LIBRAYLIB) is symbol('malloc_AutomationEventList') {*}
 our sub free-AutomationEventList(AutomationEventList $ptr) is native(LIBRAYLIB) is symbol('free_AutomationEventList') {*}
-our sub free-Rectangle(Rectangle $ptr) is native(LIBRAYLIB) is symbol('free_Rectangle') {*}
-
-our sub free-BoundingBox(
-  BoundingBox $ptr
-)
-  is native(LIBRAYLIB)
-  is symbol('free_BoundingBox') {*}
-
-our sub malloc-BoundingBox(
-  Vector3 $min,
-  Vector3 $max
-)
-  returns BoundingBox
-  is native(LIBRAYLIB)
-  is symbol('malloc_BoundingBox') {*}

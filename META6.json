@@ -54,7 +54,7 @@
     "sounds/buttonfx.wav"
   ],
   "test-depends": [],
-  "version": "0.0.15",
+  "version": "0.0.17",
   "source-url": "https://github.com/vushu/raylib-raku.git",
   "builder": "Distribution::Builder::MakeFromJSON",
   "build": {
