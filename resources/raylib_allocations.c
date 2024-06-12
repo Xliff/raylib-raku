@@ -395,3 +395,4 @@ AutomationEventList* malloc_AutomationEventList(unsigned int  capacity,unsigned 
 void free_AutomationEventList(AutomationEventList* ptr){
    free(ptr);
 }
+
