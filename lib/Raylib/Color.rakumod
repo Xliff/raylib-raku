@@ -1,6 +1,10 @@
 use v6;
 
 use Method::Also;
+
+use Raylib::Raw::Definitions;
+use Raylib::Raw::Enums;
+use Raylib::Raw::Structs;
 use Raylib::Bindings;
 
 use Raylib::Roles::Reapable;
@@ -10,13 +14,14 @@ class Raylib::Color does Reapable {
 
   submethod BUILD ( :$!color ) { }
 
-  method Raylib::Bindings::Color { $!color }
+  method Raylib::Raw::Structs::Color { $!color }
 
   proto method new (|c)
   { * }
 
   multi method new (Color $color) {
     return Nil unless $color;
+
     self.bless( :$color );
   }
   multi method new (Int() $r, Int() $g, Int() $b, Int() $a = 255) {
@@ -126,32 +131,32 @@ class Raylib::Color does Reapable {
 }
 
 ####### Predefined colors ########
-sub term:<init-lightgray  > is export { Color.init(200,  200,  200,  255 );} # creating a new instance of Color
-sub term:<init-gray       > is export { Color.init(130,  130,  130,  255 );} # creating a new instance of Color
-sub term:<init-darkgray   > is export { Color.init(80,  80,  80,  255 );} # creating a new instance of Color
-sub term:<init-yellow     > is export { Color.init(253,  249,  0,  255 );} # creating a new instance of Color
-sub term:<init-gold       > is export { Color.init(255,  203,  0,  255 );} # creating a new instance of Color
-sub term:<init-orange     > is export { Color.init(255,  161,  0,  255 );} # creating a new instance of Color
-sub term:<init-pink       > is export { Color.init(255,  109,  194,  255 );} # creating a new instance of Color
-sub term:<init-red        > is export { Color.init(230,  41,  55,  255 );} # creating a new instance of Color
-sub term:<init-maroon     > is export { Color.init(190,  33,  55,  255 );} # creating a new instance of Color
-sub term:<init-green      > is export { Color.init(0,  228,  48,  255 );} # creating a new instance of Color
-sub term:<init-lime       > is export { Color.init(0,  158,  47,  255 );} # creating a new instance of Color
-sub term:<init-darkgreen  > is export { Color.init(0,  117,  44,  255 );} # creating a new instance of Color
-sub term:<init-skyblue    > is export { Color.init(102,  191,  255,  255 );} # creating a new instance of Color
-sub term:<init-blue       > is export { Color.init(0,  121,  241,  255 );} # creating a new instance of Color
-sub term:<init-darkblue   > is export { Color.init(0,  82,  172,  255 );} # creating a new instance of Color
-sub term:<init-purple     > is export { Color.init(200,  122,  255,  255 );} # creating a new instance of Color
-sub term:<init-violet     > is export { Color.init(135,  60,  190,  255 );} # creating a new instance of Color
-sub term:<init-darkpurple > is export { Color.init(112,  31,  126,  255 );} # creating a new instance of Color
-sub term:<init-beige      > is export { Color.init(211,  176,  131,  255 );} # creating a new instance of Color
-sub term:<init-brown      > is export { Color.init(127,  106,  79,  255 );} # creating a new instance of Color
-sub term:<init-darkbrown  > is export { Color.init(76,  63,  47,  255 );} # creating a new instance of Color
-sub term:<init-white      > is export { Color.init(255,  255,  255,  255 );} # creating a new instance of Color
-sub term:<init-black      > is export { Color.init(0,  0,  0,  255 );} # creating a new instance of Color
-sub term:<init-blank      > is export { Color.init(0,  0,  0,  0 );} # creating a new instance of Color
-sub term:<init-magenta    > is export { Color.init(255,  0,  255,  255 );} # creating a new instance of Color
-sub term:<init-raywhite   > is export { Color.init(245,  245,  245,  255 );} # creating a new instance of Color
+sub term:<init-lightgray  > is export { Color.init(200,  200, 200,  255 ) } # creating a new instance of Color
+sub term:<init-gray       > is export { Color.init(130,  130, 130,  255 ) } # creating a new instance of Color
+sub term:<init-darkgray   > is export { Color.init(80,    80,  80,  255 ) } # creating a new instance of Color
+sub term:<init-yellow     > is export { Color.init(253,  249,   0,  255 ) } # creating a new instance of Color
+sub term:<init-gold       > is export { Color.init(255,  203,   0,  255 ) } # creating a new instance of Color
+sub term:<init-orange     > is export { Color.init(255,  161,   0,  255 ) } # creating a new instance of Color
+sub term:<init-pink       > is export { Color.init(255,  109, 194,  255 ) } # creating a new instance of Color
+sub term:<init-red        > is export { Color.init(230,  41,   55,  255 ) } # creating a new instance of Color
+sub term:<init-maroon     > is export { Color.init(190,  33,   55,  255 ) } # creating a new instance of Color
+sub term:<init-green      > is export { Color.init(0,   228,   48,  255 ) } # creating a new instance of Color
+sub term:<init-lime       > is export { Color.init(0,   158,   47,  255 ) } # creating a new instance of Color
+sub term:<init-darkgreen  > is export { Color.init(0,   117,   44,  255 ) } # creating a new instance of Color
+sub term:<init-skyblue    > is export { Color.init(102,  191, 255,  255 ) } # creating a new instance of Color
+sub term:<init-blue       > is export { Color.init(0,    121, 241,  255 ) } # creating a new instance of Color
+sub term:<init-darkblue   > is export { Color.init(0,    82,  172,  255 ) } # creating a new instance of Color
+sub term:<init-purple     > is export { Color.init(200, 122,  255,  255 ) } # creating a new instance of Color
+sub term:<init-violet     > is export { Color.init(135,  60,  190,  255 ) } # creating a new instance of Color
+sub term:<init-darkpurple > is export { Color.init(112,  31,  126,  255 ) } # creating a new instance of Color
+sub term:<init-beige      > is export { Color.init(211, 176,  131,  255 ) } # creating a new instance of Color
+sub term:<init-brown      > is export { Color.init(127, 106,   79,  255 ) } # creating a new instance of Color
+sub term:<init-darkbrown  > is export { Color.init(76,   63,   47,  255 ) } # creating a new instance of Color
+sub term:<init-white      > is export { Color.init(255, 255,  255,  255 ) } # creating a new instance of Color
+sub term:<init-black      > is export { Color.init(0,     0,    0,  255 ) } # creating a new instance of Color
+sub term:<init-blank      > is export { Color.init(0,     0,    0,  0   ) } # creating a new instance of Color
+sub term:<init-magenta    > is export { Color.init(255,   0,  255,  255 ) } # creating a new instance of Color
+sub term:<init-raywhite   > is export { Color.init(245,  245, 245,  255 ) } # creating a new instance of Color
 
 sub term:<LIGHTGRAY       > is export { Raylib::Color.new( term:<init-lightgray>  ) }
 sub term:<GRAY            > is export { Raylib::Color.new( term:<init-gray>       ) }
