@@ -2,35 +2,60 @@ use v6;
 
 use NativeCall;
 
+use Raylib::Raw::Definitions;
+use Raylib::Raw::Structs;
+use Raylib::Raw::Events;
 use Raylib::Bindings;
 
-class Raylib::Material {
-  has Material $!material handles(*) is built;
+my %material-maps;
 
-  method Raylib::Bindings::Material { $!material }
+class Raylib::Material {
+  has Material $!material handles<shader params> is built handles(*);
+
+  method maps {
+    my $b = $!material.maps;
+    unless %material-maps{ self.WHERE } {
+      %material-maps{ self.WHERE } = class :: {
+
+        method Array {
+          my @a;
+          @a[$_] = self[$_] for self.elems;
+          @a;
+        }
+
+        # Cribbed from MySQL::Native. Thanks, ctilmes!
+        method AT-POS (Int $field) {
+          $field < self.elems
+            ?? nativecast(
+                 MaterialMap,
+                 Pointer.new( $b + $field * nativesizeof(MaterialMap) )
+               )
+            !! MaterialMap;
+        }
+
+        method elems { MAX_MATERIAL_MAPS }
+
+      }
+    }
+    %material-maps{ self.WHERE }
+  }
+
+  method Raylib::Raw::Structs::Material { $!material }
+
+  proto method new (|)
+  { * }
 
   multi method new (Material $material) {
     return Nil unless $material;
     self.bless( :$material );
   }
+
   multi method new (
     Shader()      $shader,
-    MaterialMap() $maps,
-                  @params
-  ) {
-    samewith(
-      $shader,
-      $maps,
-      CArray[num32].new( @params )
-    );
-  }
-  multi method new (
-    Shader()      $shader,
-    MaterialMap() $maps,
     CArray[num32] $params
   ) {
     self.bless(
-      material => Material.init($shader, $maps, $params)
+      material => Material.init($shader, $params)
     );
   }
 
