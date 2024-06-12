@@ -4,6 +4,8 @@ use NativeCall;
 
 use Raylib::Bindings;
 
+use Raylib::Raw::Math;
+
 class Raylib::Matrix {
   has Matrix $!matrix handles(*) is built;
 
@@ -113,4 +115,29 @@ class Raylib::Matrix {
     );
   }
 
+  method multiply ($b) {
+    Raylib::Raw::Math::Matrix.Multiply(
+      self,
+      $b
+    );
+  }
+
+  method rotate ($axis, $angle) {
+    Raylib::Raw::Math::Matrix.Rotate($axis, $angle);
+  }
+
+  method rotate-x ($angle) {
+    Raylib::Raw::Math::Matrix.RotateX($angle);
+  }
+
+  method rotate-y ($angle) {
+    Raylib::Raw::Math::Matrix.RotateY($angle);
+  }
+
+  method rotate-z ($angle) {
+    Raylib::Raw::Math::Matrix.RotateZ($angle);
+  }
+
 }
+
+constant M = Raylib::Matrix;
