@@ -5,7 +5,7 @@ use Raylib::Bindings;
 class Raylib::MaterialMap {
   has MaterialMap $!mm handles(*) is build;
 
-  method Raylib::Bindings::MaterialMap { $!mm }
+  method Raylib::Raw::Structs::MaterialMap { $!mm }
 
   multi method new (MaterialMap $mm) {
     return Nil unless $mm;
