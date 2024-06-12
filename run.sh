@@ -1,0 +1,2 @@
+
+raku --stagestats -Ilib "$@"
