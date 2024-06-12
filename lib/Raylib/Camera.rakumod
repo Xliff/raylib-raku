@@ -2,6 +2,9 @@ use v6;
 
 use Method::Also;
 
+use Raylib::Raw::Definitions;
+use Raylib::Raw::Structs;
+
 use Raylib::Bindings;
 use Raylib::Matrix;
 use Raylib::Vector3;
@@ -75,7 +78,9 @@ class Raylib::Camera does Reapable {
     update-camera($!camera, $m);
   }
 
-  method begin-mode is also<begin> {
+  method begin-mode3d
+    is also<begin>
+  {
     begin-mode3d($!camera);
   }
 
