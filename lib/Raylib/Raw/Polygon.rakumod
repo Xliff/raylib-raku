@@ -2,7 +2,8 @@ use v6.c;
 
 use NativeCall;
 
-use Raylib::Bindings;
+use Raylib::Raw::Definitions;
+use Raylib::Raw::Structs;
 
 unit package Raylib::Raw::Polygon;
 
@@ -20,6 +21,6 @@ our sub draw-poly-lines-ex (
   is export
   is native(LIBRAYLIB)
   is symbol('DrawPolyLinesEx_pointerized'){ * }
-  
+
 our sub check-collision-point-poly (Vector2 $point, Vector2 $points is rw, int32 $pointCount) returns bool is export is native(LIBRAYLIB) is symbol('CheckCollisionPointPoly_pointerized'){ * }
 our sub gen-mesh-poly (int32 $sides, num32 $radius) returns Mesh is export is native(LIBRAYLIB) is symbol('GenMeshPoly_pointerized'){ * }

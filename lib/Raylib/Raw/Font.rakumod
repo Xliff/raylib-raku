@@ -2,7 +2,9 @@ use v6;
 
 use NativeCall;
 
-use Raylib::Bindings;
+use Raylib::Raw::Definitions;
+use Raylib::Raw::Enums;
+use Raylib::Raw::Structs;
 
 unit package Raylib::Raw::Font;
 

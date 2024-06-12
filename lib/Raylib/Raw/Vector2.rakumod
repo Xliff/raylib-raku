@@ -2,7 +2,8 @@ use v6;
 
 use NativeCall;
 
-use Raylib::Bindings;
+use Raylib::Raw::Definitions;
+use Raylib::Raw::Structs;
 
 unit package Raylib::Raw::Vector2;
 
