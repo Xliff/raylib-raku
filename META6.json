@@ -30,6 +30,7 @@
     "Raylib::Bindings": "lib/Raylib/Bindings.rakumod"
   },
   "resources": [
+    "texel_check.png",
     "libraries/raylib",
     "fonts/KAISG.ttf",
     "images/button.png",
