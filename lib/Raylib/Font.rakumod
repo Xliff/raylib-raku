@@ -10,31 +10,116 @@ use Raylib::Raw::Font;
 use Raylib::Texture2D;
 
 class Raylib::Font {
-  has Font $!font handles(*) is built;
+  has Font $!font handles(*) is built handles(*);
 
-  has $!texture;
+  has $!fontFont       is built;
+  has $!fontPosition2d is built;
+  has $!fontSize       is built;
+  has $!fontSpacing    is built;
+  has $!fontTint       is built;
+
+  submethod BUILD (
+    Num()   :position(:$!fontPosition),
+    Num()   :size(:$!fontSize),
+    Num()   :spacing(:$!fontSpacing),
+    Font()  :font(:$!fontFont),
+    Color() :tint(:color(:$fontTint))
+  ) { }
+
+  method position is rw { $!fontPosition }
+  method size     is rw { $!fontSize     }
+  method color    is rw { $!fontTint     }
+  method spacing  is rw { $!fontSpacing  }
+
+  method set-position ($p) {
+    $!fontPosition = $p;
+    self;
+  }
+
+  method set-color ($c) {
+    $!fontColor = $c;
+    self;
+  }
+
+  method set-size ($s) {
+    $!fontSize = $s;
+    self;
+  }
+
+  method set-spacing ($s) {
+    $!fontSpacing = $s;
+    self
+  }
 
   method Raylib::Bindings::Font
     is also<Font>
   { $!font }
 
-  multi method new (Font $font) {
+  multi method new (Font $font, *%a) {
     return Nil unless $font;
-    self.bless( :$font );
+    self.bless( :$font, |%a );
+  }
+  multi method new (
+    :$position,
+    :$size,
+    :$spacing,
+    :$font,
+    :tint(:$color)
+  ) {
+    self.bless(
+      :$position,
+      :$size,
+      :$spacing,
+      :$font,
+      :$color
+    )
   }
 
-  method texture ( :$raw ) {
-    $!texture = Raylib::Texture2D.new(
+  method font ( :$raw ) {
+    $!font = Raylib::Texture2D.new(
       nativecast(Texture2D, $!font.texture)
-    ) unless $!texture;
-    return $!texture.Texture2D if $raw;
-    $!texture;
+    ) unless $!font;
+    return $!font.Texture2D if $raw;
+    $!font;
   }
 
-  method get-default {
+  # Backwards compatibility
+  method texture ( :$raw ) {
+    self.font( :$raw );
+  }
+
+  method get-default ( *%a ) {
     my $font = get-font-default();
-    $font.gist.say;
-    self.new($font);
+
+    self.new($font, |%a);
+  }
+
+  method draw (
+    Str()   $text,
+            $x     is copy,
+            $y     is copy,
+           :$width is copy,
+           :$size           = $!fontSize,
+           :$color          = $!fontTint,
+           :$post
+  ) {
+    $width //= measure-text($text, $size)
+
+    my $*w = $width;
+
+    $x = $x() if $x ~~ Callable;
+    $y = $y() if $y ~~ Callable;
+
+    $x .= Num if $x !~~ Num && $x.^can('Num');
+    $y .= Num if $y !~~ Num && $y.^can('Num');
+
+    X::Raylib::InvalidObject.new(
+      message => "Coordinates of ({ $x.^name }, { $y.^name }) are {
+                  '' } invalid!"
+    ).throw unless ($x, $y).all ~~ Num;
+
+    draw-text($text, $x, $y, $size, $color);
+    $width;
   }
 
   method draw-codepoint (
@@ -49,6 +134,34 @@ class Raylib::Font {
     draw-text-codepoint($!font, $c, $position, $f, $tint);
   }
 
+  multi method draw-codepoints (
+    @codepoints,
+    :$position = $!fontPosition,
+    :$size     = $!fontSize,
+    :$spacing  = $!fontSpacing,
+    :$tint     = $!fontTint
+  ) {
+    samewith(
+      @codepoints,
+      $position
+      $size
+      $spacing
+      $tint
+    );
+  }
+  multi method draw-codepoints (
+              @codepoints,
+    Vector2() $position,
+    Color()   $tint
+  ) {
+    samewith(
+      @codepoints,
+      $position.
+      $!fontSize,
+      $!fontSpacing,
+      $tint
+    );
+  }
   multi method draw-codepoints (
                   @codepoints,
     Vector2()     $position,
