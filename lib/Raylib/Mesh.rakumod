@@ -1,13 +1,21 @@
 use v6;
 
 use NativeCall;
+
+use Raylib::Raw::Definitions;
+use Raylib::Raw::Structs;
 use Raylib::Bindings;
+
 use Raylib::Model;
 
 class Raylib::Mesh {
   has Mesh $!mesh handles(*) is built;
 
-  method Raylib::Bindings::Mesh { $!mesh }
+  method Raylib::Raw::Structs::Mesh
+  { $!mesh }
+
+  proto method new (|)
+  { * }
 
   multi method new (Mesh $mesh) {
     return Nil unless $mesh;
