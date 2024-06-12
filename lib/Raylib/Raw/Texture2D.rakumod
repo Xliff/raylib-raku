@@ -1,7 +1,9 @@
 use v6;
 
 use NativeCall;
-use Raylib::Bindings;
+
+use Raylib::Raw::Definitions;
+use Raylib::Raw::Structs;
 
 unit package Raylib::Raw::Texture2D;
 
@@ -51,14 +53,14 @@ sub draw-texture-pro (
   is native(LIBRAYLIB) {*};
 
 sub draw-texture-rec (
-    Texture2D $texture,
-    Rectangle $source,
-    Vector2 $position,
-    Color $tint
-  )
-  is export
-  is symbol("DrawTextureRec_pointerized")
-  is native(LIBRAYLIB) {*};
+  Texture2D $texture,
+  Rectangle $source,
+  Vector2 $position,
+  Color $tint
+)
+is export
+is symbol("DrawTextureRec_pointerized")
+is native(LIBRAYLIB) {*};
 
 sub draw-texture-v (
     Texture2D $texture,
