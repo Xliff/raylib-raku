@@ -2,8 +2,11 @@ use v6;
 
 use Method::Also;
 
-use Raylib::Bindings;
+use Raylib::Raw::Definitions;
+use Raylib::Raw::Enums;
+use Raylib::Raw::Structs;
 use Raylib::Raw::Rectangle;
+use Raylib::Bindings;
 
 use Raylib::Color;
 use Raylib::Vector2;
@@ -15,12 +18,12 @@ class Raylib::Rectangle
   does Raylib::Roles::ScreenPositionable
   does Reapable
 {
-  has Rectangle $!rectangle handles(*) is built;
+  has Rectangle $!rectangle handles(*) is built handles(*);
 
   proto method new (|)
   { * }
 
-  method Raylib::Bindings::Rectangle
+  method Raylib::Raw::Structs::Rectangle
     is also<Rectangle>
   { $!rectangle }
 
