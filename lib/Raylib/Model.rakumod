@@ -2,7 +2,12 @@ use v6.c;
 
 use NativeCall;
 
+use Raylib::Raw::Definitions;
+use Raylib::Raw::Structs;
+
 use Raylib::Bindings;
+use Raylib::Material;
+
 use Raylib::Raw::Model;
 
 class Raylib::Model {
@@ -13,23 +18,30 @@ class Raylib::Model {
   #     For now, the array aware version of the CStruct is now known as
   #     ModelRevised, where the original struct retains its same name.
   #     We only delegate from the array aware version.
-  has Model        $!oldmodel;
+  #has Model        $!model;
 
-  has ModelRevised $!model     handles(*) is built;
+  has Model $!model     handles(*) is built;
 
   has $!materials;
   has $!meshes;
+  has $!transforms;
 
   submethod BUILD ( :$model ) {
-    $!oldmodel = $model;
-    $!model    = nativecast(ModelRevised, $model);
+    $!model = $model;
   }
 
-  method Raylib::Bindings::Model { $!oldmodel }
+  method Raylib::Raw::Structs::Model
+  { $!model }
+
+  method Model { $!model }
 
   multi method new (Model $model) {
     return Nil unless $model;
     self.bless( :$model );
+  }
+
+  method dump {
+    dump-model($!model);
   }
 
   multi method load (
@@ -63,11 +75,11 @@ class Raylib::Model {
   }
 
   method is-ready {
-    is-model-ready($!oldmodel)
+    is-model-ready($!model)
   }
 
   method get-bounding-box ( :$raw = False ) {
-    my $bb = get-model-bounding-box($!oldmodel);
+    my $bb = get-model-bounding-box($!model);
     return $bb if $raw;
     #Raylib::BoundingBox.new($bb);
     $bb;
@@ -76,7 +88,7 @@ class Raylib::Model {
   method draw (Vector3() $position, Num() $scale, Color() $tint) {
     my num32 $s = $scale;
 
-    draw-model($!oldmodel, $position, $s, $tint);
+    draw-model($!model, $position, $s, $tint);
   }
 
   method draw-ex (
@@ -89,7 +101,7 @@ class Raylib::Model {
     my num32 $r = $rotationAngle;
 
     draw-model-ex(
-      $!oldmodel,
+      $!model,
       $position,
       $rotationAxis,
       $r,
@@ -101,7 +113,7 @@ class Raylib::Model {
   method draw-wires (Vector3() $position, Num() $scale, Color() $tint) {
     my num32 $s = $scale;
 
-    draw-model-wires($!oldmodel,  $position, $s, $tint);
+    draw-model-wires($!model,  $position, $s, $tint);
   }
 
   method draw-wires-ex(
@@ -114,7 +126,7 @@ class Raylib::Model {
     my num32 $r = $rotationAngle;
 
     draw-model-wires-ex(
-      $!oldmodel,
+      $!model,
       $position,
       $rotationAxis,
       $r,
@@ -127,9 +139,12 @@ class Raylib::Model {
     unless $!meshes {
       $!meshes = $!model.meshes;
 
-      if $!meshes.can('^mesh') -> &m {
-        &m.wrap: method (|c) {
-          Raylib::Mesh.new( callsame );
+      if $!meshes.^can('mesh') -> &m {
+        unless &m.is-wrapped {
+          &m.wrap: method (|c) {
+            my $m = callsame;
+            $m ?? Raylib::Mesh.new($m) !! Nil;
+          }
         }
       }
     }
@@ -137,37 +152,47 @@ class Raylib::Model {
     $!meshes;
   }
 
-  # method materials {
-  #   unless $!materials {
-  #     $!materials = $!model.materials;
-  #
-  #     if $!materials.can('^material') -> &m {
-  #       unless &m.is-wrapped {
-  #         &m.wrap: method (|c) {
-  #           Raylib::Material.new( callsame );
-  #         }
-  #       }
-  #     }
-  #   }
-  #
-  #   nextsame;
-  # }
+  method materials {
+    say "Materials: { +( nativecast(Pointer, $!model.materials( :raw ) ) ) }";
 
+    $!materials = Raylib::Material.new(
+      nativecast( Material, $!model.materials( :raw )  )
+    ) unless $!materials;
+
+    $!materials
+  }
+
+  method transforms {
+    unless $!transforms {
+      $!transforms = $!model.transforms;
+
+      if $!materials.can('^transform') -> &m {
+        unless &m.is-wrapped {
+          &m.wrap: method (|c) {
+            my $m = callsame;
+            $m ?? Raylib::Transform.new($m) !! Nil;
+          }
+        }
+      }
+    }
+
+    $!transforms;
+  }
 
   method set-mesh-material (Int() $meshId, Int() $materialId) {
     my int32 ($me, $ma) = ($meshId, $materialId);
 
-    set-model-mesh-material($!oldmodel, $me, $ma);
+    set-model-mesh-material($!model, $me, $ma);
   }
 
   method unload {
-    unload-model($!oldmodel);
+    unload-model($!model);
   }
 
   method update-animation (ModelAnimation() $anim, Int() $frame) {
     my int32 $f = $frame;
 
-    update-model-animation($!oldmodel, $anim, $frame);
+    update-model-animation($!model, $anim, $frame);
   }
 
 
