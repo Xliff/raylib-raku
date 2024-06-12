@@ -26,9 +26,16 @@ class Raylib::BoundingBox does Reapable {
     self.bless( :$bounding-box );
   }
   multi method new ($min is copy, $max is copy) {
-    $min = $min.Vector3;
-    $max = $max.Vector3;
-    
+    $min = $min.Vector3 if $min.^can('Vector3');
+    X::Raylib::InvalidObject.new(
+      message => '\$min is not a Vector3-compatible object)'
+    ).throw unless $min ~~ Vector3;
+
+    $max = $max.Vector3 if $max.^can('Vector3');
+    X::Raylib::InvalidObject.new(
+      message => '\$max is not a Vector3-compatible object)'
+    ).throw unless $max ~~ Vector3;
+
     my $bounding-box = BoundingBox.init($min, $max);
     return Nil unless $bounding-box;
     my $o = self.bless( :$bounding-box );
